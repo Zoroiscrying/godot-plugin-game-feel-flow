@@ -57,6 +57,16 @@ func apply(target: Node, params: GFFParams = null) -> void:
 	if not enabled:
 		return
 
+	# Reentrancy guard
+	if _is_playing:
+		match overlap_strategy:
+			OverlapStrategy.IGNORE:
+				return
+			OverlapStrategy.CANCEL:
+				stop()
+			_:
+				pass
+
 	# 检查冷却时间
 	if cooldown > 0.0 and Time.get_ticks_msec() / 1000.0 - _last_play_time < cooldown:
 		return
@@ -170,9 +180,10 @@ func _create_final_params(params: GFFParams, intensity: float, duration: float) 
 	final_params.duration = duration
 
 	if params:
-		# 复制额外参数
+		# 复制额外参数（跳过已计算的 intensity 和 duration）
 		for key in params._data:
-			final_params._data[key] = params._data[key]
+			if key != "intensity" and key != "duration":
+				final_params._data[key] = params._data[key]
 
 	return final_params
 
