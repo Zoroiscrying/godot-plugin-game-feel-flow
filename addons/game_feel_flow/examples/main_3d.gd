@@ -145,29 +145,27 @@ func _play_effect(effect_type: String) -> void:
 		print("Please select a target first")
 		return
 
-	var params = param_panel.get_params()
-
 	print("Playing: ", effect_type, " on ", _selected_target.name)
 
 	match effect_type:
 		"shake":
-			GameFeelFlow.play("shake", _selected_target, params)
+			GameFeelFlow.play("shake", _selected_target)
 		"scale":
-			GameFeelFlow.play("scale", _selected_target, params)
+			GameFeelFlow.play("scale", _selected_target)
 		"flash":
-			GameFeelFlow.play("flash", _selected_target, params)
+			GameFeelFlow.play("flash", _selected_target)
 		"color":
-			GameFeelFlow.play("color", _selected_target, params)
+			GameFeelFlow.play("color", _selected_target)
 		"hit_light":
-			GameFeelFlow.play_combo("hit_light", _selected_target, params)
+			GameFeelFlow.play_combo("hit_light", _selected_target)
 		"hit_medium":
-			GameFeelFlow.play_combo("hit_heavy", _selected_target, params)
+			GameFeelFlow.play_combo("hit_heavy", _selected_target)
 		"hit_heavy":
-			GameFeelFlow.play_combo("hit_heavy", _selected_target, params)
+			GameFeelFlow.play_combo("hit_heavy", _selected_target)
 		"explosion":
-			GameFeelFlow.play_combo("explosion", _selected_target, params)
+			GameFeelFlow.play_combo("explosion", _selected_target)
 		"death":
-			GameFeelFlow.play_combo("death", _selected_target, params)
+			GameFeelFlow.play_combo("death", _selected_target)
 
 func _reset_all() -> void:
 	for child in objects.get_children():

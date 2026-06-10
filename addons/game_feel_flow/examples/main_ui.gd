@@ -50,8 +50,6 @@ func _init_ui() -> void:
 # ===== Effect Playback =====
 
 func _play_effect(effect_type: String) -> void:
-	var params = param_panel.get_params()
-
 	print("Playing: ", effect_type)
 
 	match effect_type:
@@ -61,13 +59,13 @@ func _play_effect(effect_type: String) -> void:
 			tween.tween_property(demo_button, "scale", Vector2(0.9, 0.9), 0.05)
 			tween.tween_property(demo_button, "scale", Vector2(1.0, 1.0), 0.1)
 		"sprite_scale":
-			GameFeelFlow.play("scale", demo_sprite, params)
+			GameFeelFlow.play("scale", demo_sprite)
 		"sprite_color":
-			GameFeelFlow.play("color", demo_sprite, params)
+			GameFeelFlow.play("color", demo_sprite)
 		"hit_light":
-			GameFeelFlow.play_combo("hit_light", demo_sprite, params)
+			GameFeelFlow.play_combo("hit_light", demo_sprite)
 		"hit_medium":
-			GameFeelFlow.play_combo("hit_heavy", demo_sprite, params)
+			GameFeelFlow.play_combo("hit_heavy", demo_sprite)
 
 func _reset() -> void:
 	demo_sprite.position = _original_sprite_position
