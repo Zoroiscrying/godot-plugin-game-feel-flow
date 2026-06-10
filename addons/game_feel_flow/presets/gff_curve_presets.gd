@@ -7,13 +7,17 @@ class_name GFFCurvePresets
 static func ease_in() -> Curve:
 	var curve = Curve.new()
 	curve.add_point(Vector2(0, 0))
-	curve.add_point(Vector2(1, 1), Vector2(0.5, 0), Vector2(0.5, 1))
+	curve.add_point(Vector2(1, 1))
+	# 设置左侧切线使曲线缓入
+	curve.set_point_left_tangent(1, 0.5)
 	return curve
 
 static func ease_out() -> Curve:
 	var curve = Curve.new()
-	curve.add_point(Vector2(0, 0), Vector2(0.5, 0), Vector2(0.5, 1))
+	curve.add_point(Vector2(0, 0))
 	curve.add_point(Vector2(1, 1))
+	# 设置右侧切线使曲线缓出
+	curve.set_point_right_tangent(0, 0.5)
 	return curve
 
 static func ease_in_out() -> Curve:

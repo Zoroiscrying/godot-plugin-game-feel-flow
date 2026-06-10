@@ -53,17 +53,17 @@ func test_with_bool() -> void:
 func test_with_vector2() -> void:
 	var vec = Vector2(10, 20)
 	params.with_vector2("position", vec)
-	assert_vector2(params.get_vector2("position")).is_equal(vec)
+	assert_that(params.get_vector2("position")).is_equal(vec)
 
 func test_with_vector3() -> void:
 	var vec = Vector3(10, 20, 30)
 	params.with_vector3("axes", vec)
-	assert_vector3(params.get_vector3("axes")).is_equal(vec)
+	assert_that(params.get_vector3("axes")).is_equal(vec)
 
 func test_with_color() -> void:
 	var color = Color.RED
 	params.with_color("color", color)
-	assert_color(params.get_color("color")).is_equal(color)
+	assert_that(params.get_color("color")).is_equal(color)
 
 func test_with_string() -> void:
 	params.with_string("name", "test")
@@ -104,15 +104,15 @@ func test_get_bool_default() -> void:
 
 func test_get_vector2_default() -> void:
 	var default = Vector2(1, 2)
-	assert_vector2(params.get_vector2("nonexistent", default)).is_equal(default)
+	assert_that(params.get_vector2("nonexistent", default)).is_equal(default)
 
 func test_get_vector3_default() -> void:
 	var default = Vector3(1, 2, 3)
-	assert_vector3(params.get_vector3("nonexistent", default)).is_equal(default)
+	assert_that(params.get_vector3("nonexistent", default)).is_equal(default)
 
 func test_get_color_default() -> void:
 	var default = Color.BLUE
-	assert_color(params.get_color("nonexistent", default)).is_equal(default)
+	assert_that(params.get_color("nonexistent", default)).is_equal(default)
 
 func test_get_string_default() -> void:
 	assert_str(params.get_string("nonexistent", "default")).is_equal("default")
@@ -133,11 +133,11 @@ func test_get_variant_default() -> void:
 
 func test_get_vector2_from_vector3() -> void:
 	params.with_vector3("pos", Vector3(10, 20, 30))
-	assert_vector2(params.get_vector2("pos")).is_equal(Vector2(10, 20))
+	assert_that(params.get_vector2("pos")).is_equal(Vector2(10, 20))
 
 func test_get_vector3_from_vector2() -> void:
 	params.with_vector2("pos", Vector2(10, 20))
-	assert_vector3(params.get_vector3("pos")).is_equal(Vector3(10, 20, 0))
+	assert_that(params.get_vector3("pos")).is_equal(Vector3(10, 20, 0))
 
 # ===== 链式调用测试 =====
 
@@ -148,7 +148,7 @@ func test_chain_calls() -> void:
 		.with_int("count", 5)
 
 	assert_float(result.get_float("amplitude")).is_equal(10.0)
-	assert_color(result.get_color("color")).is_equal(Color.RED)
+	assert_that(result.get_color("color")).is_equal(Color.RED)
 	assert_int(result.get_int("count")).is_equal(5)
 	assert_object(result).is_same(params)
 

@@ -34,7 +34,7 @@ func _execute(node: Node, params: GFFParams) -> void:
 		TweenType.TO_VALUE:
 			if easing_curve:
 				var tween = node.create_tween()
-				tween.tween_method(_apply_curve.bind(node, original_value, value), 0.0, 1.0, final_duration)
+				tween.tween_method(_apply_tween_curve.bind(node, original_value, value), 0.0, 1.0, final_duration)
 				await tween.finished
 			else:
 				var tween = node.create_tween()
@@ -44,7 +44,7 @@ func _execute(node: Node, params: GFFParams) -> void:
 			node.set(property, value)
 			if easing_curve:
 				var tween = node.create_tween()
-				tween.tween_method(_apply_curve.bind(node, value, original_value), 0.0, 1.0, final_duration)
+				tween.tween_method(_apply_tween_curve.bind(node, value, original_value), 0.0, 1.0, final_duration)
 				await tween.finished
 			else:
 				var tween = node.create_tween()
@@ -53,8 +53,8 @@ func _execute(node: Node, params: GFFParams) -> void:
 		TweenType.OSCILLATE:
 			if easing_curve:
 				var tween = node.create_tween()
-				tween.tween_method(_apply_curve.bind(node, original_value, value), 0.0, 1.0, final_duration / 2)
-				tween.tween_method(_apply_curve.bind(node, value, original_value), 0.0, 1.0, final_duration / 2)
+				tween.tween_method(_apply_tween_curve.bind(node, original_value, value), 0.0, 1.0, final_duration / 2)
+				tween.tween_method(_apply_tween_curve.bind(node, value, original_value), 0.0, 1.0, final_duration / 2)
 				await tween.finished
 			else:
 				var tween = node.create_tween()
@@ -62,7 +62,7 @@ func _execute(node: Node, params: GFFParams) -> void:
 				tween.tween_property(node, property, original_value, final_duration / 2)
 				await tween.finished
 
-func _apply_curve(t: float, node: Node, from, to) -> void:
+func _apply_tween_curve(t: float, node: Node, from, to) -> void:
 	var value = easing_curve.sample(t)
 	if from is float and to is float:
 		node.set(property, lerp(from, to, value))

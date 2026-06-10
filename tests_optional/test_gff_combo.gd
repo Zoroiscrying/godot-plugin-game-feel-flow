@@ -9,7 +9,7 @@ func before_test() -> void:
 	combo = GFFCombo.new()
 
 func after_test() -> void:
-	combo.free()
+	pass
 
 # ===== 基础属性测试 =====
 

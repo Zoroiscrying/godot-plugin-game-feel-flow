@@ -80,36 +80,36 @@ func execute(player: GFFPlayer, params: GFFParams = null) -> void:
 
 # ===== 辅助方法 =====
 
-static func _create_shake(intensity: float, duration: float):
+static func _create_shake(p_amplitude: float, p_duration: float):
 	## 创建震动效果
-	var effect = load("res://addons/game_feel_flow/effects/gff_shake.gd").new()
-	effect.default_intensity = intensity
-	effect.default_duration = duration
+	var effect = load("res://addons/game_feel_flow/effects/transform/gff_shake.gd").new()
+	effect.amplitude = p_amplitude
+	effect.duration = p_duration
 	return effect
 
-static func _create_flash(color: Color, duration: float):
+static func _create_flash(color: Color, p_duration: float):
 	## 创建闪白效果
-	var effect = load("res://addons/game_feel_flow/effects/gff_flash.gd").new()
-	effect.default_color = color
-	effect.default_duration = duration
+	var effect = load("res://addons/game_feel_flow/effects/visual/gff_flash.gd").new()
+	effect.flash_color = color
+	effect.duration = p_duration
 	return effect
 
-static func _create_freeze(duration: float):
+static func _create_freeze(p_duration: float):
 	## 创建冻结帧效果
-	var effect = load("res://addons/game_feel_flow/effects/gff_freeze_frame.gd").new()
-	effect.default_duration = duration
+	var effect = load("res://addons/game_feel_flow/effects/time/gff_freeze_frame.gd").new()
+	effect.duration = p_duration
 	return effect
 
-static func _create_scale(target_scale: Vector2, duration: float):
+static func _create_scale(target_scale: Vector2, p_duration: float):
 	## 创建缩放效果
-	var effect = load("res://addons/game_feel_flow/effects/gff_scale.gd").new()
-	effect.default_target_scale = target_scale
-	effect.default_duration = duration
+	var effect = load("res://addons/game_feel_flow/effects/transform/gff_scale.gd").new()
+	effect.target_scale = target_scale
+	effect.duration = p_duration
 	return effect
 
-static func _create_alpha(target_alpha: float, duration: float):
+static func _create_alpha(target_alpha: float, p_duration: float):
 	## 创建透明度效果
-	var effect = load("res://addons/game_feel_flow/effects/gff_alpha.gd").new()
-	effect.default_alpha = target_alpha
-	effect.default_duration = duration
+	var effect = load("res://addons/game_feel_flow/effects/visual/gff_alpha.gd").new()
+	effect.target_alpha = target_alpha
+	effect.duration = p_duration
 	return effect

@@ -27,13 +27,14 @@ func after_test() -> void:
 	target.free()
 	game_feel_flow.free()
 
+
 # ===== 注册系统测试 =====
 
 func test_register_effect() -> void:
 	var feedback = MockFeedback.new()
 	game_feel_flow.register_effect("test", feedback)
 	assert_object(game_feel_flow.get_effect("test")).is_same(feedback)
-	feedback.free()
+
 
 func test_get_nonexistent_effect() -> void:
 	assert_object(game_feel_flow.get_effect("nonexistent")).is_null()
@@ -151,4 +152,4 @@ func test_play_emits_effect_started() -> void:
 	game_feel_flow.register_effect("test_effect", feedback)
 	game_feel_flow.play("test_effect", target)
 	assert_that(received_name).is_equal("test_effect")
-	feedback.free()
+

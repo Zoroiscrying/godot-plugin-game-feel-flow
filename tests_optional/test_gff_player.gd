@@ -61,7 +61,7 @@ func test_add_effect() -> void:
 	player.add_effect(feedback)
 	assert_int(player.effects.size()).is_equal(1)
 	assert_object(player.effects[0]).is_same(feedback)
-	feedback.free()
+
 
 func test_remove_effect() -> void:
 	var feedback = MockFeedback.new()
@@ -69,14 +69,14 @@ func test_remove_effect() -> void:
 	player.add_effect(feedback)
 	player.remove_effect(feedback)
 	assert_array(player.effects).is_empty()
-	feedback.free()
+
 
 func test_get_effects() -> void:
 	var feedback = MockFeedback.new()
 	player.add_effect(feedback)
 	var result = player.get_effects()
 	assert_int(result.size()).is_equal(1)
-	feedback.free()
+
 
 # ===== 播放测试 =====
 
@@ -88,7 +88,7 @@ func test_play_by_name() -> void:
 	assert_int(feedback.execute_count).is_equal(1)
 	# _resolve_target finds the Node2D child "Visual"
 	assert_object(feedback.last_target).is_same(player.get_node("Visual"))
-	feedback.free()
+
 
 func test_play_with_params() -> void:
 	var feedback = MockFeedback.new()
@@ -100,7 +100,7 @@ func test_play_with_params() -> void:
 	# apply() creates final params via _create_final_params
 	assert_float(feedback.last_params.intensity).is_equal(2.0)
 	assert_float(feedback.last_params.duration).is_equal(0.5)
-	feedback.free()
+
 
 func test_play_nonexistent_does_nothing() -> void:
 	await player.play("nonexistent")
@@ -118,8 +118,6 @@ func test_play_all() -> void:
 	await player.play_all()
 	assert_int(f1.execute_count).is_equal(1)
 	assert_int(f2.execute_count).is_equal(1)
-	f1.free()
-	f2.free()
 
 func test_play_all_skips_disabled() -> void:
 	var f1 = MockFeedback.new()
@@ -132,8 +130,7 @@ func test_play_all_skips_disabled() -> void:
 	await player.play_all()
 	assert_int(f1.execute_count).is_equal(1)
 	assert_int(f2.execute_count).is_equal(0)
-	f1.free()
-	f2.free()
+
 
 # ===== 停止测试 =====
 
@@ -149,7 +146,7 @@ func test_stop_effect() -> void:
 	player._active_effects["hit"] = feedback
 	player.stop_effect("hit")
 	assert_bool(player.is_effect_playing("hit")).is_false()
-	feedback.free()
+
 
 # ===== 状态查询测试 =====
 
@@ -159,7 +156,6 @@ func test_is_effect_playing() -> void:
 	player._active_effects["hit"] = feedback
 	assert_bool(player.is_effect_playing("hit")).is_true()
 	assert_bool(player.is_effect_playing("other")).is_false()
-	feedback.free()
 
 # ===== 信号测试 =====
 
@@ -171,7 +167,6 @@ func test_effect_started_signal() -> void:
 	player.add_effect(feedback)
 	await player.play("hit")
 	assert_bool(signal_received).is_true()
-	feedback.free()
 
 func test_effect_finished_signal() -> void:
 	var signal_received = false
@@ -181,7 +176,6 @@ func test_effect_finished_signal() -> void:
 	player.add_effect(feedback)
 	await player.play("hit")
 	assert_bool(signal_received).is_true()
-	feedback.free()
 
 func test_all_finished_signal() -> void:
 	var signal_received = false
@@ -191,7 +185,6 @@ func test_all_finished_signal() -> void:
 	player.add_effect(feedback)
 	await player.play_all()
 	assert_bool(signal_received).is_true()
-	feedback.free()
 
 # ===== 叠加策略测试 =====
 
@@ -203,7 +196,6 @@ func test_overlap_ignore() -> void:
 	await player._play_effect(feedback)
 	# Should not have been called again
 	assert_int(feedback.execute_count).is_equal(0)
-	feedback.free()
 
 func test_overlap_cancel() -> void:
 	var feedback = MockFeedback.new()
@@ -213,7 +205,6 @@ func test_overlap_cancel() -> void:
 	await player._play_effect(feedback)
 	# Should have been called once (cancel old, play new)
 	assert_int(feedback.execute_count).is_equal(1)
-	feedback.free()
 
 func test_overlap_replace() -> void:
 	var feedback = MockFeedback.new()
@@ -222,4 +213,3 @@ func test_overlap_replace() -> void:
 	player._active_effects["hit"] = feedback
 	await player._play_effect(feedback)
 	assert_int(feedback.execute_count).is_equal(1)
-	feedback.free()

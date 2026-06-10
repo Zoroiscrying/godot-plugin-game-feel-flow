@@ -35,7 +35,7 @@ project/assembly_name="Game Feel Flow"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/game_feel_flow/plugin.cfg")
+enabled=PackedStringArray("res://addons/game_feel_flow/plugin.cfg", "res://addons/gdUnit4/plugin.cfg")
 
 [rendering]
 

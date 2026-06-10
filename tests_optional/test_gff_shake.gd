@@ -16,7 +16,6 @@ func before_test() -> void:
 
 func after_test() -> void:
 	# 每个测试后执行
-	shake.free()
 	target.free()
 
 # ===== 基础属性测试 =====
@@ -31,7 +30,7 @@ func test_default_frequency() -> void:
 
 func test_default_axes() -> void:
 	# 测试默认轴向
-	assert_vector3(shake.axes).is_equal(Vector3(1, 1, 0))
+	assert_that(shake.axes).is_equal(Vector3(1, 1, 0))
 
 func test_default_attenuation_curve() -> void:
 	# 测试默认衰减曲线
@@ -48,7 +47,7 @@ func test_execute_with_camera() -> void:
 	await shake.apply(target, params)
 
 	# 震动后应该恢复原始位置
-	assert_vector2(camera.position).is_equal(original_position)
+	assert_that(camera.position).is_equal(original_position)
 
 func test_execute_with_node2d() -> void:
 	# 测试带 Node2D 执行
@@ -59,7 +58,7 @@ func test_execute_with_node2d() -> void:
 	await shake.apply(target, params)
 
 	# 震动后应该恢复原始位置
-	assert_vector2(target.position).is_equal(original_position)
+	assert_that(target.position).is_equal(original_position)
 
 func test_execute_with_custom_params() -> void:
 	# 测试自定义参数
@@ -109,4 +108,4 @@ func test_get_axes_with_params() -> void:
 	# 测试从参数获取轴向
 	var params = GFFParams.create().with_vector3("axes", Vector3(1, 0, 0))
 	var ax = params.get_vector3("axes", shake.axes)
-	assert_vector3(ax).is_equal(Vector3(1, 0, 0))
+	assert_that(ax).is_equal(Vector3(1, 0, 0))

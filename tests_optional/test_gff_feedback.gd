@@ -29,7 +29,6 @@ func before_test() -> void:
 	target = Node2D.new()
 
 func after_test() -> void:
-	feedback.free()
 	target.free()
 
 # ===== 基础属性测试 =====
@@ -218,10 +217,10 @@ func test_save_initial_state() -> void:
 	target.modulate = Color.RED
 	feedback._save_initial_state(target)
 	assert_that(feedback._initial_state.size()).is_greater(0)
-	assert_vector2(feedback._initial_state["position"]).is_equal(Vector2(10, 20))
+	assert_that(feedback._initial_state["position"]).is_equal(Vector2(10, 20))
 	assert_float(feedback._initial_state["rotation"]).is_equal(0.5)
-	assert_vector2(feedback._initial_state["scale"]).is_equal(Vector2(2, 2))
-	assert_color(feedback._initial_state["modulate"]).is_equal(Color.RED)
+	assert_that(feedback._initial_state["scale"]).is_equal(Vector2(2, 2))
+	assert_that(feedback._initial_state["modulate"]).is_equal(Color.RED)
 
 func test_restore_initial_state() -> void:
 	target.position = Vector2(10, 20)
@@ -234,22 +233,22 @@ func test_restore_initial_state() -> void:
 	target.scale = Vector2(5, 5)
 	target.modulate = Color.BLUE
 	feedback._restore_initial_state(target)
-	assert_vector2(target.position).is_equal(Vector2(10, 20))
+	assert_that(target.position).is_equal(Vector2(10, 20))
 	assert_float(target.rotation).is_equal(0.5)
-	assert_vector2(target.scale).is_equal(Vector2(2, 2))
-	assert_color(target.modulate).is_equal(Color.RED)
+	assert_that(target.scale).is_equal(Vector2(2, 2))
+	assert_that(target.modulate).is_equal(Color.RED)
 
 func test_restore_empty_state_does_nothing() -> void:
 	var orig_pos = target.position
 	feedback._restore_initial_state(target)
-	assert_vector2(target.position).is_equal(orig_pos)
+	assert_that(target.position).is_equal(orig_pos)
 
 # ===== 节点操作测试 =====
 
 func test_get_set_position_node2d() -> void:
 	var pos = Vector2(10, 20)
 	feedback._set_position(target, pos)
-	assert_vector2(feedback._get_position(target)).is_equal(pos)
+	assert_that(feedback._get_position(target)).is_equal(pos)
 
 func test_get_set_rotation_node2d() -> void:
 	feedback._set_rotation(target, 0.5)
@@ -258,16 +257,16 @@ func test_get_set_rotation_node2d() -> void:
 func test_get_set_scale_node2d() -> void:
 	var s = Vector2(2, 3)
 	feedback._set_scale(target, s)
-	assert_vector2(feedback._get_scale(target)).is_equal(s)
+	assert_that(feedback._get_scale(target)).is_equal(s)
 
 func test_get_set_modulate_node2d() -> void:
 	var c = Color.RED
 	feedback._set_modulate(target, c)
-	assert_color(feedback._get_modulate(target)).is_equal(c)
+	assert_that(feedback._get_modulate(target)).is_equal(c)
 
 func test_get_position_plain_node_returns_zero() -> void:
 	var plain = Node.new()
-	assert_vector2(feedback._get_position(plain)).is_equal(Vector2.ZERO)
+	assert_that(feedback._get_position(plain)).is_equal(Vector2.ZERO)
 	plain.free()
 
 func test_get_rotation_plain_node_returns_zero() -> void:
@@ -277,12 +276,12 @@ func test_get_rotation_plain_node_returns_zero() -> void:
 
 func test_get_scale_plain_node_returns_one() -> void:
 	var plain = Node.new()
-	assert_vector2(feedback._get_scale(plain)).is_equal(Vector2.ONE)
+	assert_that(feedback._get_scale(plain)).is_equal(Vector2.ONE)
 	plain.free()
 
 func test_get_modulate_plain_node_returns_white() -> void:
 	var plain = Node.new()
-	assert_color(feedback._get_modulate(plain)).is_equal(Color.WHITE)
+	assert_that(feedback._get_modulate(plain)).is_equal(Color.WHITE)
 	plain.free()
 
 # ===== 冷却时间测试 =====
