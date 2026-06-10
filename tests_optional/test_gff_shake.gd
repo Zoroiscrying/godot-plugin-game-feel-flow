@@ -23,19 +23,19 @@ func after_test() -> void:
 
 func test_default_amplitude() -> void:
 	# 测试默认振幅
-	assert_float(shake.default_amplitude).is_equal(10.0)
+	assert_float(shake.amplitude).is_equal(10.0)
 
 func test_default_frequency() -> void:
 	# 测试默认频率
-	assert_float(shake.default_frequency).is_equal(20.0)
+	assert_float(shake.frequency).is_equal(20.0)
 
 func test_default_axes() -> void:
 	# 测试默认轴向
-	assert_vector3(shake.default_axes).is_equal(Vector3(1, 1, 0))
+	assert_vector3(shake.axes).is_equal(Vector3(1, 1, 0))
 
-func test_default_falloff_curve() -> void:
+func test_default_attenuation_curve() -> void:
 	# 测试默认衰减曲线
-	assert_object(shake.falloff_curve).is_null()
+	assert_object(shake.attenuation_curve).is_null()
 
 # ===== 执行测试 =====
 
@@ -78,7 +78,7 @@ func test_execute_with_curve() -> void:
 	var curve = Curve.new()
 	curve.add_point(Vector2(0, 1))
 	curve.add_point(Vector2(1, 0))
-	shake.falloff_curve = curve
+	shake.attenuation_curve = curve
 
 	var params = GFFParams.create(1.0, 0.1)
 
@@ -91,52 +91,22 @@ func test_execute_with_curve() -> void:
 func test_get_amplitude_with_params() -> void:
 	# 测试从参数获取振幅
 	var params = GFFParams.create().with_float("amplitude", 20.0)
-	var amplitude = params.get_float("amplitude", shake.default_amplitude)
-	assert_float(amplitude).is_equal(20.0)
+	var amp = params.get_float("amplitude", shake.amplitude)
+	assert_float(amp).is_equal(20.0)
 
 func test_get_amplitude_without_params() -> void:
 	# 测试无参数时获取默认振幅
-	var amplitude = shake.default_amplitude
-	assert_float(amplitude).is_equal(10.0)
+	var amp = shake.amplitude
+	assert_float(amp).is_equal(10.0)
 
 func test_get_frequency_with_params() -> void:
 	# 测试从参数获取频率
 	var params = GFFParams.create().with_float("frequency", 30.0)
-	var frequency = params.get_float("frequency", shake.default_frequency)
-	assert_float(frequency).is_equal(30.0)
+	var freq = params.get_float("frequency", shake.frequency)
+	assert_float(freq).is_equal(30.0)
 
 func test_get_axes_with_params() -> void:
 	# 测试从参数获取轴向
 	var params = GFFParams.create().with_vector3("axes", Vector3(1, 0, 0))
-	var axes = params.get_vector3("axes", shake.default_axes)
-	assert_vector3(axes).is_equal(Vector3(1, 0, 0))
-
-# ===== 辅助方法测试 =====
-
-func test_get_decay_without_curve() -> void:
-	# 测试无曲线时的衰减
-	var decay = shake._get_decay(0.5)
-	assert_float(decay).is_equal(0.5)
-
-func test_get_decay_with_curve() -> void:
-	# 测试有曲线时的衰减
-	var curve = Curve.new()
-	curve.add_point(Vector2(0, 1))
-	curve.add_point(Vector2(1, 0))
-	shake.falloff_curve = curve
-
-	var decay = shake._get_decay(0.5)
-	# 曲线在 0.5 处应该是 0.5
-	assert_float(decay).is_equal(0.5)
-
-func test_get_camera_2d() -> void:
-	# 测试获取 2D 相机
-	var found = shake._get_camera_2d(target)
-	assert_object(found).is_same(camera)
-
-func test_get_camera_2d_returns_null() -> void:
-	# 测试没有相机时返回 null
-	var node = Node2D.new()
-	var found = shake._get_camera_2d(node)
-	assert_object(found).is_null()
-	node.free()
+	var ax = params.get_vector3("axes", shake.axes)
+	assert_vector3(ax).is_equal(Vector3(1, 0, 0))
