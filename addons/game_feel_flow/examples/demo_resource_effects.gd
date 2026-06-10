@@ -63,4 +63,4 @@ func _play_freeze() -> void:
 
 func _play_hit(intensity: float, duration: float) -> void:
 	print("Playing hit with intensity: ", intensity)
-	GameFeelFlow.play("hit", sprite, {"intensity": intensity, "duration": duration})
+	GameFeelFlow.play_combo("hit_light", sprite, {"intensity": intensity, "duration": duration})

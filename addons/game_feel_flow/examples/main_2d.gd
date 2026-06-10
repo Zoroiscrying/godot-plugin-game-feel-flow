@@ -71,31 +71,29 @@ func _play_effect(effect_type: String) -> void:
 
 	match effect_type:
 		"shake":
-			GameFeelFlow.execute("shake", sprite, params)
+			GameFeelFlow.play("shake", sprite, params)
 		"scale":
-			GameFeelFlow.execute("scale", sprite, params)
+			GameFeelFlow.play("scale", sprite, params)
 		"color":
-			GameFeelFlow.execute("color", sprite, params)
+			GameFeelFlow.play("color", sprite, params)
 		"alpha":
-			GameFeelFlow.execute("alpha", sprite, params)
+			GameFeelFlow.play("alpha", sprite, params)
 		"flash":
-			GameFeelFlow.execute("flash", sprite, params)
+			GameFeelFlow.play("flash", sprite, params)
 		"freeze_frame":
-			GameFeelFlow.execute("freeze_frame", sprite, params)
+			GameFeelFlow.play("freeze_frame", sprite, params)
 		"time_scale":
-			GameFeelFlow.execute("time_scale", sprite, params)
+			GameFeelFlow.play("time_scale", sprite, params)
 		"hit_light":
-			GameFeelFlow.execute("hit", sprite, params)
+			GameFeelFlow.play_combo("hit_light", sprite, params)
 		"hit_medium":
-			GameFeelFlow.execute("hit", sprite, params)
+			GameFeelFlow.play_combo("hit_heavy", sprite, params)
 		"hit_heavy":
-			GameFeelFlow.execute("hit", sprite, params)
-		"hit_critical":
-			GameFeelFlow.execute("hit", sprite, params)
+			GameFeelFlow.play_combo("hit_heavy", sprite, params)
 		"explosion":
-			GameFeelFlow.execute("hit", sprite, params)
+			GameFeelFlow.play_combo("explosion", sprite, params)
 		"death":
-			GameFeelFlow.execute("hit", sprite, params)
+			GameFeelFlow.play_combo("death", sprite, params)
 
 func _reset() -> void:
 	sprite.position = _original_position
