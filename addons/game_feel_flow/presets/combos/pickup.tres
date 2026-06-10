@@ -4,6 +4,6 @@
 
 [resource]
 script = ExtResource("1")
-label = "hit_heavy"
+label = "pickup"
 effects = []
 default_params = null

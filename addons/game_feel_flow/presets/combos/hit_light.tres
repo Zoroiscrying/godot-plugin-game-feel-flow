@@ -1,51 +1,9 @@
-[gd_resource type="Resource" script_class="GFFComboEffect" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="GFFCombo" load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://addons/game_feel_flow/core/gff_combo_effect.gd" id="1"]
-[ext_resource type="Script" path="res://addons/game_feel_flow/core/gff_single_effect.gd" id="2"]
-
-[sub_resource type="Resource" id="Resource_1"]
-script = ExtResource("2")
-enabled = true
-label = "Freeze Frame"
-effect_type = 0
-single_type = 16
-delay = 0.0
-duration = 0.05
-intensity = 1.0
-priority = 0
-
-[sub_resource type="Resource" id="Resource_2"]
-script = ExtResource("2")
-enabled = true
-label = "Shake"
-effect_type = 0
-single_type = 3
-delay = 0.0
-duration = 0.1
-intensity = 1.0
-priority = 0
-shake_amplitude = 2.0
-
-[sub_resource type="Resource" id="Resource_3"]
-script = ExtResource("2")
-enabled = true
-label = "Flash"
-effect_type = 0
-single_type = 8
-delay = 0.0
-duration = 0.03
-intensity = 1.0
-priority = 0
-flash_color = Color(1, 1, 1, 1)
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/gff_combo.gd" id="1"]
 
 [resource]
 script = ExtResource("1")
-enabled = true
-label = "Hit Light"
-effect_type = 1
-delay = 0.0
-duration = 0.2
-intensity = 1.0
-priority = 0
-play_mode = 0
-effects = [SubResource("Resource_1"), SubResource("Resource_2"), SubResource("Resource_3")]
+label = "hit_light"
+effects = []
+default_params = null
