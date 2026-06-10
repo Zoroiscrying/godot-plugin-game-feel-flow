@@ -2,44 +2,118 @@ extends Node
 
 ## Game Feel Flow
 ##
-## Global singleton for game feel effects
+## 全局单例，提供快捷API和效果管理
 
-# ===== Configuration =====
+# ===== 信号 =====
+signal effect_started(effect_name: String)
+signal effect_finished(effect_name: String)
+
+# ===== 属性 =====
 var debug_enabled: bool = false
+var _effect_registry: Dictionary = {}
+var _combo_registry: Dictionary = {}
+var _overlap_manager: Node = null
 
-# ===== Internal Storage =====
-var _feedback_registry: Dictionary = {}
-var _signal_listeners: Dictionary = {}
-var _executor = null
-
-# ===== Combo System =====
-var _combo_count: int = 0
-var _combo_timer: float = 0.0
-var _combo_timeout: float = 2.0
-
-# ===== Lifecycle =====
+# ===== 生命周期 =====
 
 func _ready() -> void:
-	print("Game Feel Flow: Global singleton ready")
-	_init_executor()
+	print("Game Feel Flow: Initializing...")
 	_register_effects()
-	_register_configs()
+	_register_combos()
+	print("Game Feel Flow: Ready (", _effect_registry.size(), " effects, ", _combo_registry.size(), " combos)")
 
-func _process(delta: float) -> void:
-	if _combo_count > 0:
-		_combo_timer -= delta
-		if _combo_timer <= 0:
-			_combo_count = 0
+# ===== 核心API =====
 
-# ===== Initialization =====
+func play(effect_name: String, target: Node, params = null) -> void:
+	## 播放效果
+	if debug_enabled:
+		print("GameFeelFlow: Playing '", effect_name, "' on ", target.name)
 
-func _init_executor() -> void:
-	var script = load("res://addons/game_feel_flow/core/gff_effect_executor.gd")
-	if script:
-		_executor = script.new()
-		add_child(_executor)
+	var effect = get_effect(effect_name)
+	if not effect:
+		push_warning("GameFeelFlow: Effect not found: ", effect_name)
+		return
+
+	# 检查目标节点
+	var player = _find_player(target)
+	if player:
+		await player.play(effect_name, params)
+	else:
+		await effect.apply(target, _ensure_params(params))
+
+	effect_started.emit(effect_name)
+
+func play_combo(combo_name: String, target: Node, params = null) -> void:
+	## 播放组合效果
+	if debug_enabled:
+		print("GameFeelFlow: Playing combo '", combo_name, "' on ", target.name)
+
+	var combo = get_combo(combo_name)
+	if not combo:
+		push_warning("GameFeelFlow: Combo not found: ", combo_name)
+		return
+
+	var player = _find_player(target)
+	if player:
+		await player.play_combo(combo, _ensure_params(params))
+	else:
+		await combo.execute(null, _ensure_params(params))
+
+func stop(target: Node) -> void:
+	## 停止目标的所有效果
+	var player = _find_player(target)
+	if player:
+		player.stop()
+
+# ===== 注册方法 =====
+
+func register_effect(name: String, effect: GFFFeedback) -> void:
+	## 注册效果
+	_effect_registry[name] = effect
+
+func register_combo(name: String, combo: GFFCombo) -> void:
+	## 注册组合效果
+	_combo_registry[name] = combo
+
+func get_effect(name: String) -> GFFFeedback:
+	## 获取效果
+	return _effect_registry.get(name)
+
+func get_combo(name: String) -> GFFCombo:
+	## 获取组合效果
+	return _combo_registry.get(name)
+
+# ===== 信号系统 =====
+
+func emit(event: String, data: Dictionary = {}) -> void:
+	## 发送事件
+	if event in _signal_listeners:
+		for callback in _signal_listeners[event]:
+			callback.call(data)
+
+func listen(event: String, callback: Callable) -> void:
+	## 监听事件
+	if event not in _signal_listeners:
+		_signal_listeners[event] = []
+	_signal_listeners[event].append(callback)
+
+func unlisten(event: String, callback: Callable) -> void:
+	## 取消监听
+	if event in _signal_listeners:
+		_signal_listeners[event].erase(callback)
+
+# ===== 调试方法 =====
+
+func set_debug(enabled: bool) -> void:
+	## 设置调试模式
+	debug_enabled = enabled
+
+# ===== 内部方法 =====
+
+var _signal_listeners: Dictionary = {}
 
 func _register_effects() -> void:
+	## 注册内置效果
 	var effects = {
 		"shake": "res://addons/game_feel_flow/effects/gff_shake.gd",
 		"flash": "res://addons/game_feel_flow/effects/gff_flash.gd",
@@ -57,120 +131,35 @@ func _register_effects() -> void:
 			var script = load(path)
 			if script:
 				var effect = script.new()
-				if effect.has_method("apply"):
-					_feedback_registry[name] = effect
+				if effect is GFFFeedback:
+					_effect_registry[name] = effect
 
-	print("Game Feel Flow: Registered ", _feedback_registry.size(), " effects")
+func _register_combos() -> void:
+	## 注册内置组合效果
+	_combo_registry["hit_light"] = GFFCombo.hit_light()
+	_combo_registry["hit_heavy"] = GFFCombo.hit_heavy()
+	_combo_registry["death"] = GFFCombo.death()
+	_combo_registry["pickup"] = GFFCombo.pickup()
+	_combo_registry["explosion"] = GFFCombo.explosion()
 
-func _register_configs() -> void:
-	## Register effect configurations
-	var script = load("res://addons/game_feel_flow/core/gff_effect_config_manager.gd")
-	if script:
-		script.register_all()
-		print("Game Feel Flow: Registered configs")
+func _find_player(target: Node) -> GFFPlayer:
+	## 查找GFFPlayer节点
+	if target is GFFPlayer:
+		return target
+	for child in target.get_children():
+		if child is GFFPlayer:
+			return child
+	return null
 
-# ===== Core API =====
-
-func execute(effect, target: Node, params = null) -> void:
-	## Execute any effect (single or combo)
-	if debug_enabled:
-		print("GameFeelFlow: executing effect on ", target.name)
-
-	if effect is String:
-		var feedback = get_feedback(effect)
-		if feedback:
-			var gff_params = _ensure_params(params)
-			await feedback.apply(target, gff_params)
-		else:
-			push_warning("GameFeelFlow: Effect not found: " + effect)
-	elif effect is RefCounted or effect is Resource:
-		if effect.has_method("execute"):
-			if _executor:
-				await effect.execute(target, _executor)
-			else:
-				push_warning("GameFeelFlow: Executor not initialized")
-		elif effect.has_method("apply"):
-			var gff_params = _ensure_params(params)
-			await effect.apply(target, gff_params)
-
-# ===== Registration =====
-
-func register_feedback(name: String, feedback) -> void:
-	_feedback_registry[name] = feedback
-
-func get_feedback(name: String):
-	return _feedback_registry.get(name)
-
-# ===== Signal System =====
-
-func emit(event: String, data: Dictionary = {}) -> void:
-	if event in _signal_listeners:
-		for callback in _signal_listeners[event]:
-			callback.call(data)
-
-func listen(event: String, callback: Callable) -> void:
-	if event not in _signal_listeners:
-		_signal_listeners[event] = []
-	_signal_listeners[event].append(callback)
-
-func unlisten(event: String, callback: Callable) -> void:
-	if event in _signal_listeners:
-		_signal_listeners[event].erase(callback)
-
-# ===== Combo System =====
-
-func hit(target: Node, intensity: float = 1.0, duration: float = 0.3) -> void:
-	## Play hit effect with combo tracking
-	_combo_count += 1
-	_combo_timer = _combo_timeout
-
-	var combo_intensity = intensity + (_combo_count * 0.1)
-	var combo_duration = duration + (_combo_count * 0.02)
-
-	execute("hit", target, {
-		"intensity": combo_intensity,
-		"duration": combo_duration,
-		"freeze_duration": 0.05 + (_combo_count * 0.01),
-		"shake_amplitude": 5.0 + (_combo_count * 1.0),
-		"knockback_distance": 20.0 + (_combo_count * 5.0),
-		"rotation_angle": 15.0 + (_combo_count * 2.0),
-	})
-
-	if _combo_count > 1:
-		print("Combo: ", _combo_count, "x")
-
-# ===== Debug =====
-
-func set_debug(enabled: bool) -> void:
-	debug_enabled = enabled
-
-# ===== Internal =====
-
-func _ensure_params(params):
+func _ensure_params(params) -> GFFParams:
+	## 确保参数是GFFParams类型
 	if params == null:
-		return _create_params(1.0, -1.0)
+		return GFFParams.create()
 	elif params is float or params is int:
-		return _create_params(params, -1.0)
+		return GFFParams.create(params)
 	elif params is Dictionary:
-		var p = _create_params(1.0, -1.0)
-		for key in params:
-			if key == "intensity":
-				p.intensity = params[key]
-			elif key == "duration":
-				p.duration = params[key]
-			else:
-				p._data[key] = params[key]
-		return p
-	elif params is RefCounted or params is Resource:
+		return GFFParams.from_dict(params)
+	elif params is GFFParams:
 		return params
 	else:
-		return _create_params(1.0, -1.0)
-
-func _create_params(p_intensity: float, p_duration: float):
-	var script = load("res://addons/game_feel_flow/core/gff_params.gd")
-	if script:
-		var params = script.new()
-		params.intensity = p_intensity
-		params.duration = p_duration
-		return params
-	return null
+		return GFFParams.create()
