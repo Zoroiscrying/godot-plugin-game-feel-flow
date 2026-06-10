@@ -132,6 +132,9 @@ func _get_default_duration() -> float:
 
 func _resolve_target(target: Node) -> Node:
 	## 解析目标节点
+	if not target:
+		return null
+	
 	if target is Node2D or target is Node3D or target is Control:
 		return target
 
