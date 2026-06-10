@@ -28,7 +28,7 @@ enum OverlapStrategy {
 
 # ===== 恢复控制 =====
 @export_group("Restore")
-@export var restore_after_play: bool = true
+@export var restore_after_play: bool = false
 
 # ===== 随机性 =====
 @export_group("Randomness")
