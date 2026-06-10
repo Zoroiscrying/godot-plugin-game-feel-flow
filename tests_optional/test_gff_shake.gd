@@ -13,6 +13,8 @@ func before_test() -> void:
 	target = Node2D.new()
 	camera = Camera2D.new()
 	target.add_child(camera)
+	# 添加到场景树中，否则 get_tree() 会返回 null
+	add_child(target)
 
 func after_test() -> void:
 	# 每个测试后执行

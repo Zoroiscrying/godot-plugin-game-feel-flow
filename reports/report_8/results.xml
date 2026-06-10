@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites id="2026-06-10" name="report_8" tests="139" failures="3" skipped="0" flaky="0" time="0.000">
+	<testsuite id="0" name="test_game_feel_flow" package="tests_optional" timestamp="2026-06-10T15:45:00" hostname="localhost" tests="19" failures="1" errors="0" skipped="0" flaky="0" time="0.097">
+		<testcase name="test_register_effect" classname="test_game_feel_flow" time="0.003">
+		</testcase>
+		<testcase name="test_get_nonexistent_effect" classname="test_game_feel_flow" time="0.002">
+		</testcase>
+		<testcase name="test_register_combo" classname="test_game_feel_flow" time="0.003">
+		</testcase>
+		<testcase name="test_get_nonexistent_combo" classname="test_game_feel_flow" time="0.006">
+		</testcase>
+		<testcase name="test_set_debug" classname="test_game_feel_flow" time="0.006">
+		</testcase>
+		<testcase name="test_find_player_direct" classname="test_game_feel_flow" time="0.006">
+		</testcase>
+		<testcase name="test_find_player_returns_null" classname="test_game_feel_flow" time="0.005">
+		</testcase>
+		<testcase name="test_find_player_is_target" classname="test_game_feel_flow" time="0.006">
+		</testcase>
+		<testcase name="test_ensure_params_null" classname="test_game_feel_flow" time="0.006">
+		</testcase>
+		<testcase name="test_ensure_params_gff_params" classname="test_game_feel_flow" time="0.006">
+		</testcase>
+		<testcase name="test_ensure_params_float" classname="test_game_feel_flow" time="0.006">
+		</testcase>
+		<testcase name="test_ensure_params_int" classname="test_game_feel_flow" time="0.006">
+		</testcase>
+		<testcase name="test_ensure_params_dict" classname="test_game_feel_flow" time="0.006">
+		</testcase>
+		<testcase name="test_emit_event" classname="test_game_feel_flow" time="0.005">
+			<failure message="FAILED: res://tests_optional/test_game_feel_flow.gd:112" type="FAILURE">
+<![CDATA[
+Expecting:
+ '1'
+ but was
+ '0'
+]]>
+			</failure>
+		</testcase>
+	</testsuite>
+	<testsuite id="1" name="test_gff_combo" package="tests_optional" timestamp="2026-06-10T15:45:00" hostname="localhost" tests="12" failures="0" errors="0" skipped="0" flaky="0" time="0.084">
+		<testcase name="test_label_default" classname="test_gff_combo" time="0.003">
+		</testcase>
+		<testcase name="test_empty_effects" classname="test_gff_combo" time="0.002">
+		</testcase>
+		<testcase name="test_default_params_null" classname="test_gff_combo" time="0.006">
+		</testcase>
+		<testcase name="test_hit_light_combo" classname="test_gff_combo" time="0.006">
+		</testcase>
+		<testcase name="test_hit_heavy_combo" classname="test_gff_combo" time="0.006">
+		</testcase>
+		<testcase name="test_death_combo" classname="test_gff_combo" time="0.006">
+		</testcase>
+		<testcase name="test_pickup_combo" classname="test_gff_combo" time="0.006">
+		</testcase>
+		<testcase name="test_explosion_combo" classname="test_gff_combo" time="0.006">
+		</testcase>
+		<testcase name="test_hit_light_effects_not_null" classname="test_gff_combo" time="0.006">
+		</testcase>
+		<testcase name="test_death_effects_not_null" classname="test_gff_combo" time="0.005">
+		</testcase>
+		<testcase name="test_all_combos_unique_labels" classname="test_gff_combo" time="0.007">
+		</testcase>
+		<testcase name="test_combo_default_params_null" classname="test_gff_combo" time="0.006">
+		</testcase>
+	</testsuite>
+	<testsuite id="2" name="test_gff_feedback" package="tests_optional" timestamp="2026-06-10T15:45:00" hostname="localhost" tests="47" failures="1" errors="0" skipped="0" flaky="0" time="0.129">
+		<testcase name="test_default_enabled" classname="test_gff_feedback" time="0.003">
+		</testcase>
+		<testcase name="test_default_label" classname="test_gff_feedback" time="0.003">
+		</testcase>
+		<testcase name="test_default_priority" classname="test_gff_feedback" time="0.002">
+		</testcase>
+		<testcase name="test_default_overlap_strategy" classname="test_gff_feedback" time="0.005">
+		</testcase>
+		<testcase name="test_default_duration" classname="test_gff_feedback" time="0.006">
+		</testcase>
+		<testcase name="test_default_delay" classname="test_gff_feedback" time="0.006">
+		</testcase>
+		<testcase name="test_default_cooldown" classname="test_gff_feedback" time="0.006">
+		</testcase>
+		<testcase name="test_default_restore_after_play" classname="test_gff_feedback" time="0.006">
+		</testcase>
+		<testcase name="test_default_random_duration" classname="test_gff_feedback" time="0.006">
+		</testcase>
+		<testcase name="test_default_random_intensity" classname="test_gff_feedback" time="0.006">
+		</testcase>
+		<testcase name="test_default_easing_curve" classname="test_gff_feedback" time="0.005">
+		</testcase>
+		<testcase name="test_initial_state" classname="test_gff_feedback" time="0.005">
+		</testcase>
+		<testcase name="test_initial_state_dict_empty" classname="test_gff_feedback" time="0.005">
+		</testcase>
+		<testcase name="test_last_play_time_zero" classname="test_gff_feedback" time="0.007">
+		</testcase>
+		<testcase name="test_apply_calls_execute" classname="test_gff_feedback" time="0.005">
+		</testcase>
+		<testcase name="test_apply_with_params" classname="test_gff_feedback" time="0.006">
+		</testcase>
+		<testcase name="test_apply_sets_resolved_node" classname="test_gff_feedback" time="0.006">
+		</testcase>
+		<testcase name="test_apply_emits_started_signal" classname="test_gff_feedback" time="0.006">
+			<failure message="FAILED: res://tests_optional/test_gff_feedback.gd:111" type="FAILURE">
+<![CDATA[
+Expecting: 'true' but is 'false'
+]]>
+			</failure>
+		</testcase>
+	</testsuite>
+	<testsuite id="3" name="test_gff_params" package="tests_optional" timestamp="2026-06-10T15:45:01" hostname="localhost" tests="29" failures="0" errors="0" skipped="0" flaky="0" time="0.201">
+		<testcase name="test_create_default" classname="test_gff_params" time="0.002">
+		</testcase>
+		<testcase name="test_create_with_params" classname="test_gff_params" time="0.002">
+		</testcase>
+		<testcase name="test_from_dict" classname="test_gff_params" time="0.004">
+		</testcase>
+		<testcase name="test_with_float" classname="test_gff_params" time="0.006">
+		</testcase>
+		<testcase name="test_with_int" classname="test_gff_params" time="0.005">
+		</testcase>
+		<testcase name="test_with_bool" classname="test_gff_params" time="0.005">
+		</testcase>
+		<testcase name="test_with_vector2" classname="test_gff_params" time="0.006">
+		</testcase>
+		<testcase name="test_with_vector3" classname="test_gff_params" time="0.005">
+		</testcase>
+		<testcase name="test_with_color" classname="test_gff_params" time="0.006">
+		</testcase>
+		<testcase name="test_with_string" classname="test_gff_params" time="0.006">
+		</testcase>
+		<testcase name="test_with_curve" classname="test_gff_params" time="0.006">
+		</testcase>
+		<testcase name="test_with_node" classname="test_gff_params" time="0.006">
+		</testcase>
+		<testcase name="test_with_resource" classname="test_gff_params" time="0.006">
+		</testcase>
+		<testcase name="test_with_variant" classname="test_gff_params" time="0.005">
+		</testcase>
+		<testcase name="test_get_float_default" classname="test_gff_params" time="0.006">
+		</testcase>
+		<testcase name="test_get_int_default" classname="test_gff_params" time="0.006">
+		</testcase>
+		<testcase name="test_get_bool_default" classname="test_gff_params" time="0.005">
+		</testcase>
+		<testcase name="test_get_vector2_default" classname="test_gff_params" time="0.007">
+		</testcase>
+		<testcase name="test_get_vector3_default" classname="test_gff_params" time="0.005">
+		</testcase>
+		<testcase name="test_get_color_default" classname="test_gff_params" time="0.007">
+		</testcase>
+		<testcase name="test_get_string_default" classname="test_gff_params" time="0.005">
+		</testcase>
+		<testcase name="test_get_curve_default" classname="test_gff_params" time="0.006">
+		</testcase>
+		<testcase name="test_get_node_default" classname="test_gff_params" time="0.005">
+		</testcase>
+		<testcase name="test_get_resource_default" classname="test_gff_params" time="0.006">
+		</testcase>
+		<testcase name="test_get_variant_default" classname="test_gff_params" time="0.006">
+		</testcase>
+		<testcase name="test_get_vector2_from_vector3" classname="test_gff_params" time="0.006">
+		</testcase>
+		<testcase name="test_get_vector3_from_vector2" classname="test_gff_params" time="0.006">
+		</testcase>
+		<testcase name="test_chain_calls" classname="test_gff_params" time="0.006">
+		</testcase>
+		<testcase name="test_override_value" classname="test_gff_params" time="0.006">
+		</testcase>
+	</testsuite>
+	<testsuite id="4" name="test_gff_player" package="tests_optional" timestamp="2026-06-10T15:45:01" hostname="localhost" tests="20" failures="1" errors="0" skipped="0" flaky="0" time="0.103">
+		<testcase name="test_default_auto_play" classname="test_gff_player" time="0.003">
+		</testcase>
+		<testcase name="test_default_effects_empty" classname="test_gff_player" time="0.002">
+		</testcase>
+		<testcase name="test_default_is_playing" classname="test_gff_player" time="0.003">
+		</testcase>
+		<testcase name="test_add_effect" classname="test_gff_player" time="0.006">
+		</testcase>
+		<testcase name="test_remove_effect" classname="test_gff_player" time="0.006">
+		</testcase>
+		<testcase name="test_get_effects" classname="test_gff_player" time="0.005">
+		</testcase>
+		<testcase name="test_play_by_name" classname="test_gff_player" time="0.005">
+		</testcase>
+		<testcase name="test_play_with_params" classname="test_gff_player" time="0.006">
+		</testcase>
+		<testcase name="test_play_nonexistent_does_nothing" classname="test_gff_player" time="0.006">
+		</testcase>
+		<testcase name="test_play_all" classname="test_gff_player" time="0.006">
+		</testcase>
+		<testcase name="test_play_all_skips_disabled" classname="test_gff_player" time="0.005">
+		</testcase>
+		<testcase name="test_stop" classname="test_gff_player" time="0.007">
+		</testcase>
+		<testcase name="test_stop_effect" classname="test_gff_player" time="0.006">
+		</testcase>
+		<testcase name="test_is_effect_playing" classname="test_gff_player" time="0.006">
+		</testcase>
+		<testcase name="test_effect_started_signal" classname="test_gff_player" time="0.005">
+			<failure message="FAILED: res://tests_optional/test_gff_player.gd:171" type="FAILURE">
+<![CDATA[
+Expecting:
+ 'hit'
+ but was
+ 'hit'
+]]>
+			</failure>
+		</testcase>
+	</testsuite>
+	<testsuite id="5" name="test_gff_shake" package="tests_optional" timestamp="2026-06-10T15:45:01" hostname="localhost" tests="12" failures="0" errors="0" skipped="0" flaky="0" time="0.884">
+		<testcase name="test_default_amplitude" classname="test_gff_shake" time="0.003">
+		</testcase>
+		<testcase name="test_default_frequency" classname="test_gff_shake" time="0.004">
+		</testcase>
+		<testcase name="test_default_axes" classname="test_gff_shake" time="0.005">
+		</testcase>
+		<testcase name="test_default_attenuation_curve" classname="test_gff_shake" time="0.005">
+		</testcase>
+		<testcase name="test_execute_with_camera" classname="test_gff_shake" time="0.205">
+		</testcase>
+		<testcase name="test_execute_with_node2d" classname="test_gff_shake" time="0.206">
+		</testcase>
+		<testcase name="test_execute_with_custom_params" classname="test_gff_shake" time="0.206">
+		</testcase>
+		<testcase name="test_execute_with_curve" classname="test_gff_shake" time="0.206">
+		</testcase>
+		<testcase name="test_get_amplitude_with_params" classname="test_gff_shake" time="0.006">
+		</testcase>
+		<testcase name="test_get_amplitude_without_params" classname="test_gff_shake" time="0.006">
+		</testcase>
+		<testcase name="test_get_frequency_with_params" classname="test_gff_shake" time="0.006">
+		</testcase>
+		<testcase name="test_get_axes_with_params" classname="test_gff_shake" time="0.006">
+		</testcase>
+	</testsuite>
+</testsuites>
