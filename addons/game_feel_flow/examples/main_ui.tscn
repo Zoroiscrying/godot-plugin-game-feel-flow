@@ -1,0 +1,100 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://addons/game_feel_flow/examples/main_ui.gd" id="1"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/editor/gff_param_panel.gd" id="2"]
+
+[node name="MainUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 0
+offset_right = 450.0
+offset_bottom = 900.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+
+[node name="Title" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "Game Feel Flow UI"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="EffectList" type="ItemList" parent="Panel/VBoxContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 200)
+size_flags_vertical = 3
+allow_reselect = true
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 2
+
+[node name="ParamPanel" type="VBoxContainer" parent="Panel/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("2")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="PlayButton" type="Button" parent="Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Play"
+
+[node name="ResetButton" type="Button" parent="Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Reset"
+
+[node name="DemoArea" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -250.0
+offset_right = -20.0
+offset_top = 20.0
+offset_bottom = 300.0
+grow_horizontal = 0
+
+[node name="DemoTitle" type="Label" parent="DemoArea"]
+layout_mode = 2
+text = "Demo Area"
+horizontal_alignment = 1
+
+[node name="DemoButton" type="Button" parent="DemoArea"]
+layout_mode = 2
+text = "Click Me"
+
+[node name="DemoLabel" type="Label" parent="DemoArea"]
+layout_mode = 2
+text = "Waiting..."
+horizontal_alignment = 1
+
+[node name="DemoProgress" type="ProgressBar" parent="DemoArea"]
+layout_mode = 2
+value = 0.0
+
+[node name="DemoSprite" type="ColorRect" parent="DemoArea"]
+layout_mode = 2
+custom_minimum_size = Vector2(100, 100)
+color = Color(0.2, 0.6, 1, 1)

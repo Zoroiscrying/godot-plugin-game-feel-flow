@@ -1,0 +1,42 @@
+name: Run Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Godot
+        uses: chickensoft-games/setup-godot@v1
+        with:
+          version: 4.2.0
+          use-dotnet: false
+
+      - name: Download GdUnit4
+        run: |
+          mkdir -p addons
+          cd addons
+          git clone https://github.com/MikeSchulze/gdUnit4.git
+          cd gdUnit4
+          git checkout v4.2.0
+
+      - name: Run Tests
+        run: |
+          godot --headless --script res://addons/gdUnit4/bin/GdUnitCmdTool.gd -- --add "res://tests_optional/" --report-xml
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: test-results
+          path: |
+            reports/
+            results/

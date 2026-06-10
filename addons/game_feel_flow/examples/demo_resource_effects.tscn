@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://dcmslh5svawi7"]
+
+[ext_resource type="Script" uid="uid://cqyaqpnvhlv01" path="res://addons/game_feel_flow/examples/demo_resource_effects.gd" id="1"]
+
+[node name="DemoResourceEffects" type="Node2D" unique_id=1329187351]
+script = ExtResource("1")
+
+[node name="Sprite2D" type="ColorRect" parent="." unique_id=944505658]
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+color = Color(0.2, 0.6, 1, 1)
