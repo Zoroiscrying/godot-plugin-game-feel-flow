@@ -34,14 +34,15 @@ func play(effect_name: String, target: Node, params = null) -> void:
 		push_warning("GameFeelFlow: Effect not found: ", effect_name)
 		return
 
-	# 检查目标节点
+	effect_started.emit(effect_name)
+
 	var player = _find_player(target)
 	if player:
 		await player.play(effect_name, params)
 	else:
 		await effect.apply(target, _ensure_params(params))
 
-	effect_started.emit(effect_name)
+	effect_finished.emit(effect_name)
 
 func play_combo(combo_name: String, target: Node, params = null) -> void:
 	## 播放组合效果
@@ -53,11 +54,15 @@ func play_combo(combo_name: String, target: Node, params = null) -> void:
 		push_warning("GameFeelFlow: Combo not found: ", combo_name)
 		return
 
+	effect_started.emit(combo_name)
+
 	var player = _find_player(target)
 	if player:
 		await player.play_combo(combo, _ensure_params(params))
 	else:
 		await combo.execute(null, _ensure_params(params))
+
+	effect_finished.emit(combo_name)
 
 func stop(target: Node) -> void:
 	## 停止目标的所有效果
