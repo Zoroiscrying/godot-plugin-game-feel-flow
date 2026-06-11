@@ -23,7 +23,7 @@ func setup_for_effect(p_effect_name: String) -> void:
 		"shake":
 			add_float_param("intensity", 1.0, 0.0, 5.0)
 			add_float_param("duration", 0.3, 0.01, 2.0)
-			add_float_param("amplitude", 10.0, 1.0, 50.0)
+			add_float_param("amplitude", 5.0, 1.0, 20.0)
 			add_float_param("frequency", 20.0, 1.0, 100.0)
 		"scale":
 			add_float_param("intensity", 1.0, 0.0, 5.0)
