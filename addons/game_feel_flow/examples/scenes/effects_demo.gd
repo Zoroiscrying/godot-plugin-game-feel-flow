@@ -3,6 +3,8 @@ extends Control
 ## 效果演示子场景
 ## 展示所有可用效果的卡片网格
 
+const EffectCard = preload("res://addons/game_feel_flow/examples/components/effect_card.gd")
+
 # ===== 节点引用 =====
 @onready var filter_bar: HBoxContainer = $VBoxContainer/FilterBar
 @onready var search_line: LineEdit = $VBoxContainer/FilterBar/SearchLine
@@ -18,6 +20,8 @@ extends Control
 var current_filter: String = "all"
 var current_effect: String = ""
 var effect_cards: Array[PanelContainer] = []
+var visible_cards: Array[PanelContainer] = []
+var _cards_created: bool = false
 
 # ===== 效果列表 =====
 var effects: Array[Dictionary] = [
@@ -74,10 +78,12 @@ func _connect_signals() -> void:
 	close_button.pressed.connect(_on_close_pressed)
 
 func _create_effect_cards() -> void:
+	# Create all cards initially but use object pool
 	for effect in effects:
-		var card = _create_card(effect)
+		var card = _create_card_lazy(effect)
 		grid_container.add_child(card)
 		effect_cards.append(card)
+	_cards_created = true
 
 func _create_card(effect: Dictionary) -> PanelContainer:
 	var card_script = preload("res://addons/game_feel_flow/examples/components/effect_card.gd")
@@ -87,6 +93,13 @@ func _create_card(effect: Dictionary) -> PanelContainer:
 	card.clicked.connect(_on_card_clicked)
 	return card
 
+func _create_card_lazy(effect: Dictionary) -> PanelContainer:
+	var card = EffectCard.create_from_pool()
+	card.set_effect(effect["name"], effect["type"], effect["complexity"])
+	if not card.clicked.is_connected(_on_card_clicked):
+		card.clicked.connect(_on_card_clicked)
+	return card
+
 # ===== 筛选和搜索 =====
 
 func _filter_effects(filter: String) -> void:
@@ -94,16 +107,22 @@ func _filter_effects(filter: String) -> void:
 	_update_card_visibility()
 
 func _search_effects(query: String) -> void:
+	visible_cards.clear()
 	for card in effect_cards:
 		var visible = query.is_empty() or card.effect_name.to_lower().contains(query.to_lower())
 		card.visible = visible
+		if visible:
+			visible_cards.append(card)
 
 func _update_card_visibility() -> void:
+	visible_cards.clear()
 	for card in effect_cards:
 		var visible = current_filter == "all" or card.complexity == current_filter
 		if visible and not search_line.text.is_empty():
 			visible = card.effect_name.to_lower().contains(search_line.text.to_lower())
 		card.visible = visible
+		if visible:
+			visible_cards.append(card)
 
 # ===== 详情预览 =====
 
