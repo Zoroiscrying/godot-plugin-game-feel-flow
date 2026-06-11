@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="GFFFreezeFrame" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://addons/game_feel_flow/effects/time/gff_freeze_frame.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+enabled = true
+label = "freeze_frame_short"
+priority = 0
+overlap_strategy = 0
+duration = 0.05
+delay = 0.0
+cooldown = 0.0
+restore_after_play = false
+random_duration_min = 1.0
+random_duration_max = 1.0
+random_intensity_min = 1.0
+random_intensity_max = 1.0
