@@ -7,7 +7,7 @@ extends Resource
 
 # ===== 属性 =====
 @export var label: String = ""
-@export var effects: Array = []
+@export var effects: Array[GFFFeedback] = []
 @export var default_params: GFFParams = null
 
 # ===== 预定义组合 =====
@@ -16,58 +16,58 @@ static func hit_light() -> GFFCombo:
 	## 轻击效果
 	var combo = GFFCombo.new()
 	combo.label = "hit_light"
-	combo.effects = [
-		_create_shake(0.5, 0.15),
-		_create_flash(Color.WHITE, 0.1),
-		_create_scale(Vector2(1.1, 1.1), 0.15),
-	]
+	var arr: Array[GFFFeedback] = []
+	arr.append(_create_shake(0.5, 0.15))
+	arr.append(_create_flash(Color.WHITE, 0.1))
+	arr.append(_create_scale(Vector2(1.1, 1.1), 0.15))
+	combo.effects = arr
 	return combo
 
 static func hit_heavy() -> GFFCombo:
 	## 重击效果
 	var combo = GFFCombo.new()
 	combo.label = "hit_heavy"
-	combo.effects = [
-		_create_shake(1.0, 0.3),
-		_create_flash(Color.WHITE, 0.15),
-		_create_freeze(0.05),
-		_create_scale(Vector2(1.3, 1.3), 0.2),
-	]
+	var arr: Array[GFFFeedback] = []
+	arr.append(_create_shake(1.0, 0.3))
+	arr.append(_create_flash(Color.WHITE, 0.15))
+	arr.append(_create_freeze(0.05))
+	arr.append(_create_scale(Vector2(1.3, 1.3), 0.2))
+	combo.effects = arr
 	return combo
 
 static func death() -> GFFCombo:
 	## 死亡效果
 	var combo = GFFCombo.new()
 	combo.label = "death"
-	combo.effects = [
-		_create_shake(1.5, 0.5),
-		_create_flash(Color.RED, 0.2),
-		_create_freeze(0.1),
-		_create_scale(Vector2(0.0, 0.0), 0.5),
-		_create_alpha(0.0, 0.5),
-	]
+	var arr: Array[GFFFeedback] = []
+	arr.append(_create_shake(1.5, 0.5))
+	arr.append(_create_flash(Color.RED, 0.2))
+	arr.append(_create_freeze(0.1))
+	arr.append(_create_scale(Vector2(0.0, 0.0), 0.5))
+	arr.append(_create_alpha(0.0, 0.5))
+	combo.effects = arr
 	return combo
 
 static func pickup() -> GFFCombo:
 	## 拾取效果
 	var combo = GFFCombo.new()
 	combo.label = "pickup"
-	combo.effects = [
-		_create_scale(Vector2(1.3, 1.3), 0.15),
-		_create_flash(Color.YELLOW, 0.1),
-	]
+	var arr: Array[GFFFeedback] = []
+	arr.append(_create_scale(Vector2(1.3, 1.3), 0.15))
+	arr.append(_create_flash(Color.YELLOW, 0.1))
+	combo.effects = arr
 	return combo
 
 static func explosion() -> GFFCombo:
 	## 爆炸效果
 	var combo = GFFCombo.new()
 	combo.label = "explosion"
-	combo.effects = [
-		_create_shake(2.0, 0.5),
-		_create_flash(Color.ORANGE, 0.2),
-		_create_freeze(0.1),
-		_create_scale(Vector2(1.5, 1.5), 0.3),
-	]
+	var arr: Array[GFFFeedback] = []
+	arr.append(_create_shake(2.0, 0.5))
+	arr.append(_create_flash(Color.ORANGE, 0.2))
+	arr.append(_create_freeze(0.1))
+	arr.append(_create_scale(Vector2(1.5, 1.5), 0.3))
+	combo.effects = arr
 	return combo
 
 # ===== 执行方法 =====
