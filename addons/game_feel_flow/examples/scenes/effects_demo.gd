@@ -86,9 +86,7 @@ func _create_effect_cards() -> void:
 	_cards_created = true
 
 func _create_card(effect: Dictionary) -> PanelContainer:
-	var card_script = preload("res://addons/game_feel_flow/examples/components/effect_card.gd")
-	var card = PanelContainer.new()
-	card.set_script(card_script)
+	var card = EffectCard.new()
 	card.set_effect(effect["name"], effect["type"], effect["complexity"])
 	card.clicked.connect(_on_card_clicked)
 	return card
