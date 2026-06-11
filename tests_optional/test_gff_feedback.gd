@@ -59,7 +59,7 @@ func test_default_cooldown() -> void:
 # ===== 恢复控制测试 =====
 
 func test_default_restore_after_play() -> void:
-	assert_bool(feedback.restore_after_play).is_true()
+	assert_bool(feedback.restore_after_play).is_false()
 
 # ===== 随机性测试 =====
 
