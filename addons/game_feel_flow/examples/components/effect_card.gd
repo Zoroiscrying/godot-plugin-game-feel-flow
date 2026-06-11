@@ -11,6 +11,9 @@ var effect_name: String = ""
 var effect_type: String = ""
 var complexity: String = "simple"  # simple, medium, complex
 var preview_target: Node = null
+var _pending_name: String = ""
+var _pending_type: String = ""
+var _pending_complexity: String = ""
 
 # ===== 节点引用 =====
 @onready var name_label: Label = $VBoxContainer/NameLabel
@@ -23,6 +26,16 @@ var preview_target: Node = null
 
 func _ready() -> void:
 	gui_input.connect(_on_gui_input)
+	if not _pending_name.is_empty():
+		name_label.text = _pending_name
+		complexity_label.text = _pending_complexity.capitalize()
+		type_label.text = _pending_type
+		_pending_name = ""
+		_pending_type = ""
+		_pending_complexity = ""
+
+func _exit_tree() -> void:
+	stop_preview()
 
 # ===== 公共方法 =====
 
@@ -33,10 +46,12 @@ func set_effect(p_name: String, p_type: String, p_complexity: String) -> void:
 	
 	if name_label:
 		name_label.text = p_name
-	if complexity_label:
 		complexity_label.text = p_complexity.capitalize()
-	if type_label:
 		type_label.text = p_type
+	else:
+		_pending_name = p_name
+		_pending_type = p_type
+		_pending_complexity = p_complexity
 
 func start_preview() -> void:
 	if preview_target and preview_viewport:
