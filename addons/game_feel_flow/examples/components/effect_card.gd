@@ -11,10 +11,7 @@ static func create_from_pool() -> PanelContainer:
 		var card = pool.pop_front()
 		card.visible = true
 		return card
-	var card_script = preload("res://addons/game_feel_flow/examples/components/effect_card.gd")
-	var card = PanelContainer.new()
-	card.set_script(card_script)
-	return card
+	return new()
 
 static func return_to_pool(card: PanelContainer) -> void:
 	card.visible = false
