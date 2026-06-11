@@ -34,12 +34,12 @@
 		<div class="report-container">
 			<h1>Testsuite Report</h1>
 			<div>
-				<span class="label">res://tests_optional/test_game_feel_flow.gd</span>
+				<span class="label">res://tests_optional/test_example_scenes.gd</span>
 			</div>
 			<div class="summary">
 				<div class="summary-item">
 					<span class="label">Tests</span>
-					<span class="value">19</span>
+					<span class="value">4</span>
 				</div>
 				<div class="summary-item">
 					<span class="label">Skipped</span>
@@ -51,21 +51,21 @@
 				</div>
 				<div class="summary-item">
 					<span class="label">Failures</span>
-					<span class="value">1</span>
-				</div>
-				<div class="summary-item">
-					<span class="label">Orphans</span>
 					<span class="value">0</span>
 				</div>
 				<div class="summary-item">
+					<span class="label">Orphans</span>
+					<span class="value">36</span>
+				</div>
+				<div class="summary-item">
 					<span class="label">Duration</span>
-					<span class="value">96ms</span>
+					<span class="value">152ms</span>
 				</div>
 				<div class="success-rate">
-					<div class="check-icon status-failed">✓</div>
+					<div class="check-icon status-warning">✓</div>
 					<div class="rate-text">
 						<span class="label">Success Rate</span>
-						<span class="value">94%</span>
+						<span class="value">100%</span>
 					</div>
 				</div>
 			</div>
@@ -73,7 +73,7 @@
 		<div class="breadcrumb">
 			<a href="../index.html"><span>All</span></a>
 			<a href="../path/tests_optional.html"><span>tests_optional</span></a>
-			<a class="active" href="#"><span>test_game_feel_flow</span></a>
+			<a class="active" href="#"><span>test_example_scenes</span></a>
 		</div>
 	</header>
 
@@ -94,13 +94,15 @@
 					<tbody>
 						
 								<tr class="testcase-group">
-									<td>test_register_effect</td>
-									<td><span class="status status-passed">PASSED</span></td>
+									<td>test_effect_card_set_effect</td>
+									<td><span class="status status-warning">WARNING</span></td>
 									<td>0</td>
-									<td>0</td>
-									<td>3ms</td>
+									<td>1</td>
+									<td>12ms</td>
 									<td class="report-column">
 										<pre>
+line 6: WARNING:: Found 1 possible orphan nodes.
+	Add 'collect_orphan_node_details()' to the end of the test to collect details.
 
 										</pre>
 									</td>
@@ -108,13 +110,15 @@
 
 
 								<tr class="testcase-group">
-									<td>test_get_nonexistent_effect</td>
-									<td><span class="status status-passed">PASSED</span></td>
+									<td>test_param_panel_setup</td>
+									<td><span class="status status-warning">WARNING</span></td>
 									<td>0</td>
-									<td>0</td>
-									<td>2ms</td>
+									<td>17</td>
+									<td>22ms</td>
 									<td class="report-column">
 										<pre>
+line 14: WARNING:: Found 17 possible orphan nodes.
+	Add 'collect_orphan_node_details()' to the end of the test to collect details.
 
 										</pre>
 									</td>
@@ -122,13 +126,15 @@
 
 
 								<tr class="testcase-group">
-									<td>test_register_combo</td>
-									<td><span class="status status-passed">PASSED</span></td>
+									<td>test_param_panel_get_params</td>
+									<td><span class="status status-warning">WARNING</span></td>
 									<td>0</td>
-									<td>0</td>
-									<td>4ms</td>
+									<td>17</td>
+									<td>36ms</td>
 									<td class="report-column">
 										<pre>
+line 20: WARNING:: Found 17 possible orphan nodes.
+	Add 'collect_orphan_node_details()' to the end of the test to collect details.
 
 										</pre>
 									</td>
@@ -136,157 +142,15 @@
 
 
 								<tr class="testcase-group">
-									<td>test_get_nonexistent_combo</td>
-									<td><span class="status status-passed">PASSED</span></td>
+									<td>test_code_preview_show_code</td>
+									<td><span class="status status-warning">WARNING</span></td>
 									<td>0</td>
-									<td>0</td>
-									<td>4ms</td>
+									<td>1</td>
+									<td>37ms</td>
 									<td class="report-column">
 										<pre>
-
-										</pre>
-									</td>
-								</tr>
-
-
-								<tr class="testcase-group">
-									<td>test_set_debug</td>
-									<td><span class="status status-passed">PASSED</span></td>
-									<td>0</td>
-									<td>0</td>
-									<td>6ms</td>
-									<td class="report-column">
-										<pre>
-
-										</pre>
-									</td>
-								</tr>
-
-
-								<tr class="testcase-group">
-									<td>test_find_player_direct</td>
-									<td><span class="status status-passed">PASSED</span></td>
-									<td>0</td>
-									<td>0</td>
-									<td>6ms</td>
-									<td class="report-column">
-										<pre>
-
-										</pre>
-									</td>
-								</tr>
-
-
-								<tr class="testcase-group">
-									<td>test_find_player_returns_null</td>
-									<td><span class="status status-passed">PASSED</span></td>
-									<td>0</td>
-									<td>0</td>
-									<td>6ms</td>
-									<td class="report-column">
-										<pre>
-
-										</pre>
-									</td>
-								</tr>
-
-
-								<tr class="testcase-group">
-									<td>test_find_player_is_target</td>
-									<td><span class="status status-passed">PASSED</span></td>
-									<td>0</td>
-									<td>0</td>
-									<td>5ms</td>
-									<td class="report-column">
-										<pre>
-
-										</pre>
-									</td>
-								</tr>
-
-
-								<tr class="testcase-group">
-									<td>test_ensure_params_null</td>
-									<td><span class="status status-passed">PASSED</span></td>
-									<td>0</td>
-									<td>0</td>
-									<td>5ms</td>
-									<td class="report-column">
-										<pre>
-
-										</pre>
-									</td>
-								</tr>
-
-
-								<tr class="testcase-group">
-									<td>test_ensure_params_gff_params</td>
-									<td><span class="status status-passed">PASSED</span></td>
-									<td>0</td>
-									<td>0</td>
-									<td>6ms</td>
-									<td class="report-column">
-										<pre>
-
-										</pre>
-									</td>
-								</tr>
-
-
-								<tr class="testcase-group">
-									<td>test_ensure_params_float</td>
-									<td><span class="status status-passed">PASSED</span></td>
-									<td>0</td>
-									<td>0</td>
-									<td>6ms</td>
-									<td class="report-column">
-										<pre>
-
-										</pre>
-									</td>
-								</tr>
-
-
-								<tr class="testcase-group">
-									<td>test_ensure_params_int</td>
-									<td><span class="status status-passed">PASSED</span></td>
-									<td>0</td>
-									<td>0</td>
-									<td>5ms</td>
-									<td class="report-column">
-										<pre>
-
-										</pre>
-									</td>
-								</tr>
-
-
-								<tr class="testcase-group">
-									<td>test_ensure_params_dict</td>
-									<td><span class="status status-passed">PASSED</span></td>
-									<td>0</td>
-									<td>0</td>
-									<td>5ms</td>
-									<td class="report-column">
-										<pre>
-
-										</pre>
-									</td>
-								</tr>
-
-
-								<tr class="testcase-group">
-									<td>test_emit_event</td>
-									<td><span class="status status-failed">FAILED</span></td>
-									<td>0</td>
-									<td>0</td>
-									<td>7ms</td>
-									<td class="report-column">
-										<pre>
-line 112: Expecting:
- '1'
- but was
- '0'
+line 27: WARNING:: Found 1 possible orphan nodes.
+	Add 'collect_orphan_node_details()' to the end of the test to collect details.
 
 										</pre>
 									</td>
@@ -303,7 +167,7 @@ line 112: Expecting:
 	</main>
 
 	<footer>
-		<p>Generated by <a href="https://github.com/MikeSchulze/gdUnit4">GdUnit4</a> at 2026-06-10 15:45:32</p>
+		<p>Generated by <a href="https://github.com/MikeSchulze/gdUnit4">GdUnit4</a> at 2026-06-11 13:10:43</p>
 		<div class="status-legend">
 			<span class="status-legend-item">
 				<span class="status-box status-skipped"></span> Skipped

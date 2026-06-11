@@ -34,12 +34,12 @@
 		<div class="report-container">
 			<h1>Testsuite Report</h1>
 			<div>
-				<span class="label">res://tests_optional/test_game_feel_flow.gd</span>
+				<span class="label">res://tests_optional/test_gff_params.gd</span>
 			</div>
 			<div class="summary">
 				<div class="summary-item">
 					<span class="label">Tests</span>
-					<span class="value">19</span>
+					<span class="value">29</span>
 				</div>
 				<div class="summary-item">
 					<span class="label">Skipped</span>
@@ -51,7 +51,7 @@
 				</div>
 				<div class="summary-item">
 					<span class="label">Failures</span>
-					<span class="value">1</span>
+					<span class="value">0</span>
 				</div>
 				<div class="summary-item">
 					<span class="label">Orphans</span>
@@ -59,13 +59,13 @@
 				</div>
 				<div class="summary-item">
 					<span class="label">Duration</span>
-					<span class="value">104ms</span>
+					<span class="value">1s 143ms</span>
 				</div>
 				<div class="success-rate">
-					<div class="check-icon status-failed">✓</div>
+					<div class="check-icon status-passed">✓</div>
 					<div class="rate-text">
 						<span class="label">Success Rate</span>
-						<span class="value">94%</span>
+						<span class="value">100%</span>
 					</div>
 				</div>
 			</div>
@@ -73,7 +73,7 @@
 		<div class="breadcrumb">
 			<a href="../index.html"><span>All</span></a>
 			<a href="../path/tests_optional.html"><span>tests_optional</span></a>
-			<a class="active" href="#"><span>test_game_feel_flow</span></a>
+			<a class="active" href="#"><span>test_gff_params</span></a>
 		</div>
 	</header>
 
@@ -94,11 +94,11 @@
 					<tbody>
 						
 								<tr class="testcase-group">
-									<td>test_register_effect</td>
+									<td>test_create_default</td>
 									<td><span class="status status-passed">PASSED</span></td>
 									<td>0</td>
 									<td>0</td>
-									<td>4ms</td>
+									<td>36ms</td>
 									<td class="report-column">
 										<pre>
 
@@ -108,11 +108,11 @@
 
 
 								<tr class="testcase-group">
-									<td>test_get_nonexistent_effect</td>
+									<td>test_create_with_params</td>
 									<td><span class="status status-passed">PASSED</span></td>
 									<td>0</td>
 									<td>0</td>
-									<td>2ms</td>
+									<td>36ms</td>
 									<td class="report-column">
 										<pre>
 
@@ -122,11 +122,11 @@
 
 
 								<tr class="testcase-group">
-									<td>test_register_combo</td>
+									<td>test_from_dict</td>
 									<td><span class="status status-passed">PASSED</span></td>
 									<td>0</td>
 									<td>0</td>
-									<td>2ms</td>
+									<td>36ms</td>
 									<td class="report-column">
 										<pre>
 
@@ -136,11 +136,11 @@
 
 
 								<tr class="testcase-group">
-									<td>test_get_nonexistent_combo</td>
+									<td>test_with_float</td>
 									<td><span class="status status-passed">PASSED</span></td>
 									<td>0</td>
 									<td>0</td>
-									<td>5ms</td>
+									<td>38ms</td>
 									<td class="report-column">
 										<pre>
 
@@ -150,11 +150,11 @@
 
 
 								<tr class="testcase-group">
-									<td>test_set_debug</td>
+									<td>test_with_int</td>
 									<td><span class="status status-passed">PASSED</span></td>
 									<td>0</td>
 									<td>0</td>
-									<td>5ms</td>
+									<td>36ms</td>
 									<td class="report-column">
 										<pre>
 
@@ -164,11 +164,11 @@
 
 
 								<tr class="testcase-group">
-									<td>test_find_player_direct</td>
+									<td>test_with_bool</td>
 									<td><span class="status status-passed">PASSED</span></td>
 									<td>0</td>
 									<td>0</td>
-									<td>5ms</td>
+									<td>36ms</td>
 									<td class="report-column">
 										<pre>
 
@@ -178,11 +178,11 @@
 
 
 								<tr class="testcase-group">
-									<td>test_find_player_returns_null</td>
+									<td>test_with_vector2</td>
 									<td><span class="status status-passed">PASSED</span></td>
 									<td>0</td>
 									<td>0</td>
-									<td>7ms</td>
+									<td>36ms</td>
 									<td class="report-column">
 										<pre>
 
@@ -192,11 +192,11 @@
 
 
 								<tr class="testcase-group">
-									<td>test_find_player_is_target</td>
+									<td>test_with_vector3</td>
 									<td><span class="status status-passed">PASSED</span></td>
 									<td>0</td>
 									<td>0</td>
-									<td>6ms</td>
+									<td>38ms</td>
 									<td class="report-column">
 										<pre>
 
@@ -206,11 +206,11 @@
 
 
 								<tr class="testcase-group">
-									<td>test_ensure_params_null</td>
+									<td>test_with_color</td>
 									<td><span class="status status-passed">PASSED</span></td>
 									<td>0</td>
 									<td>0</td>
-									<td>6ms</td>
+									<td>36ms</td>
 									<td class="report-column">
 										<pre>
 
@@ -220,11 +220,11 @@
 
 
 								<tr class="testcase-group">
-									<td>test_ensure_params_gff_params</td>
+									<td>test_with_string</td>
 									<td><span class="status status-passed">PASSED</span></td>
 									<td>0</td>
 									<td>0</td>
-									<td>5ms</td>
+									<td>36ms</td>
 									<td class="report-column">
 										<pre>
 
@@ -234,11 +234,11 @@
 
 
 								<tr class="testcase-group">
-									<td>test_ensure_params_float</td>
+									<td>test_with_curve</td>
 									<td><span class="status status-passed">PASSED</span></td>
 									<td>0</td>
 									<td>0</td>
-									<td>6ms</td>
+									<td>37ms</td>
 									<td class="report-column">
 										<pre>
 
@@ -248,11 +248,11 @@
 
 
 								<tr class="testcase-group">
-									<td>test_ensure_params_int</td>
+									<td>test_with_node</td>
 									<td><span class="status status-passed">PASSED</span></td>
 									<td>0</td>
 									<td>0</td>
-									<td>5ms</td>
+									<td>38ms</td>
 									<td class="report-column">
 										<pre>
 
@@ -262,11 +262,11 @@
 
 
 								<tr class="testcase-group">
-									<td>test_ensure_params_dict</td>
+									<td>test_with_resource</td>
 									<td><span class="status status-passed">PASSED</span></td>
 									<td>0</td>
 									<td>0</td>
-									<td>6ms</td>
+									<td>37ms</td>
 									<td class="report-column">
 										<pre>
 
@@ -276,11 +276,11 @@
 
 
 								<tr class="testcase-group">
-									<td>test_emit_event</td>
+									<td>test_with_variant</td>
 									<td><span class="status status-passed">PASSED</span></td>
 									<td>0</td>
 									<td>0</td>
-									<td>6ms</td>
+									<td>36ms</td>
 									<td class="report-column">
 										<pre>
 
@@ -290,17 +290,209 @@
 
 
 								<tr class="testcase-group">
-									<td>test_listen_event</td>
-									<td><span class="status status-failed">FAILED</span></td>
+									<td>test_get_float_default</td>
+									<td><span class="status status-passed">PASSED</span></td>
 									<td>0</td>
 									<td>0</td>
-									<td>7ms</td>
+									<td>37ms</td>
 									<td class="report-column">
 										<pre>
-line 117: Expecting:
- '1'
- but was
- '0'
+
+										</pre>
+									</td>
+								</tr>
+
+
+								<tr class="testcase-group">
+									<td>test_get_int_default</td>
+									<td><span class="status status-passed">PASSED</span></td>
+									<td>0</td>
+									<td>0</td>
+									<td>37ms</td>
+									<td class="report-column">
+										<pre>
+
+										</pre>
+									</td>
+								</tr>
+
+
+								<tr class="testcase-group">
+									<td>test_get_bool_default</td>
+									<td><span class="status status-passed">PASSED</span></td>
+									<td>0</td>
+									<td>0</td>
+									<td>36ms</td>
+									<td class="report-column">
+										<pre>
+
+										</pre>
+									</td>
+								</tr>
+
+
+								<tr class="testcase-group">
+									<td>test_get_vector2_default</td>
+									<td><span class="status status-passed">PASSED</span></td>
+									<td>0</td>
+									<td>0</td>
+									<td>36ms</td>
+									<td class="report-column">
+										<pre>
+
+										</pre>
+									</td>
+								</tr>
+
+
+								<tr class="testcase-group">
+									<td>test_get_vector3_default</td>
+									<td><span class="status status-passed">PASSED</span></td>
+									<td>0</td>
+									<td>0</td>
+									<td>37ms</td>
+									<td class="report-column">
+										<pre>
+
+										</pre>
+									</td>
+								</tr>
+
+
+								<tr class="testcase-group">
+									<td>test_get_color_default</td>
+									<td><span class="status status-passed">PASSED</span></td>
+									<td>0</td>
+									<td>0</td>
+									<td>37ms</td>
+									<td class="report-column">
+										<pre>
+
+										</pre>
+									</td>
+								</tr>
+
+
+								<tr class="testcase-group">
+									<td>test_get_string_default</td>
+									<td><span class="status status-passed">PASSED</span></td>
+									<td>0</td>
+									<td>0</td>
+									<td>36ms</td>
+									<td class="report-column">
+										<pre>
+
+										</pre>
+									</td>
+								</tr>
+
+
+								<tr class="testcase-group">
+									<td>test_get_curve_default</td>
+									<td><span class="status status-passed">PASSED</span></td>
+									<td>0</td>
+									<td>0</td>
+									<td>36ms</td>
+									<td class="report-column">
+										<pre>
+
+										</pre>
+									</td>
+								</tr>
+
+
+								<tr class="testcase-group">
+									<td>test_get_node_default</td>
+									<td><span class="status status-passed">PASSED</span></td>
+									<td>0</td>
+									<td>0</td>
+									<td>36ms</td>
+									<td class="report-column">
+										<pre>
+
+										</pre>
+									</td>
+								</tr>
+
+
+								<tr class="testcase-group">
+									<td>test_get_resource_default</td>
+									<td><span class="status status-passed">PASSED</span></td>
+									<td>0</td>
+									<td>0</td>
+									<td>36ms</td>
+									<td class="report-column">
+										<pre>
+
+										</pre>
+									</td>
+								</tr>
+
+
+								<tr class="testcase-group">
+									<td>test_get_variant_default</td>
+									<td><span class="status status-passed">PASSED</span></td>
+									<td>0</td>
+									<td>0</td>
+									<td>36ms</td>
+									<td class="report-column">
+										<pre>
+
+										</pre>
+									</td>
+								</tr>
+
+
+								<tr class="testcase-group">
+									<td>test_get_vector2_from_vector3</td>
+									<td><span class="status status-passed">PASSED</span></td>
+									<td>0</td>
+									<td>0</td>
+									<td>37ms</td>
+									<td class="report-column">
+										<pre>
+
+										</pre>
+									</td>
+								</tr>
+
+
+								<tr class="testcase-group">
+									<td>test_get_vector3_from_vector2</td>
+									<td><span class="status status-passed">PASSED</span></td>
+									<td>0</td>
+									<td>0</td>
+									<td>37ms</td>
+									<td class="report-column">
+										<pre>
+
+										</pre>
+									</td>
+								</tr>
+
+
+								<tr class="testcase-group">
+									<td>test_chain_calls</td>
+									<td><span class="status status-passed">PASSED</span></td>
+									<td>0</td>
+									<td>0</td>
+									<td>36ms</td>
+									<td class="report-column">
+										<pre>
+
+										</pre>
+									</td>
+								</tr>
+
+
+								<tr class="testcase-group">
+									<td>test_override_value</td>
+									<td><span class="status status-passed">PASSED</span></td>
+									<td>0</td>
+									<td>0</td>
+									<td>37ms</td>
+									<td class="report-column">
+										<pre>
 
 										</pre>
 									</td>
@@ -317,7 +509,7 @@ line 117: Expecting:
 	</main>
 
 	<footer>
-		<p>Generated by <a href="https://github.com/MikeSchulze/gdUnit4">GdUnit4</a> at 2026-06-10 15:47:31</p>
+		<p>Generated by <a href="https://github.com/MikeSchulze/gdUnit4">GdUnit4</a> at 2026-06-11 13:10:43</p>
 		<div class="status-legend">
 			<span class="status-legend-item">
 				<span class="status-box status-skipped"></span> Skipped

@@ -34,12 +34,12 @@
 		<div class="report-container">
 			<h1>Testsuite Report</h1>
 			<div>
-				<span class="label">res://tests_optional/test_gff_shake.gd</span>
+				<span class="label">res://tests_optional/test_example_scenes.gd</span>
 			</div>
 			<div class="summary">
 				<div class="summary-item">
 					<span class="label">Tests</span>
-					<span class="value">12</span>
+					<span class="value">4</span>
 				</div>
 				<div class="summary-item">
 					<span class="label">Skipped</span>
@@ -55,14 +55,14 @@
 				</div>
 				<div class="summary-item">
 					<span class="label">Orphans</span>
-					<span class="value">0</span>
+					<span class="value">36</span>
 				</div>
 				<div class="summary-item">
 					<span class="label">Duration</span>
-					<span class="value">884ms</span>
+					<span class="value">180ms</span>
 				</div>
 				<div class="success-rate">
-					<div class="check-icon status-passed">✓</div>
+					<div class="check-icon status-warning">✓</div>
 					<div class="rate-text">
 						<span class="label">Success Rate</span>
 						<span class="value">100%</span>
@@ -73,7 +73,7 @@
 		<div class="breadcrumb">
 			<a href="../index.html"><span>All</span></a>
 			<a href="../path/tests_optional.html"><span>tests_optional</span></a>
-			<a class="active" href="#"><span>test_gff_shake</span></a>
+			<a class="active" href="#"><span>test_example_scenes</span></a>
 		</div>
 	</header>
 
@@ -94,13 +94,15 @@
 					<tbody>
 						
 								<tr class="testcase-group">
-									<td>test_default_amplitude</td>
-									<td><span class="status status-passed">PASSED</span></td>
+									<td>test_effect_card_set_effect</td>
+									<td><span class="status status-warning">WARNING</span></td>
 									<td>0</td>
-									<td>0</td>
-									<td>2ms</td>
+									<td>1</td>
+									<td>16ms</td>
 									<td class="report-column">
 										<pre>
+line 6: WARNING:: Found 1 possible orphan nodes.
+	Add 'collect_orphan_node_details()' to the end of the test to collect details.
 
 										</pre>
 									</td>
@@ -108,13 +110,15 @@
 
 
 								<tr class="testcase-group">
-									<td>test_default_frequency</td>
-									<td><span class="status status-passed">PASSED</span></td>
+									<td>test_param_panel_setup</td>
+									<td><span class="status status-warning">WARNING</span></td>
 									<td>0</td>
-									<td>0</td>
-									<td>3ms</td>
+									<td>17</td>
+									<td>24ms</td>
 									<td class="report-column">
 										<pre>
+line 14: WARNING:: Found 17 possible orphan nodes.
+	Add 'collect_orphan_node_details()' to the end of the test to collect details.
 
 										</pre>
 									</td>
@@ -122,13 +126,15 @@
 
 
 								<tr class="testcase-group">
-									<td>test_default_axes</td>
-									<td><span class="status status-passed">PASSED</span></td>
+									<td>test_param_panel_get_params</td>
+									<td><span class="status status-warning">WARNING</span></td>
 									<td>0</td>
-									<td>0</td>
-									<td>7ms</td>
+									<td>17</td>
+									<td>41ms</td>
 									<td class="report-column">
 										<pre>
+line 20: WARNING:: Found 17 possible orphan nodes.
+	Add 'collect_orphan_node_details()' to the end of the test to collect details.
 
 										</pre>
 									</td>
@@ -136,125 +142,15 @@
 
 
 								<tr class="testcase-group">
-									<td>test_default_attenuation_curve</td>
-									<td><span class="status status-passed">PASSED</span></td>
+									<td>test_code_preview_show_code</td>
+									<td><span class="status status-warning">WARNING</span></td>
 									<td>0</td>
-									<td>0</td>
-									<td>6ms</td>
+									<td>1</td>
+									<td>43ms</td>
 									<td class="report-column">
 										<pre>
-
-										</pre>
-									</td>
-								</tr>
-
-
-								<tr class="testcase-group">
-									<td>test_execute_with_camera</td>
-									<td><span class="status status-passed">PASSED</span></td>
-									<td>0</td>
-									<td>0</td>
-									<td>205ms</td>
-									<td class="report-column">
-										<pre>
-
-										</pre>
-									</td>
-								</tr>
-
-
-								<tr class="testcase-group">
-									<td>test_execute_with_node2d</td>
-									<td><span class="status status-passed">PASSED</span></td>
-									<td>0</td>
-									<td>0</td>
-									<td>206ms</td>
-									<td class="report-column">
-										<pre>
-
-										</pre>
-									</td>
-								</tr>
-
-
-								<tr class="testcase-group">
-									<td>test_execute_with_custom_params</td>
-									<td><span class="status status-passed">PASSED</span></td>
-									<td>0</td>
-									<td>0</td>
-									<td>206ms</td>
-									<td class="report-column">
-										<pre>
-
-										</pre>
-									</td>
-								</tr>
-
-
-								<tr class="testcase-group">
-									<td>test_execute_with_curve</td>
-									<td><span class="status status-passed">PASSED</span></td>
-									<td>0</td>
-									<td>0</td>
-									<td>206ms</td>
-									<td class="report-column">
-										<pre>
-
-										</pre>
-									</td>
-								</tr>
-
-
-								<tr class="testcase-group">
-									<td>test_get_amplitude_with_params</td>
-									<td><span class="status status-passed">PASSED</span></td>
-									<td>0</td>
-									<td>0</td>
-									<td>5ms</td>
-									<td class="report-column">
-										<pre>
-
-										</pre>
-									</td>
-								</tr>
-
-
-								<tr class="testcase-group">
-									<td>test_get_amplitude_without_params</td>
-									<td><span class="status status-passed">PASSED</span></td>
-									<td>0</td>
-									<td>0</td>
-									<td>6ms</td>
-									<td class="report-column">
-										<pre>
-
-										</pre>
-									</td>
-								</tr>
-
-
-								<tr class="testcase-group">
-									<td>test_get_frequency_with_params</td>
-									<td><span class="status status-passed">PASSED</span></td>
-									<td>0</td>
-									<td>0</td>
-									<td>5ms</td>
-									<td class="report-column">
-										<pre>
-
-										</pre>
-									</td>
-								</tr>
-
-
-								<tr class="testcase-group">
-									<td>test_get_axes_with_params</td>
-									<td><span class="status status-passed">PASSED</span></td>
-									<td>0</td>
-									<td>0</td>
-									<td>6ms</td>
-									<td class="report-column">
-										<pre>
+line 27: WARNING:: Found 1 possible orphan nodes.
+	Add 'collect_orphan_node_details()' to the end of the test to collect details.
 
 										</pre>
 									</td>
@@ -271,7 +167,7 @@
 	</main>
 
 	<footer>
-		<p>Generated by <a href="https://github.com/MikeSchulze/gdUnit4">GdUnit4</a> at 2026-06-10 15:45:32</p>
+		<p>Generated by <a href="https://github.com/MikeSchulze/gdUnit4">GdUnit4</a> at 2026-06-11 12:46:11</p>
 		<div class="status-legend">
 			<span class="status-legend-item">
 				<span class="status-box status-skipped"></span> Skipped
