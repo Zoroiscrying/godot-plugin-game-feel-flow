@@ -150,21 +150,21 @@ func _play_effect(effect_type: String) -> void:
 
 	match effect_type:
 		"shake":
-			GameFeelFlow.play("shake", _selected_target, params)
+			GFUtil.shake(_selected_target, params.get_float("intensity", 1.0))
 		"scale":
-			GameFeelFlow.play("scale", _selected_target, params)
+			GFUtil.scale(_selected_target, params.get_float("intensity", 1.0))
 		"flash":
-			GameFeelFlow.play("flash", _selected_target, params)
+			GFUtil.flash(_selected_target, params.get_color("color", Color.WHITE))
 		"color":
-			GameFeelFlow.play("color", _selected_target, params)
+			GFUtil.color(_selected_target, params.get_color("color", Color.RED))
 		"hit_light":
-			GameFeelFlow.play_combo("hit_light", _selected_target, params)
+			GFUtil.hit(_selected_target, params.get_float("intensity", 1.0))
 		"hit_heavy":
-			GameFeelFlow.play_combo("hit_heavy", _selected_target, params)
+			GFUtil.hit_heavy(_selected_target, params.get_float("intensity", 1.0))
 		"explosion":
-			GameFeelFlow.play_combo("explosion", _selected_target, params)
+			GFUtil.explosion(_selected_target, params.get_float("intensity", 1.0))
 		"death":
-			GameFeelFlow.play_combo("death", _selected_target, params)
+			GFUtil.death(_selected_target, params.get_float("intensity", 1.0))
 
 func _reset_all() -> void:
 	for child in objects.get_children():

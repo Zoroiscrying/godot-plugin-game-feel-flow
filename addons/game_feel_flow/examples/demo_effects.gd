@@ -64,7 +64,24 @@ func _on_reset_pressed() -> void:
 
 func _play_effect(effect_type: String) -> void:
 	var params = _get_params()
-	GameFeelFlow.play(effect_type, target_sprite, params)
+	
+	match effect_type:
+		"shake":
+			GFUtil.shake(target_sprite, params.get_float("intensity", 1.0))
+		"scale":
+			GFUtil.scale(target_sprite, params.get_float("intensity", 1.0))
+		"flash":
+			GFUtil.flash(target_sprite, params.get_color("color", Color.WHITE))
+		"color":
+			GFUtil.color(target_sprite, params.get_color("color", Color.RED))
+		"alpha":
+			GFUtil.alpha(target_sprite, params.get_float("target_alpha", 0.0))
+		"freeze_frame":
+			GFUtil.freeze(params.get_float("duration", 0.05))
+		"time_scale":
+			GFUtil.slow_motion(params.get_float("duration", 1.0), params.get_float("scale", 0.3))
+		"hit":
+			GFUtil.hit(target_sprite, params.get_float("intensity", 1.0))
 
 func _reset_target() -> void:
 	target_sprite.position = Vector2.ZERO
