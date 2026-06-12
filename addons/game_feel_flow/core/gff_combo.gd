@@ -17,9 +17,9 @@ static func hit_light() -> GFFCombo:
 	var combo = GFFCombo.new()
 	combo.label = "hit_light"
 	var arr: Array[GFFFeedback] = []
-	arr.append(_create_shake(0.4, 0.1))
-	arr.append(_create_flash(Color.WHITE, 0.05))
-	arr.append(_create_scale(Vector2(1.08, 1.08), 0.1))
+	arr.append(_create_shake(0.3, 0.08))
+	arr.append(_create_flash(Color.WHITE, 0.04))
+	arr.append(_create_scale(Vector2(1.05, 1.05), 0.08))
 	combo.effects = arr
 	return combo
 
@@ -28,10 +28,10 @@ static func hit_heavy() -> GFFCombo:
 	var combo = GFFCombo.new()
 	combo.label = "hit_heavy"
 	var arr: Array[GFFFeedback] = []
-	arr.append(_create_shake(0.8, 0.15))
-	arr.append(_create_flash(Color.WHITE, 0.08))
-	arr.append(_create_freeze(0.03))
-	arr.append(_create_scale(Vector2(1.2, 1.2), 0.15))
+	arr.append(_create_shake(0.6, 0.12))
+	arr.append(_create_flash(Color.WHITE, 0.06))
+	arr.append(_create_freeze(0.02))
+	arr.append(_create_scale(Vector2(1.15, 1.15), 0.12))
 	combo.effects = arr
 	return combo
 
@@ -40,11 +40,11 @@ static func death() -> GFFCombo:
 	var combo = GFFCombo.new()
 	combo.label = "death"
 	var arr: Array[GFFFeedback] = []
-	arr.append(_create_shake(1.0, 0.25))
-	arr.append(_create_flash(Color.RED, 0.1))
-	arr.append(_create_freeze(0.05))
-	arr.append(_create_scale(Vector2(0.85, 0.85), 0.2))
-	arr.append(_create_alpha(0.0, 0.3))
+	arr.append(_create_shake(0.8, 0.2))
+	arr.append(_create_flash(Color.RED, 0.08))
+	arr.append(_create_freeze(0.04))
+	arr.append(_create_scale(Vector2(0.9, 0.9), 0.15))
+	arr.append(_create_alpha(0.0, 0.2))
 	combo.effects = arr
 	return combo
 
@@ -53,8 +53,8 @@ static func pickup() -> GFFCombo:
 	var combo = GFFCombo.new()
 	combo.label = "pickup"
 	var arr: Array[GFFFeedback] = []
-	arr.append(_create_scale(Vector2(1.15, 1.15), 0.1))
-	arr.append(_create_flash(Color.YELLOW, 0.05))
+	arr.append(_create_scale(Vector2(1.1, 1.1), 0.08))
+	arr.append(_create_flash(Color.YELLOW, 0.04))
 	combo.effects = arr
 	return combo
 
@@ -63,10 +63,10 @@ static func explosion() -> GFFCombo:
 	var combo = GFFCombo.new()
 	combo.label = "explosion"
 	var arr: Array[GFFFeedback] = []
-	arr.append(_create_shake(1.2, 0.25))
-	arr.append(_create_flash(Color.ORANGE, 0.1))
-	arr.append(_create_freeze(0.05))
-	arr.append(_create_scale(Vector2(1.25, 1.25), 0.2))
+	arr.append(_create_shake(1.0, 0.2))
+	arr.append(_create_flash(Color.ORANGE, 0.08))
+	arr.append(_create_freeze(0.04))
+	arr.append(_create_scale(Vector2(1.2, 1.2), 0.15))
 	combo.effects = arr
 	return combo
 
