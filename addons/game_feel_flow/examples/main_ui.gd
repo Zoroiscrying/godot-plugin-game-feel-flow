@@ -47,10 +47,18 @@ func _init_ui() -> void:
 	for effect in effects:
 		effect_list.add_item(effect["name"])
 
+# ===== Effect Selection =====
+
+func _on_effect_selected(index: int) -> void:
+	if index >= 0 and index < effects.size():
+		var effect_type = effects[index]["type"]
+		_update_params(effect_type)
+
 # ===== Effect Playback =====
 
 func _play_effect(effect_type: String) -> void:
-	print("Playing: ", effect_type)
+	var params = _get_params()
+	print("Playing: ", effect_type, " with params: ", params)
 
 	match effect_type:
 		"button_press":
@@ -59,13 +67,13 @@ func _play_effect(effect_type: String) -> void:
 			tween.tween_property(demo_button, "scale", Vector2(0.9, 0.9), 0.05)
 			tween.tween_property(demo_button, "scale", Vector2(1.0, 1.0), 0.1)
 		"sprite_scale":
-			GameFeelFlow.play("scale", demo_sprite)
+			GameFeelFlow.play("scale", demo_sprite, params)
 		"sprite_color":
-			GameFeelFlow.play("color", demo_sprite)
+			GameFeelFlow.play("color", demo_sprite, params)
 		"hit_light":
-			GameFeelFlow.play_combo("hit_light", demo_sprite)
+			GameFeelFlow.play_combo("hit_light", demo_sprite, params)
 		"hit_medium":
-			GameFeelFlow.play_combo("hit_heavy", demo_sprite)
+			GameFeelFlow.play_combo("hit_heavy", demo_sprite, params)
 
 func _reset() -> void:
 	demo_sprite.position = _original_sprite_position
@@ -75,11 +83,89 @@ func _reset() -> void:
 	demo_progress.value = 0
 	print("Reset")
 
-# ===== Callbacks =====
+# ===== Parameter Management =====
 
-func _on_effect_selected(index: int) -> void:
-	if index >= 0 and index < effects.size():
-		param_panel.show_params(effects[index]["type"])
+func _update_params(effect_type: String) -> void:
+	# Clear existing params
+	for child in param_panel.get_children():
+		child.queue_free()
+	
+	# Add params based on effect type
+	match effect_type:
+		"button_press":
+			_add_float_param("duration", 0.1, 0.01, 0.5)
+		"sprite_scale":
+			_add_float_param("intensity", 1.0, 0.0, 3.0)
+			_add_float_param("duration", 0.15, 0.01, 0.5)
+		"sprite_color":
+			_add_float_param("intensity", 1.0, 0.0, 3.0)
+			_add_float_param("duration", 0.15, 0.01, 0.3)
+			_add_color_param("color", Color.RED)
+		"hit_light", "hit_medium":
+			_add_float_param("intensity", 1.0, 0.0, 3.0)
+		_:
+			_add_float_param("intensity", 1.0, 0.0, 3.0)
+			_add_float_param("duration", 0.15, 0.01, 0.5)
+
+func _add_float_param(param_name: String, default: float, min_val: float, max_val: float) -> void:
+	var hbox = HBoxContainer.new()
+	
+	var label = Label.new()
+	label.text = param_name
+	label.custom_minimum_size.x = 100
+	hbox.add_child(label)
+	
+	var slider = HSlider.new()
+	slider.min_value = min_val
+	slider.max_value = max_val
+	slider.value = default
+	slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	slider.name = param_name
+	hbox.add_child(slider)
+	
+	var value_label = Label.new()
+	value_label.text = "%.2f" % default
+	value_label.custom_minimum_size.x = 50
+	hbox.add_child(value_label)
+	
+	slider.value_changed.connect(func(value): value_label.text = "%.2f" % value)
+	
+	param_panel.add_child(hbox)
+
+func _add_color_param(param_name: String, default: Color) -> void:
+	var hbox = HBoxContainer.new()
+	
+	var label = Label.new()
+	label.text = param_name
+	label.custom_minimum_size.x = 100
+	hbox.add_child(label)
+	
+	var color_picker = ColorPickerButton.new()
+	color_picker.color = default
+	color_picker.name = param_name
+	hbox.add_child(color_picker)
+	
+	param_panel.add_child(hbox)
+
+func _get_params() -> GFFParams:
+	var params = GFFParams.new()
+	
+	for child in param_panel.get_children():
+		if child is HBoxContainer:
+			for subchild in child.get_children():
+				if subchild is HSlider:
+					if subchild.name == "intensity":
+						params.intensity = subchild.value
+					elif subchild.name == "duration":
+						params.duration = subchild.value
+					else:
+						params.with_float(subchild.name, subchild.value)
+				elif subchild is ColorPickerButton:
+					params.with_color(subchild.name, subchild.color)
+	
+	return params
+
+# ===== Callbacks =====
 
 func _on_play_pressed() -> void:
 	var selected = effect_list.get_selected_items()

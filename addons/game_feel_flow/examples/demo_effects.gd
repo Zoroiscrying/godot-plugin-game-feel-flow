@@ -80,34 +80,34 @@ func _update_params(effect_type: String) -> void:
 
 	match effect_type:
 		"shake":
-			_add_float_param("intensity", 1.0, 0.0, 5.0)
-			_add_float_param("duration", 0.3, 0.01, 2.0)
-			_add_float_param("amplitude", 10.0, 1.0, 50.0)
+			_add_float_param("intensity", 1.0, 0.0, 3.0)
+			_add_float_param("duration", 0.15, 0.01, 0.5)
+			_add_float_param("amplitude", 3.0, 0.5, 10.0)
 		"scale":
-			_add_float_param("intensity", 1.0, 0.0, 5.0)
-			_add_float_param("duration", 0.3, 0.01, 2.0)
+			_add_float_param("intensity", 1.0, 0.0, 3.0)
+			_add_float_param("duration", 0.15, 0.01, 0.5)
 		"flash":
-			_add_float_param("intensity", 1.0, 0.0, 5.0)
-			_add_float_param("duration", 0.1, 0.01, 1.0)
+			_add_float_param("intensity", 1.0, 0.0, 3.0)
+			_add_float_param("duration", 0.1, 0.01, 0.3)
 			_add_color_param("color", Color.WHITE)
 		"color":
-			_add_float_param("intensity", 1.0, 0.0, 5.0)
-			_add_float_param("duration", 0.3, 0.01, 2.0)
+			_add_float_param("intensity", 1.0, 0.0, 3.0)
+			_add_float_param("duration", 0.15, 0.01, 0.3)
 			_add_color_param("color", Color.RED)
 		"alpha":
-			_add_float_param("intensity", 1.0, 0.0, 5.0)
-			_add_float_param("duration", 0.3, 0.01, 2.0)
+			_add_float_param("intensity", 1.0, 0.0, 3.0)
+			_add_float_param("duration", 0.15, 0.01, 0.3)
 		"freeze_frame":
-			_add_float_param("duration", 0.1, 0.01, 1.0)
+			_add_float_param("duration", 0.05, 0.01, 0.2)
 		"time_scale":
-			_add_float_param("duration", 0.3, 0.01, 2.0)
-			_add_float_param("scale", 0.5, 0.0, 2.0)
+			_add_float_param("duration", 0.2, 0.01, 1.0)
+			_add_float_param("scale", 0.5, 0.1, 1.0)
 		"hit":
-			_add_float_param("intensity", 1.5, 0.0, 5.0)
-			_add_float_param("duration", 0.4, 0.01, 2.0)
+			_add_float_param("intensity", 1.0, 0.0, 3.0)
+			_add_float_param("duration", 0.15, 0.01, 0.5)
 		_:
-			_add_float_param("intensity", 1.0, 0.0, 5.0)
-			_add_float_param("duration", 0.2, 0.01, 2.0)
+			_add_float_param("intensity", 1.0, 0.0, 3.0)
+			_add_float_param("duration", 0.15, 0.01, 0.5)
 
 func _add_float_param(param_name: String, default: float, min_val: float, max_val: float) -> void:
 	var hbox = HBoxContainer.new()
@@ -147,15 +147,20 @@ func _add_color_param(param_name: String, default: Color) -> void:
 
 	param_panel.add_child(hbox)
 
-func _get_params() -> Dictionary:
-	var params: Dictionary = {}
+func _get_params() -> GFFParams:
+	var params = GFFParams.new()
 
 	for child in param_panel.get_children():
 		if child is HBoxContainer:
 			for subchild in child.get_children():
 				if subchild is HSlider:
-					params[subchild.name] = subchild.value
+					if subchild.name == "intensity":
+						params.intensity = subchild.value
+					elif subchild.name == "duration":
+						params.duration = subchild.value
+					else:
+						params.with_float(subchild.name, subchild.value)
 				elif subchild is ColorPickerButton:
-					params[subchild.name] = subchild.color
+					params.with_color(subchild.name, subchild.color)
 
 	return params

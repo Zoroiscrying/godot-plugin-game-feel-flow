@@ -25,9 +25,8 @@ var effects: Array[Dictionary] = [
 	{"name": "Freeze Frame", "type": "freeze_frame"},
 	{"name": "Time Scale", "type": "time_scale"},
 	{"name": "Hit Light", "type": "hit_light"},
-	{"name": "Hit Medium", "type": "hit_medium"},
+	{"name": "Hit Medium", "type": "hit_heavy"},
 	{"name": "Hit Heavy", "type": "hit_heavy"},
-	{"name": "Hit Critical", "type": "hit_critical"},
 	{"name": "Explosion", "type": "explosion"},
 	{"name": "Death", "type": "death"},
 ]
@@ -60,38 +59,39 @@ func _init_ui() -> void:
 func _on_effect_selected(index: int) -> void:
 	if index >= 0 and index < effects.size():
 		var effect_type = effects[index]["type"]
-		param_panel.show_params(effect_type)
+		_update_params(effect_type)
 
 # ===== Effect Playback =====
 
 func _play_effect(effect_type: String) -> void:
-	print("Playing: ", effect_type)
+	var params = _get_params()
+	print("Playing: ", effect_type, " with params: ", params)
 
 	match effect_type:
 		"shake":
-			GameFeelFlow.play("shake", sprite)
+			GameFeelFlow.play("shake", sprite, params)
 		"scale":
-			GameFeelFlow.play("scale", sprite)
+			GameFeelFlow.play("scale", sprite, params)
 		"color":
-			GameFeelFlow.play("color", sprite)
+			GameFeelFlow.play("color", sprite, params)
 		"alpha":
-			GameFeelFlow.play("alpha", sprite)
+			GameFeelFlow.play("alpha", sprite, params)
 		"flash":
-			GameFeelFlow.play("flash", sprite)
+			GameFeelFlow.play("flash", sprite, params)
 		"freeze_frame":
-			GameFeelFlow.play("freeze_frame", sprite)
+			GameFeelFlow.play("freeze_frame", sprite, params)
 		"time_scale":
-			GameFeelFlow.play("time_scale", sprite)
+			GameFeelFlow.play("time_scale", sprite, params)
 		"hit_light":
-			GameFeelFlow.play_combo("hit_light", sprite)
+			GameFeelFlow.play_combo("hit_light", sprite, params)
 		"hit_medium":
-			GameFeelFlow.play_combo("hit_heavy", sprite)
+			GameFeelFlow.play_combo("hit_heavy", sprite, params)
 		"hit_heavy":
-			GameFeelFlow.play_combo("hit_heavy", sprite)
+			GameFeelFlow.play_combo("hit_heavy", sprite, params)
 		"explosion":
-			GameFeelFlow.play_combo("explosion", sprite)
+			GameFeelFlow.play_combo("explosion", sprite, params)
 		"death":
-			GameFeelFlow.play_combo("death", sprite)
+			GameFeelFlow.play_combo("death", sprite, params)
 
 func _reset() -> void:
 	sprite.position = _original_position
@@ -100,6 +100,103 @@ func _reset() -> void:
 	sprite.modulate = _original_color
 	Engine.time_scale = 1.0
 	print("Reset")
+
+# ===== Parameter Management =====
+
+func _update_params(effect_type: String) -> void:
+	# Clear existing params
+	for child in param_panel.get_children():
+		child.queue_free()
+	
+	# Add params based on effect type
+	match effect_type:
+		"shake":
+			_add_float_param("intensity", 1.0, 0.0, 3.0)
+			_add_float_param("duration", 0.15, 0.01, 0.5)
+			_add_float_param("amplitude", 3.0, 0.5, 10.0)
+			_add_float_param("frequency", 15.0, 5.0, 50.0)
+		"scale":
+			_add_float_param("intensity", 1.0, 0.0, 3.0)
+			_add_float_param("duration", 0.15, 0.01, 0.5)
+		"flash":
+			_add_float_param("intensity", 1.0, 0.0, 3.0)
+			_add_float_param("duration", 0.1, 0.01, 0.3)
+			_add_color_param("color", Color.WHITE)
+		"color":
+			_add_float_param("intensity", 1.0, 0.0, 3.0)
+			_add_float_param("duration", 0.15, 0.01, 0.3)
+			_add_color_param("color", Color.RED)
+		"alpha":
+			_add_float_param("intensity", 1.0, 0.0, 3.0)
+			_add_float_param("duration", 0.15, 0.01, 0.3)
+		"freeze_frame":
+			_add_float_param("duration", 0.05, 0.01, 0.2)
+		"time_scale":
+			_add_float_param("duration", 0.2, 0.01, 1.0)
+			_add_float_param("scale", 0.5, 0.1, 1.0)
+		"hit_light", "hit_heavy", "explosion", "death":
+			_add_float_param("intensity", 1.0, 0.0, 3.0)
+		_:
+			_add_float_param("intensity", 1.0, 0.0, 3.0)
+			_add_float_param("duration", 0.15, 0.01, 0.5)
+
+func _add_float_param(param_name: String, default: float, min_val: float, max_val: float) -> void:
+	var hbox = HBoxContainer.new()
+	
+	var label = Label.new()
+	label.text = param_name
+	label.custom_minimum_size.x = 100
+	hbox.add_child(label)
+	
+	var slider = HSlider.new()
+	slider.min_value = min_val
+	slider.max_value = max_val
+	slider.value = default
+	slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	slider.name = param_name
+	hbox.add_child(slider)
+	
+	var value_label = Label.new()
+	value_label.text = "%.2f" % default
+	value_label.custom_minimum_size.x = 50
+	hbox.add_child(value_label)
+	
+	slider.value_changed.connect(func(value): value_label.text = "%.2f" % value)
+	
+	param_panel.add_child(hbox)
+
+func _add_color_param(param_name: String, default: Color) -> void:
+	var hbox = HBoxContainer.new()
+	
+	var label = Label.new()
+	label.text = param_name
+	label.custom_minimum_size.x = 100
+	hbox.add_child(label)
+	
+	var color_picker = ColorPickerButton.new()
+	color_picker.color = default
+	color_picker.name = param_name
+	hbox.add_child(color_picker)
+	
+	param_panel.add_child(hbox)
+
+func _get_params() -> GFFParams:
+	var params = GFFParams.new()
+	
+	for child in param_panel.get_children():
+		if child is HBoxContainer:
+			for subchild in child.get_children():
+				if subchild is HSlider:
+					if subchild.name == "intensity":
+						params.intensity = subchild.value
+					elif subchild.name == "duration":
+						params.duration = subchild.value
+					else:
+						params.with_float(subchild.name, subchild.value)
+				elif subchild is ColorPickerButton:
+					params.with_color(subchild.name, subchild.color)
+	
+	return params
 
 # ===== Callbacks =====
 
