@@ -108,6 +108,21 @@ func test_play_nonexistent_does_nothing() -> void:
 	await player.play("nonexistent")
 	assert_bool(player.is_playing()).is_false()
 
+func test_play_with_feedback_object() -> void:
+	# 测试通过GFFFeedback对象播放
+	var feedback = MockFeedback.new()
+	feedback.label = "hit"
+	await player.play(feedback)
+	assert_int(feedback.execute_count).is_equal(1)
+
+func test_play_with_string() -> void:
+	# 测试通过字符串播放
+	var feedback = MockFeedback.new()
+	feedback.label = "hit"
+	player.add_effect(feedback)
+	await player.play("hit")
+	assert_int(feedback.execute_count).is_equal(1)
+
 # ===== play_all 测试 =====
 
 func test_play_all() -> void:
