@@ -180,7 +180,7 @@ func test_overlap_ignore() -> void:
 	feedback.label = "hit"
 	feedback.overlap_strategy = GFFFeedback.OverlapStrategy.IGNORE
 	player._active_effects["hit"] = feedback
-	await player._play_effect(feedback)
+	await player._play_feedback(feedback)
 	# Should not have been called again
 	assert_int(feedback.execute_count).is_equal(0)
 
@@ -189,7 +189,7 @@ func test_overlap_cancel() -> void:
 	feedback.label = "hit"
 	feedback.overlap_strategy = GFFFeedback.OverlapStrategy.CANCEL
 	player._active_effects["hit"] = feedback
-	await player._play_effect(feedback)
+	await player._play_feedback(feedback)
 	# Should have been called once (cancel old, play new)
 	assert_int(feedback.execute_count).is_equal(1)
 
@@ -198,5 +198,5 @@ func test_overlap_replace() -> void:
 	feedback.label = "hit"
 	feedback.overlap_strategy = GFFFeedback.OverlapStrategy.REPLACE
 	player._active_effects["hit"] = feedback
-	await player._play_effect(feedback)
+	await player._play_feedback(feedback)
 	assert_int(feedback.execute_count).is_equal(1)

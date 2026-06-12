@@ -27,25 +27,38 @@ func _ready() -> void:
 
 # ===== 公共方法 =====
 
-func play(effect_name: String, params = null) -> void:
-	## 播放指定效果
-	var effect = _get_effect(effect_name)
-	if effect:
-		await _play_effect(effect, params)
+func play(effect, params = null) -> void:
+	## 播放效果
+	## effect: String | GFFFeedback | GFFCombo
+	if effect is String:
+		var feedback = _get_effect(effect)
+		if feedback:
+			await _play_feedback(feedback, params)
+		else:
+			push_warning("GFFPlayer: Effect not found: ", effect)
+	elif effect is GFFFeedback:
+		await _play_feedback(effect, params)
+	elif effect is GFFCombo:
+		await _play_combo(effect, params)
 
-func play_combo(combo: GFFCombo, params = null) -> void:
+func play_combo(combo, params = null) -> void:
 	## 播放组合效果
-	if combo:
-		# 查找目标节点（父节点或自身）
-		var target = get_parent() if get_parent() else self
-		await combo.execute(target, params)
+	## combo: String | GFFCombo
+	if combo is String:
+		var combo_resource = _get_combo(combo)
+		if combo_resource:
+			await _play_combo(combo_resource, params)
+		else:
+			push_warning("GFFPlayer: Combo not found: ", combo)
+	elif combo is GFFCombo:
+		await _play_combo(combo, params)
 
 func play_all(params = null) -> void:
 	## 播放所有效果
 	_is_playing = true
 	for effect in effects:
 		if effect.enabled:
-			_play_effect(effect, params)
+			_play_feedback(effect, params)
 
 	# 等待所有效果完成
 	while not _active_effects.is_empty():
@@ -81,12 +94,12 @@ func is_effect_playing(effect_name: String) -> bool:
 
 # ===== 内部方法 =====
 
-func _play_effect(effect: GFFFeedback, params = null) -> void:
+func _play_feedback(feedback: GFFFeedback, params = null) -> void:
 	## 播放单个效果
-	var effect_id = effect.label if not effect.label.is_empty() else str(effect.get_instance_id())
+	var effect_id = feedback.label if not feedback.label.is_empty() else str(feedback.get_instance_id())
 
 	# 检查叠加策略
-	match effect.overlap_strategy:
+	match feedback.overlap_strategy:
 		GFFFeedback.OverlapStrategy.IGNORE:
 			if effect_id in _active_effects:
 				return
@@ -98,15 +111,15 @@ func _play_effect(effect: GFFFeedback, params = null) -> void:
 				stop_effect(effect_id)
 		GFFFeedback.OverlapStrategy.QUEUE:
 			if effect_id in _active_effects:
-				_effect_queue.append({"effect": effect, "params": params})
+				_effect_queue.append({"effect": feedback, "params": params})
 				return
 
 	# 添加到活跃效果
-	_active_effects[effect_id] = effect
+	_active_effects[effect_id] = feedback
 	effect_started.emit(effect_id)
 
 	# 执行效果
-	await effect.apply(self, params)
+	await feedback.apply(_get_target_node(), _ensure_params(params))
 
 	# 从活跃效果中移除
 	_active_effects.erase(effect_id)
@@ -115,13 +128,51 @@ func _play_effect(effect: GFFFeedback, params = null) -> void:
 	# 处理队列
 	if not _effect_queue.is_empty():
 		var next = _effect_queue.pop_front()
-		_play_effect(next["effect"], next["params"])
+		_play_feedback(next["effect"], next["params"])
+
+func _play_combo(combo: GFFCombo, params = null) -> void:
+	## 播放组合效果
+	if combo:
+		var target = _get_target_node()
+		await combo.execute(target, _ensure_params(params))
+
+func _get_target_node() -> Node:
+	## 获取目标节点
+	# 查找子节点中的可操作节点
+	for child in get_children():
+		if child is Node2D or child is Node3D or child is Control:
+			return child
+	
+	# 如果没有，返回父节点
+	return get_parent() if get_parent() else self
+
+func _ensure_params(params) -> GFFParams:
+	## 确保参数是GFFParams类型
+	if params == null:
+		return GFFParams.create()
+	elif params is float or params is int:
+		return GFFParams.create(params)
+	elif params is Dictionary:
+		return GFFParams.from_dict(params)
+	elif params is GFFParams:
+		return params
+	else:
+		return GFFParams.create()
 
 func _get_effect(effect_name: String) -> GFFFeedback:
 	## 获取指定名称的效果
 	for effect in effects:
 		if effect.label == effect_name:
 			return effect
+	return null
+
+func _get_combo(combo_name: String) -> GFFCombo:
+	## 获取组合效果
+	# 从全局单例获取
+	var combo = GameFeelFlow.get_combo(combo_name)
+	if combo:
+		return combo
+	
 	return null
 
 # ===== 编辑器方法 =====
