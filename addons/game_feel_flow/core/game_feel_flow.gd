@@ -24,45 +24,63 @@ func _ready() -> void:
 
 # ===== 核心API =====
 
-func play(effect_name: String, target: Node, params = null) -> void:
+func play(effect, target: Node, params = null) -> void:
 	## 播放效果
+	## effect: String | GFFFeedback | GFFCombo
 	if debug_enabled:
-		print("GameFeelFlow: Playing '", effect_name, "' on ", target.name)
+		print("GameFeelFlow: Playing effect on ", target.name)
 
-	var effect = get_effect(effect_name)
-	if not effect:
-		push_warning("GameFeelFlow: Effect not found: ", effect_name)
-		return
-
-	effect_started.emit(effect_name)
-
+	# 查找GFFPlayer
 	var player = _find_player(target)
+
 	if player:
-		await player.play(effect_name, params)
+		# 使用GFFPlayer播放
+		await player.play(effect, params)
 	else:
-		await effect.apply(target, _ensure_params(params))
+		# 直接播放
+		if effect is String:
+			var feedback = get_effect(effect)
+			if feedback:
+				effect_started.emit(effect)
+				await feedback.apply(target, _ensure_params(params))
+				effect_finished.emit(effect)
+			else:
+				push_warning("GameFeelFlow: Effect not found: ", effect)
+		elif effect is GFFFeedback:
+			effect_started.emit(effect.label if effect.label else "unknown")
+			await effect.apply(target, _ensure_params(params))
+			effect_finished.emit(effect.label if effect.label else "unknown")
+		elif effect is GFFCombo:
+			effect_started.emit(effect.label if effect.label else "unknown")
+			await effect.execute(target, _ensure_params(params))
+			effect_finished.emit(effect.label if effect.label else "unknown")
 
-	effect_finished.emit(effect_name)
-
-func play_combo(combo_name: String, target: Node, params = null) -> void:
+func play_combo(combo, target: Node, params = null) -> void:
 	## 播放组合效果
+	## combo: String | GFFCombo
 	if debug_enabled:
-		print("GameFeelFlow: Playing combo '", combo_name, "' on ", target.name)
+		print("GameFeelFlow: Playing combo on ", target.name)
 
-	var combo = get_combo(combo_name)
-	if not combo:
-		push_warning("GameFeelFlow: Combo not found: ", combo_name)
-		return
-
-	effect_started.emit(combo_name)
-
+	# 查找GFFPlayer
 	var player = _find_player(target)
-	if player:
-		await player.play_combo(combo, _ensure_params(params))
-	else:
-		await combo.execute(null, _ensure_params(params))
 
-	effect_finished.emit(combo_name)
+	if player:
+		# 使用GFFPlayer播放
+		await player.play_combo(combo, params)
+	else:
+		# 直接播放
+		if combo is String:
+			var combo_resource = get_combo(combo)
+			if combo_resource:
+				effect_started.emit(combo)
+				await combo_resource.execute(target, _ensure_params(params))
+				effect_finished.emit(combo)
+			else:
+				push_warning("GameFeelFlow: Combo not found: ", combo)
+		elif combo is GFFCombo:
+			effect_started.emit(combo.label if combo.label else "unknown")
+			await combo.execute(target, _ensure_params(params))
+			effect_finished.emit(combo.label if combo.label else "unknown")
 
 func stop(target: Node) -> void:
 	## 停止目标的所有效果
