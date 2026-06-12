@@ -48,7 +48,7 @@ func test_default_overlap_strategy() -> void:
 # ===== 时间控制测试 =====
 
 func test_default_duration() -> void:
-	assert_float(feedback.duration).is_equal(0.2)
+	assert_float(feedback.duration).is_equal(0.1)
 
 func test_default_delay() -> void:
 	assert_float(feedback.delay).is_equal(0.0)
@@ -175,7 +175,7 @@ func test_get_duration_param_with_params() -> void:
 	assert_float(feedback._get_duration_param(params)).is_equal(0.5)
 
 func test_get_duration_param_without_params() -> void:
-	assert_float(feedback._get_duration_param(null)).is_equal(0.2)
+	assert_float(feedback._get_duration_param(null)).is_equal(0.1)
 
 # ===== 最终参数创建测试 =====
 

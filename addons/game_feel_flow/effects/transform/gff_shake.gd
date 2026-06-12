@@ -7,7 +7,7 @@ extends GFFFeedback
 
 # ===== 属性 =====
 @export_group("Shake Settings")
-@export var amplitude: float = 5.0
+@export var amplitude: float = 2.0
 @export var frequency: float = 20.0
 @export var axes: Vector3 = Vector3(1, 1, 0)
 @export var attenuation_curve: Curve = null

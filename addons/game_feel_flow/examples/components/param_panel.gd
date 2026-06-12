@@ -21,32 +21,32 @@ func setup_for_effect(p_effect_name: String) -> void:
 	
 	match p_effect_name:
 		"shake":
-			add_float_param("intensity", 1.0, 0.0, 5.0)
-			add_float_param("duration", 0.3, 0.01, 2.0)
-			add_float_param("amplitude", 5.0, 1.0, 20.0)
-			add_float_param("frequency", 20.0, 1.0, 100.0)
+			add_float_param("intensity", 1.0, 0.0, 3.0)
+			add_float_param("duration", 0.1, 0.01, 0.5)
+			add_float_param("amplitude", 2.0, 0.5, 10.0)
+			add_float_param("frequency", 20.0, 5.0, 50.0)
 		"scale":
-			add_float_param("intensity", 1.0, 0.0, 5.0)
-			add_float_param("duration", 0.3, 0.01, 2.0)
+			add_float_param("intensity", 1.0, 0.0, 3.0)
+			add_float_param("duration", 0.1, 0.01, 0.5)
 		"flash":
-			add_float_param("intensity", 1.0, 0.0, 5.0)
-			add_float_param("duration", 0.1, 0.01, 1.0)
+			add_float_param("intensity", 1.0, 0.0, 3.0)
+			add_float_param("duration", 0.05, 0.01, 0.2)
 			add_color_param("color", Color.WHITE)
 		"color":
-			add_float_param("intensity", 1.0, 0.0, 5.0)
-			add_float_param("duration", 0.3, 0.01, 2.0)
+			add_float_param("intensity", 1.0, 0.0, 3.0)
+			add_float_param("duration", 0.1, 0.01, 0.3)
 			add_color_param("color", Color.RED)
 		"alpha":
-			add_float_param("intensity", 1.0, 0.0, 5.0)
-			add_float_param("duration", 0.3, 0.01, 2.0)
+			add_float_param("intensity", 1.0, 0.0, 3.0)
+			add_float_param("duration", 0.1, 0.01, 0.3)
 		"freeze_frame":
-			add_float_param("duration", 0.1, 0.01, 1.0)
+			add_float_param("duration", 0.03, 0.01, 0.1)
 		"time_scale":
-			add_float_param("duration", 0.3, 0.01, 2.0)
-			add_float_param("scale", 0.5, 0.0, 2.0)
+			add_float_param("duration", 0.2, 0.01, 1.0)
+			add_float_param("scale", 0.5, 0.1, 1.0)
 		_:
-			add_float_param("intensity", 1.0, 0.0, 5.0)
-			add_float_param("duration", 0.2, 0.01, 2.0)
+			add_float_param("intensity", 1.0, 0.0, 3.0)
+			add_float_param("duration", 0.1, 0.01, 0.5)
 
 func get_params() -> GFFParams:
 	var gff_params = GFFParams.new()
