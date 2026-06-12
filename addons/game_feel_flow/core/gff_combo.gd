@@ -72,11 +72,11 @@ static func explosion() -> GFFCombo:
 
 # ===== 执行方法 =====
 
-func execute(player: GFFPlayer, params: GFFParams = null) -> void:
+func execute(target: Node, params: GFFParams = null) -> void:
 	## 执行组合效果
 	for effect in effects:
 		if effect.get("enabled") == null or effect.enabled:
-			await effect.apply(player, params)
+			await effect.apply(target, params)
 
 # ===== 辅助方法 =====
 

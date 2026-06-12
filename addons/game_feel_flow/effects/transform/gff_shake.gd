@@ -16,7 +16,8 @@ extends GFFFeedback
 
 func _execute(node: Node, params: GFFParams) -> void:
 	## 执行震动效果
-	var final_amplitude = amplitude * params.get_float("intensity", 1.0)
+	var intensity = params.get_float("intensity", 1.0)
+	var final_amplitude = params.get_float("amplitude", amplitude * intensity)
 	var final_duration = params.get_float("duration", duration)
 	var final_frequency = params.get_float("frequency", frequency)
 	var final_axes = params.get_vector3("axes", axes)

@@ -36,7 +36,9 @@ func play(effect_name: String, params = null) -> void:
 func play_combo(combo: GFFCombo, params = null) -> void:
 	## 播放组合效果
 	if combo:
-		await combo.execute(self, params)
+		# 查找目标节点（父节点或自身）
+		var target = get_parent() if get_parent() else self
+		await combo.execute(target, params)
 
 func play_all(params = null) -> void:
 	## 播放所有效果
