@@ -14,8 +14,8 @@ enum ScaleMode {
 
 # ===== 属性 =====
 @export_group("Scale Settings")
-@export var target_scale: Vector2 = Vector2(1.1, 1.1)
-@export var target_scale_3d: Vector3 = Vector3(1.1, 1.1, 1.1)
+@export var target_scale: Vector2 = Vector2(1.15, 1.15)
+@export var target_scale_3d: Vector3 = Vector3(1.15, 1.15, 1.15)
 @export var scale_mode: ScaleMode = ScaleMode.TO_SCALE
 
 # ===== 重写方法 =====

@@ -22,7 +22,7 @@ enum OverlapStrategy {
 
 # ===== 时间控制 =====
 @export_group("Timing")
-@export var duration: float = 0.1
+@export var duration: float = 0.15
 @export var delay: float = 0.0
 @export var cooldown: float = 0.0
 

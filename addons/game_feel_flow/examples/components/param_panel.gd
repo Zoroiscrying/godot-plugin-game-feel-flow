@@ -28,9 +28,10 @@ func setup_for_effect(p_effect_name: String) -> void:
 		"scale":
 			add_float_param("intensity", 1.0, 0.0, 3.0)
 			add_float_param("duration", 0.1, 0.01, 0.5)
+			add_float_param("target_scale", 1.1, 1.0, 2.0)
 		"flash":
 			add_float_param("intensity", 1.0, 0.0, 3.0)
-			add_float_param("duration", 0.05, 0.01, 0.2)
+			add_float_param("duration", 0.1, 0.01, 0.3)
 			add_color_param("color", Color.WHITE)
 		"color":
 			add_float_param("intensity", 1.0, 0.0, 3.0)
@@ -40,7 +41,7 @@ func setup_for_effect(p_effect_name: String) -> void:
 			add_float_param("intensity", 1.0, 0.0, 3.0)
 			add_float_param("duration", 0.1, 0.01, 0.3)
 		"freeze_frame":
-			add_float_param("duration", 0.03, 0.01, 0.1)
+			add_float_param("duration", 0.05, 0.01, 0.2)
 		"time_scale":
 			add_float_param("duration", 0.2, 0.01, 1.0)
 			add_float_param("scale", 0.5, 0.1, 1.0)
