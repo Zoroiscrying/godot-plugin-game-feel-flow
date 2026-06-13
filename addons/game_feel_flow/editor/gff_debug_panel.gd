@@ -8,6 +8,8 @@ extends Control
 # ===== 节点引用 =====
 @onready var effect_list: ItemList = $VBoxContainer/EffectList
 @onready var status_label: Label = $VBoxContainer/StatusLabel
+@onready var fps_label: Label = $VBoxContainer/FPSLabel
+@onready var memory_label: Label = $VBoxContainer/MemoryLabel
 @onready var clear_button: Button = $VBoxContainer/ClearButton
 
 # ===== 状态 =====
@@ -19,6 +21,12 @@ var _active_effects: Dictionary = {}
 func _ready() -> void:
 	_connect_signals()
 	_update_status()
+	_update_fps()
+	_update_memory()
+
+func _process(_delta: float) -> void:
+	_update_fps()
+	_update_memory()
 
 func _connect_signals() -> void:
 	if Engine.is_editor_hint():
@@ -65,3 +73,12 @@ func _update_list() -> void:
 
 func _update_status() -> void:
 	status_label.text = "Active Effects: %d | Log Entries: %d" % [_active_effects.size(), _log_entries.size()]
+
+func _update_fps() -> void:
+	if fps_label:
+		fps_label.text = "FPS: %d" % Engine.get_frames_per_second()
+
+func _update_memory() -> void:
+	if memory_label:
+		var memory = OS.get_memory_info()
+		memory_label.text = "Memory: %d MB" % (memory["physical"] / 1024 / 1024)
