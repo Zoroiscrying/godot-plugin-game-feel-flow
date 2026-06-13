@@ -63,6 +63,14 @@ func _input(event: InputEvent) -> void:
 func _store_original() -> void:
 	for child in objects.get_children():
 		if child is MeshInstance3D:
+			# 创建Visual层用于效果应用
+			var visual = child.duplicate()
+			visual.name = child.name + "_Visual"
+			child.add_child(visual)
+			# 将原始网格隐藏，使用Visual层
+			child.visible = false
+			visual.visible = true
+			
 			_original_values[child] = {
 				"position": child.position,
 				"rotation": child.rotation,
@@ -146,31 +154,37 @@ func _on_effect_selected(index: int) -> void:
 
 # ===== Effect Playback =====
 
+func _get_visual_target(target: Node) -> Node:
+	## 获取Visual层，如果不存在则返回原始目标
+	var visual = target.get_node_or_null(target.name + "_Visual")
+	return visual if visual else target
+
 func _play_effect(effect_type: String) -> void:
 	if not _selected_target:
 		print("Please select a target first")
 		return
 
 	var params = _get_params()
-	print("Playing: ", effect_type, " on ", _selected_target.name, " with params: ", params)
+	var visual_target = _get_visual_target(_selected_target)
+	print("Playing: ", effect_type, " on ", visual_target.name, " with params: ", params)
 
 	match effect_type:
 		"shake":
-			GFUtil.shake(_selected_target, params.get_float("intensity", 1.0))
+			GFUtil.shake(visual_target, params.get_float("intensity", 1.0))
 		"scale":
-			GFUtil.scale(_selected_target, params.get_float("intensity", 1.0))
+			GFUtil.scale(visual_target, params.get_float("intensity", 1.0))
 		"flash":
-			GFUtil.flash(_selected_target, params.get_color("color", Color.WHITE))
+			GFUtil.flash(visual_target, params.get_color("color", Color.WHITE))
 		"color":
-			GFUtil.color(_selected_target, params.get_color("color", Color.RED))
+			GFUtil.color(visual_target, params.get_color("color", Color.RED))
 		"hit_light":
-			GFUtil.hit(_selected_target, params.get_float("intensity", 1.0))
+			GFUtil.hit(visual_target, params.get_float("intensity", 1.0))
 		"hit_heavy":
-			GFUtil.hit_heavy(_selected_target, params.get_float("intensity", 1.0))
+			GFUtil.hit_heavy(visual_target, params.get_float("intensity", 1.0))
 		"explosion":
-			GFUtil.explosion(_selected_target, params.get_float("intensity", 1.0))
+			GFUtil.explosion(visual_target, params.get_float("intensity", 1.0))
 		"death":
-			GFUtil.death(_selected_target, params.get_float("intensity", 1.0))
+			GFUtil.death(visual_target, params.get_float("intensity", 1.0))
 
 func _reset_all() -> void:
 	for child in objects.get_children():
@@ -181,6 +195,14 @@ func _reset_all() -> void:
 			child.scale = vals["scale"]
 			if child.material_override:
 				child.material_override.emission_enabled = false
+			
+			# 重置Visual层
+			var visual = child.get_node_or_null(child.name + "_Visual")
+			if visual:
+				visual.position = Vector3.ZERO
+				visual.rotation = Vector3.ZERO
+				visual.scale = Vector3.ONE
+				visual.modulate = Color.WHITE
 
 	camera.fov = 75.0
 	Engine.time_scale = 1.0
