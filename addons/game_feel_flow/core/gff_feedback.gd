@@ -29,6 +29,13 @@ enum OverlapStrategy {
 # ===== 恢复控制 =====
 @export_group("Restore")
 @export var restore_after_play: bool = false
+@export var restore_mode: RestoreMode = RestoreMode.IMMEDIATE
+
+enum RestoreMode {
+	IMMEDIATE,  # 立即恢复
+	GRADUAL,    # 渐进恢复
+	CUSTOM      # 自定义恢复
+}
 
 # ===== 随机性 =====
 @export_group("Randomness")
@@ -101,7 +108,13 @@ func apply(target: Node, params: GFFParams = null) -> void:
 
 	# 恢复初始状态
 	if restore_after_play:
-		_restore_initial_state(node)
+		match restore_mode:
+			RestoreMode.IMMEDIATE:
+				_restore_initial_state(node)
+			RestoreMode.GRADUAL:
+				await _restore_gradual(node)
+			RestoreMode.CUSTOM:
+				_restore_custom(node)
 
 	_is_playing = false
 	finished.emit()
@@ -163,6 +176,23 @@ func _restore_initial_state(node: Node) -> void:
 	_set_rotation(node, _initial_state["rotation"])
 	_set_scale(node, _initial_state["scale"])
 	_set_modulate(node, _initial_state["modulate"])
+
+func _restore_gradual(node: Node) -> void:
+	## 渐进恢复初始状态
+	if _initial_state.is_empty():
+		return
+
+	var tween = node.create_tween()
+	tween.set_parallel(true)
+	tween.tween_method(_set_position.bind(node), _get_position(node), _initial_state["position"], 0.3)
+	tween.tween_method(_set_rotation.bind(node), _get_rotation(node), _initial_state["rotation"], 0.3)
+	tween.tween_method(_set_scale.bind(node), _get_scale(node), _initial_state["scale"], 0.3)
+	tween.tween_method(_set_modulate.bind(node), _get_modulate(node), _initial_state["modulate"], 0.3)
+	await tween.finished
+
+func _restore_custom(node: Node) -> void:
+	## 自定义恢复（子类重写）
+	_restore_initial_state(node)
 
 func _get_intensity(params: GFFParams) -> float:
 	## 获取强度参数
