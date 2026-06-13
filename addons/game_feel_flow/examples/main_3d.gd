@@ -72,7 +72,13 @@ func _store_original() -> void:
 func _find_moving_objects() -> void:
 	var capsule = objects.get_node_or_null("MovingCapsule")
 	if capsule:
-		_moving_objects.append(capsule)
+		# 创建容器进行圆周运动，胶囊通过effect进行本地空间移动
+		var container = Node3D.new()
+		container.name = "MovingContainer"
+		capsule.add_child(container)
+		# 将胶囊的位置重置为本地原点
+		capsule.position = Vector3.ZERO
+		_moving_objects.append(container)
 
 func _init_ui() -> void:
 	for effect in effects:
@@ -190,28 +196,28 @@ func _update_params(effect_type: String) -> void:
 	# Add params based on effect type
 	match effect_type:
 		"shake":
-			_add_float_param("intensity", 1.0, 0.0, 3.0)
-			_add_float_param("duration", 0.15, 0.01, 0.5)
-			_add_float_param("amplitude", 3.0, 0.5, 10.0)
-			_add_float_param("frequency", 15.0, 5.0, 50.0)
+			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
+			_add_float_param("duration", 0.1, 0.01, 0.5, 0.01)
+			_add_float_param("amplitude", 0.1, 0.01, 1.0, 0.01)
+			_add_float_param("frequency", 15.0, 5.0, 50.0, 1.0)
 		"scale":
-			_add_float_param("intensity", 1.0, 0.0, 3.0)
-			_add_float_param("duration", 0.15, 0.01, 0.5)
+			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
+			_add_float_param("duration", 0.1, 0.01, 0.5, 0.01)
 		"flash":
-			_add_float_param("intensity", 1.0, 0.0, 3.0)
-			_add_float_param("duration", 0.1, 0.01, 0.3)
+			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
+			_add_float_param("duration", 0.1, 0.01, 0.3, 0.01)
 			_add_color_param("color", Color.WHITE)
 		"color":
-			_add_float_param("intensity", 1.0, 0.0, 3.0)
-			_add_float_param("duration", 0.15, 0.01, 0.3)
+			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
+			_add_float_param("duration", 0.1, 0.01, 0.3, 0.01)
 			_add_color_param("color", Color.RED)
 		"hit_light", "hit_heavy", "explosion", "death":
-			_add_float_param("intensity", 1.0, 0.0, 3.0)
+			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
 		_:
-			_add_float_param("intensity", 1.0, 0.0, 3.0)
-			_add_float_param("duration", 0.15, 0.01, 0.5)
+			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
+			_add_float_param("duration", 0.1, 0.01, 0.5, 0.01)
 
-func _add_float_param(param_name: String, default: float, min_val: float, max_val: float) -> void:
+func _add_float_param(param_name: String, default: float, min_val: float, max_val: float, step: float = 0.01) -> void:
 	var hbox = HBoxContainer.new()
 	
 	var label = Label.new()
@@ -223,6 +229,7 @@ func _add_float_param(param_name: String, default: float, min_val: float, max_va
 	slider.min_value = min_val
 	slider.max_value = max_val
 	slider.value = default
+	slider.step = step
 	slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	slider.name = param_name
 	hbox.add_child(slider)

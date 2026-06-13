@@ -111,36 +111,36 @@ func _update_params(effect_type: String) -> void:
 	# Add params based on effect type
 	match effect_type:
 		"shake":
-			_add_float_param("intensity", 1.0, 0.0, 3.0)
-			_add_float_param("duration", 0.15, 0.01, 0.5)
-			_add_float_param("amplitude", 3.0, 0.5, 10.0)
-			_add_float_param("frequency", 15.0, 5.0, 50.0)
+			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
+			_add_float_param("duration", 0.1, 0.01, 0.5, 0.01)
+			_add_float_param("amplitude", 0.1, 0.01, 1.0, 0.01)
+			_add_float_param("frequency", 15.0, 5.0, 50.0, 1.0)
 		"scale":
-			_add_float_param("intensity", 1.0, 0.0, 3.0)
-			_add_float_param("duration", 0.15, 0.01, 0.5)
+			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
+			_add_float_param("duration", 0.1, 0.01, 0.5, 0.01)
 		"flash":
-			_add_float_param("intensity", 1.0, 0.0, 3.0)
-			_add_float_param("duration", 0.1, 0.01, 0.3)
+			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
+			_add_float_param("duration", 0.1, 0.01, 0.3, 0.01)
 			_add_color_param("color", Color.WHITE)
 		"color":
-			_add_float_param("intensity", 1.0, 0.0, 3.0)
-			_add_float_param("duration", 0.15, 0.01, 0.3)
+			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
+			_add_float_param("duration", 0.1, 0.01, 0.3, 0.01)
 			_add_color_param("color", Color.RED)
 		"alpha":
-			_add_float_param("intensity", 1.0, 0.0, 3.0)
-			_add_float_param("duration", 0.15, 0.01, 0.3)
+			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
+			_add_float_param("duration", 0.1, 0.01, 0.3, 0.01)
 		"freeze_frame":
-			_add_float_param("duration", 0.05, 0.01, 0.2)
+			_add_float_param("duration", 0.05, 0.01, 0.2, 0.01)
 		"time_scale":
-			_add_float_param("duration", 0.2, 0.01, 1.0)
-			_add_float_param("scale", 0.5, 0.1, 1.0)
+			_add_float_param("duration", 0.2, 0.01, 1.0, 0.01)
+			_add_float_param("scale", 0.5, 0.1, 1.0, 0.1)
 		"hit_light", "hit_heavy", "explosion", "death":
-			_add_float_param("intensity", 1.0, 0.0, 3.0)
+			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
 		_:
-			_add_float_param("intensity", 1.0, 0.0, 3.0)
-			_add_float_param("duration", 0.15, 0.01, 0.5)
+			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
+			_add_float_param("duration", 0.1, 0.01, 0.5, 0.01)
 
-func _add_float_param(param_name: String, default: float, min_val: float, max_val: float) -> void:
+func _add_float_param(param_name: String, default: float, min_val: float, max_val: float, step: float = 0.01) -> void:
 	var hbox = HBoxContainer.new()
 	
 	var label = Label.new()
@@ -152,6 +152,7 @@ func _add_float_param(param_name: String, default: float, min_val: float, max_va
 	slider.min_value = min_val
 	slider.max_value = max_val
 	slider.value = default
+	slider.step = step
 	slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	slider.name = param_name
 	hbox.add_child(slider)
