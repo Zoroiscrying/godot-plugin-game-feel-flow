@@ -14,7 +14,7 @@ extends Node3D
 # ===== Properties =====
 var _selected_target: MeshInstance3D = null
 var _original_values: Dictionary = {}
-var _moving_objects: Array[MeshInstance3D] = []
+var _moving_objects: Array[Node3D] = []
 var _time: float = 0.0
 
 # ===== Effect List =====
