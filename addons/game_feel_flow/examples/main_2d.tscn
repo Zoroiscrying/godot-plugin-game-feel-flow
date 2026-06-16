@@ -16,6 +16,7 @@ color = Color(0.2, 0.6, 1, 1)
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="UI" type="CanvasLayer" parent="."]
+layer = 1
 
 [node name="Panel" type="Panel" parent="UI"]
 anchors_preset = 0
