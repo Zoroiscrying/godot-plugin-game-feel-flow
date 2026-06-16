@@ -2,15 +2,15 @@ extends Control
 
 ## Game Feel Flow UI Main Scene
 
-@onready var effect_list: ItemList = $Panel/VBoxContainer/EffectList
-@onready var param_panel: VBoxContainer = $Panel/VBoxContainer/ScrollContainer/ParamPanel
-@onready var play_button: Button = $Panel/VBoxContainer/HBoxContainer/PlayButton
-@onready var reset_button: Button = $Panel/VBoxContainer/HBoxContainer/ResetButton
+@onready var effect_list: ItemList = $Control/Panel/VBoxContainer/EffectList
+@onready var param_panel: VBoxContainer = $Control/Panel/VBoxContainer/ScrollContainer/ParamPanel
+@onready var play_button: Button = $Control/Panel/VBoxContainer/HBoxContainer/PlayButton
+@onready var reset_button: Button = $Control/Panel/VBoxContainer/HBoxContainer/ResetButton
 
-@onready var demo_button: Button = $DemoArea/DemoButton
-@onready var demo_label: Label = $DemoArea/DemoLabel
-@onready var demo_progress: ProgressBar = $DemoArea/DemoProgress
-@onready var demo_sprite: ColorRect = $DemoArea/DemoSprite
+@onready var demo_button: Button = $Control/DemoArea/DemoButton
+@onready var demo_label: Label = $Control/DemoArea/DemoLabel
+@onready var demo_progress: ProgressBar = $Control/DemoArea/DemoProgress
+@onready var demo_sprite: ColorRect = $Control/DemoArea/DemoSprite
 
 # ===== Original Values =====
 var _original_sprite_position: Vector2 = Vector2.ZERO
