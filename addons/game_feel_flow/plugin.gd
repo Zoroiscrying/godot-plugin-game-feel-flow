@@ -409,25 +409,15 @@ func _on_save_file_selected(path: String) -> void:
 			_update_status("Error: Failed to save")
 
 func _on_test_pressed() -> void:
-	## 测试效果
+	## 测试效果 - 打开测试场景
 	if not _current_effect:
 		_update_status("Error: No effect to test")
 		return
 	
-	if not _test_scene:
-		_update_status("Error: No test target")
-		return
-	
-	# 获取参数
-	var params = _get_params()
-	
-	# 使用Engine.get_singleton获取autoload单例
-	var game_feel_flow = Engine.get_singleton(AUTOLOAD_NAME)
-	if game_feel_flow:
-		game_feel_flow.play(_current_effect, _test_scene, params)
-		_update_status("Testing effect...")
-	else:
-		_update_status("Error: GameFeelFlow singleton not found")
+	# 打开测试场景
+	var scene_path = "res://addons/game_feel_flow/editor/test_scene_2d.tscn"
+	EditorInterface.open_scene_from_path(scene_path)
+	_update_status("Opened test scene")
 
 func _on_reset_pressed() -> void:
 	## 重置测试场景
