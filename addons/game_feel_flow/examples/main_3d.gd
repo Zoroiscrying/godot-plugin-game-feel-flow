@@ -24,6 +24,9 @@ var effects: Array[Dictionary] = [
 	{"name": "Shake Scale", "type": "shake_scale"},
 	{"name": "Shake Rotation", "type": "shake_rotation"},
 	{"name": "Punch", "type": "punch"},
+	{"name": "Punch Scale", "type": "punch_scale"},
+	{"name": "Punch Position", "type": "punch_position"},
+	{"name": "Punch Rotation", "type": "punch_rotation"},
 	{"name": "Scale", "type": "scale"},
 	{"name": "Flash", "type": "flash"},
 	{"name": "Color", "type": "color"},
@@ -204,6 +207,12 @@ func _play_effect(effect_type: String) -> void:
 			GameFeelFlow.play("shake_rotation", visual_target, params)
 		"punch":
 			GameFeelFlow.play("punch", visual_target, params)
+		"punch_scale":
+			GameFeelFlow.play("punch_scale", visual_target, params)
+		"punch_position":
+			GameFeelFlow.play("punch_position", visual_target, params)
+		"punch_rotation":
+			GameFeelFlow.play("punch_rotation", visual_target, params)
 		"scale":
 			GameFeelFlow.play("scale", visual_target, params)
 		"flash":
@@ -271,6 +280,18 @@ func _update_params(effect_type: String) -> void:
 			_add_float_param("amplitude", 10.0, 1.0, 45.0, 1.0)
 			_add_float_param("frequency", 15.0, 5.0, 50.0, 1.0)
 		"punch":
+			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
+			_add_float_param("duration", 0.3, 0.01, 1.0, 0.01)
+			_add_float_param("elasticity", 0.5, 0.0, 1.0, 0.1)
+		"punch_scale":
+			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
+			_add_float_param("duration", 0.3, 0.01, 1.0, 0.01)
+			_add_float_param("elasticity", 0.5, 0.0, 1.0, 0.1)
+		"punch_position":
+			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
+			_add_float_param("duration", 0.3, 0.01, 1.0, 0.01)
+			_add_float_param("elasticity", 0.5, 0.0, 1.0, 0.1)
+		"punch_rotation":
 			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
 			_add_float_param("duration", 0.3, 0.01, 1.0, 0.01)
 			_add_float_param("elasticity", 0.5, 0.0, 1.0, 0.1)
