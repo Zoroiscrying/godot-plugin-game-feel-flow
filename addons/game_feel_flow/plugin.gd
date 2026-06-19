@@ -319,7 +319,12 @@ func _on_play_pressed() -> void:
 	## 播放按钮点击
 	if _preview_target and not _current_effect.is_empty():
 		var params = _get_params()
-		GameFeelFlow.play(_current_effect, _preview_target, params)
+		# 使用Engine.get_singleton获取autoload单例
+		var game_feel_flow = Engine.get_singleton(AUTOLOAD_NAME)
+		if game_feel_flow:
+			game_feel_flow.play(_current_effect, _preview_target, params)
+		else:
+			push_warning("Game Feel Flow: Singleton not found")
 
 func _on_reset_pressed() -> void:
 	## 重置按钮点击
