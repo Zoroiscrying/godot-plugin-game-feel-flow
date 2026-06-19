@@ -10,6 +10,7 @@ var _inspector_plugin: EditorInspectorPlugin = null
 var _preview_dock: Control = null
 var _preview_viewport: SubViewport = null
 var _preview_target: Control = null
+var _param_panel: VBoxContainer = null
 
 func _enter_tree() -> void:
 	# Add autoload singleton
@@ -116,9 +117,9 @@ func _create_preview_panel() -> Control:
 	panel.add_child(preview_container)
 	
 	# 参数面板
-	var param_panel = VBoxContainer.new()
-	param_panel.name = "ParamPanel"
-	panel.add_child(param_panel)
+	_param_panel = VBoxContainer.new()
+	_param_panel.name = "ParamPanel"
+	panel.add_child(_param_panel)
 	
 	# 控制按钮
 	var button_bar = HBoxContainer.new()
@@ -152,49 +153,48 @@ func _on_effect_selected(index: int) -> void:
 
 func _update_params(effect_type: String) -> void:
 	## 更新参数面板
-	var param_panel = _preview_dock.get_node("VBoxContainer/ParamPanel")
-	if not param_panel:
+	if not _param_panel:
 		return
 	
 	# 清空参数面板
-	for child in param_panel.get_children():
+	for child in _param_panel.get_children():
 		child.queue_free()
 	
 	# 根据效果类型添加参数
 	match effect_type:
 		"shake", "shake_position":
-			_add_float_param(param_panel, "intensity", 1.0, 0.0, 3.0, 0.1)
-			_add_float_param(param_panel, "duration", 0.3, 0.01, 1.0, 0.01)
-			_add_float_param(param_panel, "amplitude", 0.5, 0.1, 5.0, 0.1)
+			_add_float_param(_param_panel, "intensity", 1.0, 0.0, 3.0, 0.1)
+			_add_float_param(_param_panel, "duration", 0.3, 0.01, 1.0, 0.01)
+			_add_float_param(_param_panel, "amplitude", 0.5, 0.1, 5.0, 0.1)
 		"shake_scale":
-			_add_float_param(param_panel, "intensity", 1.0, 0.0, 3.0, 0.1)
-			_add_float_param(param_panel, "duration", 0.3, 0.01, 1.0, 0.01)
-			_add_float_param(param_panel, "amplitude", 0.2, 0.05, 2.0, 0.05)
+			_add_float_param(_param_panel, "intensity", 1.0, 0.0, 3.0, 0.1)
+			_add_float_param(_param_panel, "duration", 0.3, 0.01, 1.0, 0.01)
+			_add_float_param(_param_panel, "amplitude", 0.2, 0.05, 2.0, 0.05)
 		"shake_rotation":
-			_add_float_param(param_panel, "intensity", 1.0, 0.0, 3.0, 0.1)
-			_add_float_param(param_panel, "duration", 0.3, 0.01, 1.0, 0.01)
-			_add_float_param(param_panel, "amplitude", 10.0, 1.0, 45.0, 1.0)
+			_add_float_param(_param_panel, "intensity", 1.0, 0.0, 3.0, 0.1)
+			_add_float_param(_param_panel, "duration", 0.3, 0.01, 1.0, 0.01)
+			_add_float_param(_param_panel, "amplitude", 10.0, 1.0, 45.0, 1.0)
 		"punch", "punch_position", "punch_scale", "punch_rotation":
-			_add_float_param(param_panel, "intensity", 1.0, 0.0, 3.0, 0.1)
-			_add_float_param(param_panel, "duration", 0.3, 0.01, 1.0, 0.01)
-			_add_float_param(param_panel, "elasticity", 0.5, 0.0, 1.0, 0.1)
+			_add_float_param(_param_panel, "intensity", 1.0, 0.0, 3.0, 0.1)
+			_add_float_param(_param_panel, "duration", 0.3, 0.01, 1.0, 0.01)
+			_add_float_param(_param_panel, "elasticity", 0.5, 0.0, 1.0, 0.1)
 		"scale":
-			_add_float_param(param_panel, "intensity", 1.0, 0.0, 3.0, 0.1)
-			_add_float_param(param_panel, "duration", 0.3, 0.01, 1.0, 0.01)
+			_add_float_param(_param_panel, "intensity", 1.0, 0.0, 3.0, 0.1)
+			_add_float_param(_param_panel, "duration", 0.3, 0.01, 1.0, 0.01)
 		"flash":
-			_add_float_param(param_panel, "intensity", 1.0, 0.0, 3.0, 0.1)
-			_add_float_param(param_panel, "duration", 0.3, 0.01, 1.0, 0.01)
-			_add_float_param(param_panel, "frequency", 15.0, 5.0, 30.0, 1.0)
-			_add_color_param(param_panel, "color", Color.WHITE)
+			_add_float_param(_param_panel, "intensity", 1.0, 0.0, 3.0, 0.1)
+			_add_float_param(_param_panel, "duration", 0.3, 0.01, 1.0, 0.01)
+			_add_float_param(_param_panel, "frequency", 15.0, 5.0, 30.0, 1.0)
+			_add_color_param(_param_panel, "color", Color.WHITE)
 		"color":
-			_add_float_param(param_panel, "intensity", 1.0, 0.0, 3.0, 0.1)
-			_add_float_param(param_panel, "duration", 0.3, 0.01, 0.5, 0.01)
-			_add_color_param(param_panel, "color", Color.RED)
+			_add_float_param(_param_panel, "intensity", 1.0, 0.0, 3.0, 0.1)
+			_add_float_param(_param_panel, "duration", 0.3, 0.01, 0.5, 0.01)
+			_add_color_param(_param_panel, "color", Color.RED)
 		"alpha":
-			_add_float_param(param_panel, "intensity", 1.0, 0.0, 3.0, 0.1)
-			_add_float_param(param_panel, "duration", 0.3, 0.01, 0.3, 0.01)
+			_add_float_param(_param_panel, "intensity", 1.0, 0.0, 3.0, 0.1)
+			_add_float_param(_param_panel, "duration", 0.3, 0.01, 0.3, 0.01)
 		"hit_light", "hit_heavy", "death", "pickup", "explosion":
-			_add_float_param(param_panel, "intensity", 1.0, 0.0, 3.0, 0.1)
+			_add_float_param(_param_panel, "intensity", 1.0, 0.0, 3.0, 0.1)
 
 func _add_float_param(parent: Control, param_name: String, default: float, min_val: float, max_val: float, step: float = 0.01) -> void:
 	var hbox = HBoxContainer.new()
