@@ -19,7 +19,7 @@ static func hit_light() -> GFFCombo:
 	var arr: Array[GFFFeedback] = []
 	arr.append(_create_shake(0.3, 0.08))
 	arr.append(_create_flash(Color.WHITE, 0.04))
-	arr.append(_create_scale(Vector2(1.05, 1.05), 0.08))
+	arr.append(_create_punch_scale(Vector2(0.1, 0.1), 0.15))
 	combo.effects = arr
 	return combo
 
@@ -31,7 +31,7 @@ static func hit_heavy() -> GFFCombo:
 	arr.append(_create_shake(0.6, 0.12))
 	arr.append(_create_flash(Color.WHITE, 0.06))
 	arr.append(_create_freeze(0.02))
-	arr.append(_create_scale(Vector2(1.15, 1.15), 0.12))
+	arr.append(_create_punch_scale(Vector2(0.2, 0.2), 0.2))
 	combo.effects = arr
 	return combo
 
@@ -43,7 +43,7 @@ static func death() -> GFFCombo:
 	arr.append(_create_shake(0.8, 0.2))
 	arr.append(_create_flash(Color.RED, 0.08))
 	arr.append(_create_freeze(0.04))
-	arr.append(_create_scale(Vector2(0.9, 0.9), 0.15))
+	arr.append(_create_punch_scale(Vector2(-0.2, -0.2), 0.3))
 	arr.append(_create_alpha(0.0, 0.2))
 	combo.effects = arr
 	return combo
@@ -53,7 +53,7 @@ static func pickup() -> GFFCombo:
 	var combo = GFFCombo.new()
 	combo.label = "pickup"
 	var arr: Array[GFFFeedback] = []
-	arr.append(_create_scale(Vector2(1.1, 1.1), 0.08))
+	arr.append(_create_punch_scale(Vector2(0.15, 0.15), 0.12))
 	arr.append(_create_flash(Color.YELLOW, 0.04))
 	combo.effects = arr
 	return combo
@@ -66,7 +66,7 @@ static func explosion() -> GFFCombo:
 	arr.append(_create_shake(1.0, 0.2))
 	arr.append(_create_flash(Color.ORANGE, 0.08))
 	arr.append(_create_freeze(0.04))
-	arr.append(_create_scale(Vector2(1.2, 1.2), 0.15))
+	arr.append(_create_punch_scale(Vector2(0.25, 0.25), 0.25))
 	combo.effects = arr
 	return combo
 
@@ -111,6 +111,18 @@ static func _create_scale(target_scale: Vector2, p_duration: float):
 	var effect = GFFCurvedBase.new()
 	effect.target_type = GFFCurvedBase.TargetType.SCALE
 	effect.tweener_type = GFFCurvedBase.TweenerType.LINEAR
+	effect.duration = p_duration
+	# 通过默认参数传递target值
+	effect._default_target_x = target_scale.x
+	effect._default_target_y = target_scale.y
+	return effect
+
+static func _create_punch_scale(target_scale: Vector2, p_duration: float):
+	## 创建冲击缩放效果（先放大再缩小回来）
+	var effect = GFFCurvedBase.new()
+	effect.target_type = GFFCurvedBase.TargetType.SCALE
+	effect.tweener_type = GFFCurvedBase.TweenerType.ELASTIC
+	effect.punch_mode = GFFCurvedBase.PunchMode.TO_ORIGIN
 	effect.duration = p_duration
 	# 通过默认参数传递target值
 	effect._default_target_x = target_scale.x
