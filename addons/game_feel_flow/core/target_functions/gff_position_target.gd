@@ -3,9 +3,12 @@ extends GFFTargetFunction
 
 ## Game Feel Flow Position Target
 ##
-## 读写位置属性
+## 读写位置属性，根据节点类型自动适配
 
 func get_value(node: Node) -> Variant:
+	if not is_valid_node(node):
+		return Vector2.ZERO
+	
 	if node is Node3D:
 		return node.position
 	elif node is Node2D:
@@ -15,6 +18,9 @@ func get_value(node: Node) -> Variant:
 	return Vector2.ZERO
 
 func set_value(node: Node, value: Variant) -> void:
+	if not is_valid_node(node):
+		return
+	
 	if node is Node3D:
 		if value is Vector3:
 			node.position = value

@@ -32,7 +32,7 @@ func _create_target_function() -> GFFTargetFunction:
 	return null
 
 func _create_tweener() -> GFFValueTweener:
-	## 创建值变化器（子类重写）
+	## 创建值变化器
 	match tweener_type:
 		TweenerType.LINEAR:
 			return GFFLinearTweener.new()
@@ -50,6 +50,10 @@ func _execute(node: Node, params: GFFParams) -> void:
 		push_error("GFFCurvedBase: Target function or value tweener not initialized")
 		return
 	
+	if not _target_function.is_valid_node(node):
+		push_warning("GFFCurvedBase: Invalid node type")
+		return
+	
 	var intensity = params.get_float("intensity", 1.0)
 	var final_duration = params.get_float("duration", duration)
 	
@@ -59,7 +63,7 @@ func _execute(node: Node, params: GFFParams) -> void:
 	await _value_tweener.tween_value(node, _target_function, original_value, target_value, final_duration, curve)
 
 func _calculate_target_value(original_value: Variant, intensity: float) -> Variant:
-	## 计算目标值（子类可重写）
+	## 计算目标值（子类重写）
 	push_error("_calculate_target_value() not implemented")
 	return original_value
 

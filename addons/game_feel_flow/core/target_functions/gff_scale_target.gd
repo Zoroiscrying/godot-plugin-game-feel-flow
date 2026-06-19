@@ -3,9 +3,12 @@ extends GFFTargetFunction
 
 ## Game Feel Flow Scale Target
 ##
-## 读写缩放属性
+## 读写缩放属性，根据节点类型自动适配
 
 func get_value(node: Node) -> Variant:
+	if not is_valid_node(node):
+		return Vector2.ONE
+	
 	if node is Node3D:
 		return node.scale
 	elif node is Node2D:
@@ -15,6 +18,9 @@ func get_value(node: Node) -> Variant:
 	return Vector2.ONE
 
 func set_value(node: Node, value: Variant) -> void:
+	if not is_valid_node(node):
+		return
+	
 	if node is Node3D:
 		if value is Vector3:
 			node.scale = value
