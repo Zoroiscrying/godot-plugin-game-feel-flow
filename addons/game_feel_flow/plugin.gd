@@ -9,7 +9,7 @@ const AUTOLOAD_PATH = "res://addons/game_feel_flow/core/game_feel_flow.gd"
 var _inspector_plugin: EditorInspectorPlugin = null
 var _preview_dock: Control = null
 var _preview_viewport: SubViewport = null
-var _preview_target: Node2D = null
+var _preview_target: Control = null
 
 func _enter_tree() -> void:
 	# Add autoload singleton
