@@ -3,7 +3,8 @@ extends Node
 
 ## Game Feel Flow Player
 ##
-## 播放器节点，管理效果生命周期和编排
+## 播放器节点，类似Unity Feel的MMF_Player
+## 支持Inspector配置、预设加载、效果播放
 
 # ===== 信号 =====
 signal effect_started(effect_name: String)
@@ -12,58 +13,45 @@ signal all_finished
 
 # ===== 属性 =====
 @export var auto_play: bool = false
-@export var effects: Array[GFFFeedback] = []
+@export var combo_presets: Array[GFFCombo] = []  # 预设组合
+@export var preset_directory: String = "res://addons/game_feel_flow/presets/combos/"  # 预设目录
 
-# ===== 状态 =====
+# ===== 运行时数据 =====
+var _combo_dictionary: Dictionary = {}  # label -> GFFCombo
 var _active_effects: Dictionary = {}
-var _effect_queue: Array = []
 var _is_playing: bool = false
 
 # ===== 生命周期 =====
 
 func _ready() -> void:
-	if auto_play and not effects.is_empty():
-		play_all()
+	_load_presets()
+	_build_combo_dictionary()
+	
+	if auto_play and not _combo_dictionary.is_empty():
+		var first_key = _combo_dictionary.keys()[0]
+		play(first_key)
 
 # ===== 公共方法 =====
 
-func play(effect, params = null) -> void:
-	## 播放效果
-	## effect: String | GFFFeedback | GFFCombo
-	if effect is String:
-		var feedback = _get_effect(effect)
-		if feedback:
-			await _play_feedback(feedback, params)
-		else:
-			push_warning("GFFPlayer: Effect not found: ", effect)
-	elif effect is GFFFeedback:
-		await _play_feedback(effect, params)
-	elif effect is GFFCombo:
-		await _play_combo(effect, params)
+func play(combo_name: String, params = null) -> void:
+	## 播放指定组合效果
+	var combo = _combo_dictionary.get(combo_name)
+	if combo:
+		await _play_combo(combo, params)
+	else:
+		push_warning("GFFPlayer: Combo not found: ", combo_name)
 
-func play_combo(combo, params = null) -> void:
+func play_combo(combo: GFFCombo, params = null) -> void:
 	## 播放组合效果
-	## combo: String | GFFCombo
-	if combo is String:
-		var combo_resource = _get_combo(combo)
-		if combo_resource:
-			await _play_combo(combo_resource, params)
-		else:
-			push_warning("GFFPlayer: Combo not found: ", combo)
-	elif combo is GFFCombo:
+	if combo:
 		await _play_combo(combo, params)
 
 func play_all(params = null) -> void:
-	## 播放所有效果
+	## 播放所有组合效果
 	_is_playing = true
-	for effect in effects:
-		if effect.enabled:
-			_play_feedback(effect, params)
-
-	# 等待所有效果完成
-	while not _active_effects.is_empty():
-		await get_tree().process_frame
-
+	for combo_name in _combo_dictionary:
+		play(combo_name, params)
+		await get_tree().create_timer(0.5).timeout  # 间隔0.5秒
 	_is_playing = false
 	all_finished.emit()
 
@@ -76,65 +64,31 @@ func stop() -> void:
 	_active_effects.clear()
 	_is_playing = false
 
-func stop_effect(effect_name: String) -> void:
-	## 停止指定效果
-	if effect_name in _active_effects:
-		var effect = _active_effects[effect_name]
-		if effect and effect.has_method("stop"):
-			effect.stop()
-		_active_effects.erase(effect_name)
-
 func is_playing() -> bool:
 	## 是否正在播放
 	return _is_playing
 
-func is_effect_playing(effect_name: String) -> bool:
-	## 指定效果是否正在播放
-	return effect_name in _active_effects
+func get_combo_names() -> Array[String]:
+	## 获取所有组合效果名称
+	return _combo_dictionary.keys()
+
+func has_combo(combo_name: String) -> bool:
+	## 是否有指定组合效果
+	return combo_name in _combo_dictionary
 
 # ===== 内部方法 =====
 
-func _play_feedback(feedback: GFFFeedback, params = null) -> void:
-	## 播放单个效果
-	var effect_id = feedback.label if not feedback.label.is_empty() else str(feedback.get_instance_id())
-
-	# 检查叠加策略
-	match feedback.overlap_strategy:
-		GFFFeedback.OverlapStrategy.IGNORE:
-			if effect_id in _active_effects:
-				return
-		GFFFeedback.OverlapStrategy.CANCEL:
-			if effect_id in _active_effects:
-				stop_effect(effect_id)
-		GFFFeedback.OverlapStrategy.REPLACE:
-			if effect_id in _active_effects:
-				stop_effect(effect_id)
-		GFFFeedback.OverlapStrategy.QUEUE:
-			if effect_id in _active_effects:
-				_effect_queue.append({"effect": feedback, "params": params})
-				return
-
-	# 添加到活跃效果
-	_active_effects[effect_id] = feedback
-	effect_started.emit(effect_id)
-
-	# 执行效果
-	await feedback.apply(_get_target_node(), _ensure_params(params))
-
-	# 从活跃效果中移除
-	_active_effects.erase(effect_id)
-	effect_finished.emit(effect_id)
-
-	# 处理队列
-	if not _effect_queue.is_empty():
-		var next = _effect_queue.pop_front()
-		_play_feedback(next["effect"], next["params"])
-
 func _play_combo(combo: GFFCombo, params = null) -> void:
 	## 播放组合效果
-	if combo:
-		var target = _get_target_node()
-		await combo.execute(target, _ensure_params(params))
+	_is_playing = true
+	effect_started.emit(combo.label)
+	
+	# 获取目标节点
+	var target = _get_target_node()
+	await combo.execute(target, _ensure_params(params))
+	
+	_is_playing = false
+	effect_finished.emit(combo.label)
 
 func _get_target_node() -> Node:
 	## 获取目标节点
@@ -159,32 +113,52 @@ func _ensure_params(params) -> GFFParams:
 	else:
 		return GFFParams.create()
 
-func _get_effect(effect_name: String) -> GFFFeedback:
-	## 获取指定名称的效果
-	for effect in effects:
-		if effect.label == effect_name:
-			return effect
-	return null
+# ===== 预设管理 =====
 
-func _get_combo(combo_name: String) -> GFFCombo:
-	## 获取组合效果
-	# 从全局单例获取
-	var combo = GameFeelFlow.get_combo(combo_name)
-	if combo:
-		return combo
+func _load_presets() -> void:
+	## 从目录加载预设
+	var dir = DirAccess.open(preset_directory)
+	if dir:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			if file_name.ends_with(".tres"):
+				var path = preset_directory + file_name
+				var combo = load(path)
+				if combo is GFFCombo:
+					combo_presets.append(combo)
+			file_name = dir.get_next()
+
+func _build_combo_dictionary() -> void:
+	## 构建组合效果字典
+	_combo_dictionary.clear()
 	
-	return null
+	# 从预设加载
+	for combo in combo_presets:
+		if combo and not combo.label.is_empty():
+			_combo_dictionary[combo.label] = combo
+	
+	# 从代码预定义加载
+	_combo_dictionary["hit_light"] = GFFCombo.hit_light()
+	_combo_dictionary["hit_heavy"] = GFFCombo.hit_heavy()
+	_combo_dictionary["death"] = GFFCombo.death()
+	_combo_dictionary["pickup"] = GFFCombo.pickup()
+	_combo_dictionary["explosion"] = GFFCombo.explosion()
 
-# ===== 编辑器方法 =====
+func add_combo(combo: GFFCombo) -> void:
+	## 添加组合效果
+	if combo and not combo.label.is_empty():
+		_combo_dictionary[combo.label] = combo
+		combo_presets.append(combo)
 
-func add_effect(effect: GFFFeedback) -> void:
-	## 添加效果
-	effects.append(effect)
+func remove_combo(combo_name: String) -> void:
+	## 移除组合效果
+	_combo_dictionary.erase(combo_name)
 
-func remove_effect(effect: GFFFeedback) -> void:
-	## 移除效果
-	effects.erase(effect)
-
-func get_effects() -> Array[GFFFeedback]:
-	## 获取所有效果
-	return effects
+func save_combo_as_preset(combo: GFFCombo, path: String) -> void:
+	## 保存组合效果为预设文件
+	var error = ResourceSaver.save(combo, path)
+	if error == OK:
+		print("GFFPlayer: Saved combo preset: ", path)
+	else:
+		push_error("GFFPlayer: Failed to save combo preset: ", path)
