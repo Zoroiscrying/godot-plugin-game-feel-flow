@@ -421,9 +421,13 @@ func _on_test_pressed() -> void:
 	# 获取参数
 	var params = _get_params()
 	
-	# 测试效果
-	GameFeelFlow.play(_current_effect, _test_scene, params)
-	_update_status("Testing effect...")
+	# 使用Engine.get_singleton获取autoload单例
+	var game_feel_flow = Engine.get_singleton(AUTOLOAD_NAME)
+	if game_feel_flow:
+		game_feel_flow.play(_current_effect, _test_scene, params)
+		_update_status("Testing effect...")
+	else:
+		_update_status("Error: GameFeelFlow singleton not found")
 
 func _on_reset_pressed() -> void:
 	## 重置测试场景
