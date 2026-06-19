@@ -192,29 +192,24 @@ func _play_effect(effect_type: String) -> void:
 	var visual_target = _get_visual_target(_selected_target)
 	print("Playing: ", effect_type, " on ", visual_target.name, " with params: ", params)
 
-	# 创建GFFParams对象，传递所有参数
-	var gff_params = GFFParams.create(params.get_float("intensity", 1.0), params.get_float("duration", 0.1))
-	for key in params:
-		if key != "intensity" and key != "duration":
-			gff_params.with_float(key, params[key])
-
+	# 直接使用params对象
 	match effect_type:
 		"shake":
-			GameFeelFlow.play("shake", visual_target, gff_params)
+			GameFeelFlow.play("shake", visual_target, params)
 		"scale":
-			GameFeelFlow.play("scale", visual_target, gff_params)
+			GameFeelFlow.play("scale", visual_target, params)
 		"flash":
-			GameFeelFlow.play("flash", visual_target, gff_params)
+			GameFeelFlow.play("flash", visual_target, params)
 		"color":
-			GameFeelFlow.play("color", visual_target, gff_params)
+			GameFeelFlow.play("color", visual_target, params)
 		"hit_light":
-			GameFeelFlow.play_combo("hit_light", visual_target, gff_params)
+			GameFeelFlow.play_combo("hit_light", visual_target, params)
 		"hit_heavy":
-			GameFeelFlow.play_combo("hit_heavy", visual_target, gff_params)
+			GameFeelFlow.play_combo("hit_heavy", visual_target, params)
 		"explosion":
-			GameFeelFlow.play_combo("explosion", visual_target, gff_params)
+			GameFeelFlow.play_combo("explosion", visual_target, params)
 		"death":
-			GameFeelFlow.play_combo("death", visual_target, gff_params)
+			GameFeelFlow.play_combo("death", visual_target, params)
 
 func _reset_all() -> void:
 	for child in objects.get_children():
