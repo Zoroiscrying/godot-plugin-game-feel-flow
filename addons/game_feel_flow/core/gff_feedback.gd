@@ -93,7 +93,7 @@ func apply(target: Node, params: GFFParams = null) -> void:
 		_save_initial_state(node)
 
 	# 计算随机参数
-	var final_duration = duration * randf_range(random_duration_min, random_duration_max)
+	var final_duration = _get_duration_param(params) * randf_range(random_duration_min, random_duration_max)
 	var final_intensity = _get_intensity(params) * randf_range(random_intensity_min, random_intensity_max)
 
 	# 创建最终参数
