@@ -20,7 +20,7 @@ func tween_value(node: Node, target_function: GFFTargetFunction, from: Variant, 
 		if curve:
 			decay = curve.sample(t)
 		
-		# 计算随机偏移
+		# 计算随机偏移（使用amplitude作为强度）
 		var offset = _calculate_offset(amplitude, decay)
 		var value = _add_offset(from, offset)
 		

@@ -138,14 +138,35 @@ var _signal_listeners: Dictionary = {}
 func _register_effects() -> void:
 	## 注册内置效果
 	# Shake系列
-	_effect_registry["shake_position"] = _create_curved_effect(GFFCurvedBase.TargetType.POSITION, GFFCurvedBase.TweenerType.SHAKE)
-	_effect_registry["shake_scale"] = _create_curved_effect(GFFCurvedBase.TargetType.SCALE, GFFCurvedBase.TweenerType.SHAKE)
-	_effect_registry["shake_rotation"] = _create_curved_effect(GFFCurvedBase.TargetType.ROTATION, GFFCurvedBase.TweenerType.SHAKE)
+	var shake_position = _create_curved_effect(GFFCurvedBase.TargetType.POSITION, GFFCurvedBase.TweenerType.SHAKE)
+	shake_position.amplitude = 0.5
+	shake_position.frequency = 15.0
+	_effect_registry["shake_position"] = shake_position
+	
+	var shake_scale = _create_curved_effect(GFFCurvedBase.TargetType.SCALE, GFFCurvedBase.TweenerType.SHAKE)
+	shake_scale.amplitude = 0.2
+	shake_scale.frequency = 15.0
+	_effect_registry["shake_scale"] = shake_scale
+	
+	var shake_rotation = _create_curved_effect(GFFCurvedBase.TargetType.ROTATION, GFFCurvedBase.TweenerType.SHAKE)
+	shake_rotation.amplitude = 10.0
+	shake_rotation.frequency = 15.0
+	_effect_registry["shake_rotation"] = shake_rotation
 	
 	# Punch系列
-	_effect_registry["punch_position"] = _create_curved_effect(GFFCurvedBase.TargetType.POSITION, GFFCurvedBase.TweenerType.ELASTIC)
-	_effect_registry["punch_scale"] = _create_curved_effect(GFFCurvedBase.TargetType.SCALE, GFFCurvedBase.TweenerType.ELASTIC)
-	_effect_registry["punch_rotation"] = _create_curved_effect(GFFCurvedBase.TargetType.ROTATION, GFFCurvedBase.TweenerType.ELASTIC)
+	var punch_position = _create_curved_effect(GFFCurvedBase.TargetType.POSITION, GFFCurvedBase.TweenerType.ELASTIC)
+	punch_position.target_value = Vector2(10.0, 0.0)
+	punch_position.target_value_3d = Vector3(10.0, 0.0, 0.0)
+	_effect_registry["punch_position"] = punch_position
+	
+	var punch_scale = _create_curved_effect(GFFCurvedBase.TargetType.SCALE, GFFCurvedBase.TweenerType.ELASTIC)
+	punch_scale.target_value = Vector2(0.3, 0.3)
+	punch_scale.target_value_3d = Vector3(0.3, 0.3, 0.3)
+	_effect_registry["punch_scale"] = punch_scale
+	
+	var punch_rotation = _create_curved_effect(GFFCurvedBase.TargetType.ROTATION, GFFCurvedBase.TweenerType.ELASTIC)
+	punch_rotation.target_angle = 15.0
+	_effect_registry["punch_rotation"] = punch_rotation
 	
 	# Curved系列
 	_effect_registry["curved_position"] = _create_curved_effect(GFFCurvedBase.TargetType.POSITION, GFFCurvedBase.TweenerType.LINEAR)
