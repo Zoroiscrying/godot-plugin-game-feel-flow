@@ -10,6 +10,7 @@ extends GFFFeedback
 @export var target_type: TargetType = TargetType.POSITION
 @export var tweener_type: TweenerType = TweenerType.LINEAR
 @export var curve: Curve = null
+@export var punch_mode: PunchMode = PunchMode.TO_TARGET
 
 # ===== 默认参数（用于预设） =====
 var _default_amplitude: float = 0.5
@@ -33,6 +34,11 @@ enum TweenerType {
 	SHAKE,
 	FLASH,
 	COLOR
+}
+
+enum PunchMode {
+	TO_TARGET,    # 到达目标点（先超出再回来）
+	TO_ORIGIN     # 回到初始点（先超出再回来）
 }
 
 # ===== 组合对象 =====

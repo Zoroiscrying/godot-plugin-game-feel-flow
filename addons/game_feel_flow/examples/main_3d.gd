@@ -279,17 +279,20 @@ func _update_params(effect_type: String) -> void:
 			_add_float_param("target_x", 10.0, 0.0, 50.0, 1.0)
 			_add_float_param("target_y", 0.0, -50.0, 50.0, 1.0)
 			_add_float_param("elasticity", 0.5, 0.0, 1.0, 0.1)
+			_add_int_param("punch_mode", 0, 0, 1)  # 0=TO_TARGET, 1=TO_ORIGIN
 		"punch_scale":
 			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
 			_add_float_param("duration", 0.3, 0.01, 1.0, 0.01)
 			_add_float_param("target_x", 0.3, 0.0, 1.0, 0.1)
 			_add_float_param("target_y", 0.3, 0.0, 1.0, 0.1)
 			_add_float_param("elasticity", 0.5, 0.0, 1.0, 0.1)
+			_add_int_param("punch_mode", 0, 0, 1)  # 0=TO_TARGET, 1=TO_ORIGIN
 		"punch_rotation":
 			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
 			_add_float_param("duration", 0.3, 0.01, 1.0, 0.01)
 			_add_float_param("target_x", 15.0, 0.0, 90.0, 1.0)
 			_add_float_param("elasticity", 0.5, 0.0, 1.0, 0.1)
+			_add_int_param("punch_mode", 0, 0, 1)  # 0=TO_TARGET, 1=TO_ORIGIN
 		"scale":
 			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
 			_add_float_param("duration", 0.3, 0.01, 1.0, 0.01)
@@ -334,6 +337,26 @@ func _add_float_param(param_name: String, default: float, min_val: float, max_va
 	
 	param_panel.add_child(hbox)
 
+func _add_int_param(param_name: String, default: int, min_val: int, max_val: int) -> void:
+	var hbox = HBoxContainer.new()
+	
+	var label = Label.new()
+	label.text = param_name
+	label.custom_minimum_size.x = 100
+	hbox.add_child(label)
+	
+	var spin_box = SpinBox.new()
+	spin_box.min_value = min_val
+	spin_box.max_value = max_val
+	spin_box.value = default
+	spin_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	spin_box.name = param_name
+	hbox.add_child(spin_box)
+	
+	spin_box.value_changed.connect(func(value): pass)
+	
+	param_panel.add_child(hbox)
+
 func _add_color_param(param_name: String, default: Color) -> void:
 	var hbox = HBoxContainer.new()
 	
@@ -362,6 +385,8 @@ func _get_params() -> GFFParams:
 						params.duration = subchild.value
 					else:
 						params.with_float(subchild.name, subchild.value)
+				elif subchild is SpinBox:
+					params.with_int(subchild.name, int(subchild.value))
 				elif subchild is ColorPickerButton:
 					params.with_color(subchild.name, subchild.color)
 	

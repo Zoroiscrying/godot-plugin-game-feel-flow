@@ -7,18 +7,43 @@ extends GFFValueTweener
 
 # ===== 属性 =====
 var elasticity: float = 0.5
+var punch_mode: int = 0  # 0=TO_TARGET, 1=TO_ORIGIN
 
 func setup_from_params(params: GFFParams) -> void:
 	## 从GFFParams中读取参数
 	elasticity = params.get_float("elasticity", elasticity)
+	punch_mode = params.get_int("punch_mode", punch_mode)
 
 func tween_value(node: Node, target_function: GFFTargetFunction, from: Variant, to: Variant, duration: float, curve: Curve = null) -> void:
 	var tween = node.create_tween()
-	if curve:
-		tween.tween_method(_apply_curve.bind(node, target_function, from, to, curve), 0.0, 1.0, duration)
-	else:
-		tween.tween_method(_apply_elastic.bind(node, target_function, from, to), 0.0, 1.0, duration)
+	
+	match punch_mode:
+		0:  # TO_TARGET - 到达目标点
+			if curve:
+				tween.tween_method(_apply_curve.bind(node, target_function, from, to, curve), 0.0, 1.0, duration)
+			else:
+				tween.tween_method(_apply_elastic.bind(node, target_function, from, to), 0.0, 1.0, duration)
+		1:  # TO_ORIGIN - 回到初始点
+			# 先超出目标点，然后回到初始点
+			var overshoot = _calculate_overshoot(from, to)
+			if curve:
+				tween.tween_method(_apply_curve.bind(node, target_function, from, overshoot, curve), 0.0, 0.5, duration / 2)
+				tween.tween_method(_apply_curve.bind(node, target_function, overshoot, from, curve), 0.0, 0.5, duration / 2)
+			else:
+				tween.tween_method(_apply_elastic.bind(node, target_function, from, overshoot), 0.0, 0.5, duration / 2)
+				tween.tween_method(_apply_elastic.bind(node, target_function, overshoot, from), 0.0, 0.5, duration / 2)
+	
 	await tween.finished
+
+func _calculate_overshoot(from: Variant, to: Variant) -> Variant:
+	## 计算超出目标点的位置
+	if from is float and to is float:
+		return from + (to - from) * 1.5
+	elif from is Vector2 and to is Vector2:
+		return from + (to - from) * 1.5
+	elif from is Vector3 and to is Vector3:
+		return from + (to - from) * 1.5
+	return to
 
 func _apply_elastic(t: float, node: Node, target_function: GFFTargetFunction, from: Variant, to: Variant) -> void:
 	var elastic_t = _elastic_ease(t)
