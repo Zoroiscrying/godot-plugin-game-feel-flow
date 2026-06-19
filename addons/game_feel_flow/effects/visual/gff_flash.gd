@@ -50,24 +50,26 @@ func _execute_3d(node: Node3D, color: Color, intensity: float, final_duration: f
 	if material is StandardMaterial3D:
 		var original_color = material.albedo_color
 		var flash_color_intensity = color * intensity
+		var interval = final_duration / (flash_count * 2)
 		
-		# 快速闪烁
+		# 闪烁
 		for i in range(flash_count):
 			material.albedo_color = flash_color_intensity
-			await node.get_tree().create_timer(0.03).timeout
+			await node.get_tree().create_timer(interval).timeout
 			material.albedo_color = original_color
-			await node.get_tree().create_timer(0.03).timeout
+			await node.get_tree().create_timer(interval).timeout
 
 func _execute_2d(node: Node, color: Color, intensity: float, final_duration: float) -> void:
 	## 2D节点和UI的闪光效果
 	var original_modulate = _get_modulate(node)
+	var interval = final_duration / (flash_count * 2)
 
-	# 快速闪烁
+	# 闪烁
 	for i in range(flash_count):
 		_set_modulate(node, color * intensity)
-		await node.get_tree().create_timer(0.03).timeout
+		await node.get_tree().create_timer(interval).timeout
 		_set_modulate(node, original_modulate)
-		await node.get_tree().create_timer(0.03).timeout
+		await node.get_tree().create_timer(interval).timeout
 
 func _get_default_intensity() -> float:
 	return 1.0
