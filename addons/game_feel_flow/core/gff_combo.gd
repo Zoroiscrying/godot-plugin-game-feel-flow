@@ -111,8 +111,10 @@ static func _create_scale(target_scale: Vector2, p_duration: float):
 	var effect = GFFCurvedBase.new()
 	effect.target_type = GFFCurvedBase.TargetType.SCALE
 	effect.tweener_type = GFFCurvedBase.TweenerType.LINEAR
-	effect.target_value = target_scale
 	effect.duration = p_duration
+	# 通过默认参数传递target值
+	effect._default_target_x = target_scale.x
+	effect._default_target_y = target_scale.y
 	return effect
 
 static func _create_alpha(target_alpha: float, p_duration: float):
@@ -120,6 +122,7 @@ static func _create_alpha(target_alpha: float, p_duration: float):
 	var effect = GFFCurvedBase.new()
 	effect.target_type = GFFCurvedBase.TargetType.MODULATE
 	effect.tweener_type = GFFCurvedBase.TweenerType.COLOR
-	effect.target_value = Vector2(target_alpha, target_alpha)
 	effect.duration = p_duration
+	# 通过默认参数传递target值
+	effect._default_target_x = target_alpha
 	return effect
