@@ -9,6 +9,7 @@ const AUTOLOAD_PATH = "res://addons/game_feel_flow/core/game_feel_flow.gd"
 var _inspector_plugin: EditorInspectorPlugin = null
 var _editor_dock: Control = null
 var _current_effect: GFFCurvedBase = null
+var _status_label: Label = null
 
 func _enter_tree() -> void:
 	# Add autoload singleton
@@ -198,10 +199,9 @@ func _create_status_bar() -> Control:
 	## 创建状态栏
 	var status_bar = HBoxContainer.new()
 	
-	var status_label = Label.new()
-	status_label.text = "Ready"
-	status_label.name = "StatusLabel"
-	status_bar.add_child(status_label)
+	_status_label = Label.new()
+	_status_label.text = "Ready"
+	status_bar.add_child(_status_label)
 	
 	return status_bar
 
@@ -269,9 +269,8 @@ func _on_test_pressed() -> void:
 
 func _update_status(message: String) -> void:
 	## 更新状态栏
-	var status_label = _editor_dock.get_node("StatusLabel")
-	if status_label:
-		status_label.text = message
+	if _status_label:
+		_status_label.text = message
 
 func _update_effect_from_ui() -> void:
 	## 从UI更新效果配置
