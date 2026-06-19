@@ -3,11 +3,9 @@
 [ext_resource type="Script" uid="uid://dsu45asqq7j6l" path="res://addons/game_feel_flow/examples/main_3d.gd" id="1"]
 [ext_resource type="Script" uid="uid://c731ls1wu0npd" path="res://addons/game_feel_flow/editor/gff_param_panel.gd" id="2"]
 
-[sub_resource type="Sky" id="Sky_1"]
-
 [sub_resource type="Environment" id="Environment_1"]
-background_mode = 2
-sky = SubResource("Sky_1")
+background_mode = 1
+background_color = Color(0.4, 0.6, 0.8, 1)
 ambient_light_source = 2
 ambient_light_color = Color(0.5, 0.5, 0.5, 1)
 
