@@ -93,15 +93,11 @@ func _store_original() -> void:
 			}
 
 func _find_moving_objects() -> void:
-	var capsule = objects.get_node_or_null("MovingCapsule")
-	if capsule:
-		# 创建容器进行圆周运动，胶囊通过effect进行本地空间移动
-		var container = Node3D.new()
-		container.name = "MovingContainer"
-		capsule.add_child(container)
-		# 将胶囊的位置重置为本地原点
-		capsule.position = Vector3.ZERO
-		_moving_objects.append(container)
+	# 查找MovingCapsule的容器（已经被_store_original转换）
+	var capsule_container = objects.get_node_or_null("MovingCapsule_Container")
+	if capsule_container:
+		# 容器就是逻辑层，负责运动
+		_moving_objects.append(capsule_container)
 
 func _init_ui() -> void:
 	for effect in effects:
