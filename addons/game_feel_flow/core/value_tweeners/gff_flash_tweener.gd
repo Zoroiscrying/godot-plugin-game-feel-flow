@@ -10,6 +10,12 @@ var flash_color: Color = Color.WHITE
 var flash_frequency: float = 15.0
 var lerp_mode: int = 0  # 0=INSTANT, 1=LINEAR, 2=SMOOTH
 
+func setup_from_params(params: GFFParams) -> void:
+	## 从GFFParams中读取参数
+	flash_color = params.get_color("color", flash_color)
+	flash_frequency = params.get_float("frequency", flash_frequency)
+	lerp_mode = params.get_int("lerp_mode", lerp_mode)
+
 func tween_value(node: Node, target_function: GFFTargetFunction, from: Variant, to: Variant, duration: float, curve: Curve = null) -> void:
 	var count = int(duration * flash_frequency)
 	if count < 1:

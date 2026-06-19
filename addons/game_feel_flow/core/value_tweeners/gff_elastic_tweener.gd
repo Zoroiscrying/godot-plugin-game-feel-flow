@@ -8,6 +8,10 @@ extends GFFValueTweener
 # ===== 属性 =====
 var elasticity: float = 0.5
 
+func setup_from_params(params: GFFParams) -> void:
+	## 从GFFParams中读取参数
+	elasticity = params.get_float("elasticity", elasticity)
+
 func tween_value(node: Node, target_function: GFFTargetFunction, from: Variant, to: Variant, duration: float, curve: Curve = null) -> void:
 	var tween = node.create_tween()
 	if curve:

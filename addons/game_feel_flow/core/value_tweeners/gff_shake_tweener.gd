@@ -9,6 +9,11 @@ extends GFFValueTweener
 var amplitude: float = 0.5
 var frequency: float = 15.0
 
+func setup_from_params(params: GFFParams) -> void:
+	## 从GFFParams中读取参数
+	amplitude = params.get_float("amplitude", amplitude)
+	frequency = params.get_float("frequency", frequency)
+
 func tween_value(node: Node, target_function: GFFTargetFunction, from: Variant, to: Variant, duration: float, curve: Curve = null) -> void:
 	var elapsed = 0.0
 	

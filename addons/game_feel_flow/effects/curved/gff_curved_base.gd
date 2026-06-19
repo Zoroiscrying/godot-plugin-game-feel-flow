@@ -107,19 +107,11 @@ func _execute(node: Node, params: GFFParams) -> void:
 		push_warning("GFFCurvedBase: Invalid node type")
 		return
 	
-	# 从params中读取参数
+	# 让tweener从params中读取参数
+	_value_tweener.setup_from_params(params)
+	
 	var intensity = params.get_float("intensity", 1.0)
 	var final_duration = params.get_float("duration", duration)
-	var final_amplitude = params.get_float("amplitude", amplitude)
-	var final_frequency = params.get_float("frequency", frequency)
-	var final_elasticity = params.get_float("elasticity", elasticity)
-	
-	# 更新tweener的参数
-	if _value_tweener is GFFShakeTweener:
-		_value_tweener.amplitude = final_amplitude
-		_value_tweener.frequency = final_frequency
-	elif _value_tweener is GFFElasticTweener:
-		_value_tweener.elasticity = final_elasticity
 	
 	var original_value = _target_function.get_value(node)
 	var target_value = _calculate_target_value(original_value, intensity)

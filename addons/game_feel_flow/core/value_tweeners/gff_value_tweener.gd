@@ -15,3 +15,7 @@ func get_value_at_time(t: float, from: Variant, to: Variant, curve: Curve = null
 	## 获取指定时间的值
 	push_error("get_value_at_time() not implemented")
 	return null
+
+func setup_from_params(params: GFFParams) -> void:
+	## 从GFFParams中读取参数（子类重写）
+	pass
