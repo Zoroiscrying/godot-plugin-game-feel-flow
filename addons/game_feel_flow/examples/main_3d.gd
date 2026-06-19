@@ -258,12 +258,7 @@ func _update_params(effect_type: String) -> void:
 	
 	# Add params based on effect type
 	match effect_type:
-		"shake":
-			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
-			_add_float_param("duration", 0.3, 0.01, 1.0, 0.01)
-			_add_float_param("amplitude", 0.5, 0.1, 5.0, 0.1)
-			_add_float_param("frequency", 15.0, 5.0, 50.0, 1.0)
-		"shake_position":
+		"shake", "shake_position":
 			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
 			_add_float_param("duration", 0.3, 0.01, 1.0, 0.01)
 			_add_float_param("amplitude", 0.5, 0.1, 5.0, 0.1)
@@ -278,21 +273,22 @@ func _update_params(effect_type: String) -> void:
 			_add_float_param("duration", 0.3, 0.01, 1.0, 0.01)
 			_add_float_param("amplitude", 10.0, 1.0, 45.0, 1.0)
 			_add_float_param("frequency", 15.0, 5.0, 50.0, 1.0)
-		"punch":
+		"punch", "punch_position":
 			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
 			_add_float_param("duration", 0.3, 0.01, 1.0, 0.01)
+			_add_float_param("target_x", 10.0, 0.0, 50.0, 1.0)
+			_add_float_param("target_y", 0.0, -50.0, 50.0, 1.0)
 			_add_float_param("elasticity", 0.5, 0.0, 1.0, 0.1)
 		"punch_scale":
 			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
 			_add_float_param("duration", 0.3, 0.01, 1.0, 0.01)
-			_add_float_param("elasticity", 0.5, 0.0, 1.0, 0.1)
-		"punch_position":
-			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
-			_add_float_param("duration", 0.3, 0.01, 1.0, 0.01)
+			_add_float_param("target_x", 0.3, 0.0, 1.0, 0.1)
+			_add_float_param("target_y", 0.3, 0.0, 1.0, 0.1)
 			_add_float_param("elasticity", 0.5, 0.0, 1.0, 0.1)
 		"punch_rotation":
 			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
 			_add_float_param("duration", 0.3, 0.01, 1.0, 0.01)
+			_add_float_param("target_x", 15.0, 0.0, 90.0, 1.0)
 			_add_float_param("elasticity", 0.5, 0.0, 1.0, 0.1)
 		"scale":
 			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)

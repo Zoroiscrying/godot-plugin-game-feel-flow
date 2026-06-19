@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="GFFCurvedBase" format=3 uid="uid://c12m2mepjxa38"]
+
+[ext_resource type="Script" uid="uid://cw1adefvk3suo" path="res://addons/game_feel_flow/effects/curved/gff_curved_base.gd" id="1_8qmux"]
+
+[resource]
+script = ExtResource("1_8qmux")
+target_type = 1
+target_value = Vector2(1.2, 1.2)
+duration = 0.5

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="GFFCurvedBase" format=3 uid="uid://bq8r65fdo8axe"]
+
+[ext_resource type="Script" uid="uid://cw1adefvk3suo" path="res://addons/game_feel_flow/effects/curved/gff_curved_base.gd" id="1_08b4o"]
+
+[resource]
+script = ExtResource("1_08b4o")
+target_type = 2
+tweener_type = 2
+amplitude = 10.0

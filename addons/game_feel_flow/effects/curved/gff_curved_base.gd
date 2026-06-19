@@ -11,24 +11,6 @@ extends GFFFeedback
 @export var tweener_type: TweenerType = TweenerType.LINEAR
 @export var curve: Curve = null
 
-@export_group("Target Settings")
-@export var target_value: Vector2 = Vector2.ZERO
-@export var target_value_3d: Vector3 = Vector3.ZERO
-@export var target_angle: float = 0.0
-
-@export_group("Shake Settings")
-@export var amplitude: float = 0.5
-@export var frequency: float = 15.0
-@export var axes: Vector3 = Vector3(1, 1, 0)
-
-@export_group("Punch Settings")
-@export var elasticity: float = 0.5
-
-@export_group("Flash Settings")
-@export var flash_color: Color = Color.WHITE
-@export var flash_frequency: float = 15.0
-@export var lerp_mode: int = 0  # 0=INSTANT, 1=LINEAR, 2=SMOOTH
-
 enum TargetType {
 	POSITION,
 	SCALE,
@@ -75,20 +57,11 @@ func _create_tweener() -> GFFValueTweener:
 		TweenerType.LINEAR:
 			return GFFLinearTweener.new()
 		TweenerType.ELASTIC:
-			var tweener = GFFElasticTweener.new()
-			tweener.elasticity = elasticity
-			return tweener
+			return GFFElasticTweener.new()
 		TweenerType.SHAKE:
-			var tweener = GFFShakeTweener.new()
-			tweener.amplitude = amplitude
-			tweener.frequency = frequency
-			return tweener
+			return GFFShakeTweener.new()
 		TweenerType.FLASH:
-			var tweener = GFFFlashTweener.new()
-			tweener.flash_color = flash_color
-			tweener.flash_frequency = flash_frequency
-			tweener.lerp_mode = lerp_mode
-			return tweener
+			return GFFFlashTweener.new()
 		TweenerType.COLOR:
 			return GFFColorTweener.new()
 		_:
@@ -119,22 +92,32 @@ func _execute(node: Node, params: GFFParams) -> void:
 	await _value_tweener.tween_value(node, _target_function, original_value, target_value, final_duration, curve)
 
 func _calculate_target_value(original_value: Variant, intensity: float) -> Variant:
+	# 从params中获取target值
+	var params = GFFParams.create(intensity)
+	var target_offset = _get_target_offset(params)
+	
 	match target_type:
 		TargetType.POSITION:
 			if original_value is Vector3:
-				return original_value + target_value_3d * intensity
+				return original_value + target_offset
 			elif original_value is Vector2:
-				return original_value + Vector2(target_value.x * intensity, target_value.y * intensity)
+				return original_value + Vector2(target_offset.x, target_offset.y)
 		TargetType.SCALE:
-			# Scale使用增量模式
 			if original_value is Vector3:
-				return original_value + target_value_3d * intensity
+				return original_value + target_offset
 			elif original_value is Vector2:
-				return original_value + Vector2(target_value.x * intensity, target_value.y * intensity)
+				return original_value + Vector2(target_offset.x, target_offset.y)
 		TargetType.ROTATION:
 			if original_value is float:
-				return original_value + deg_to_rad(target_angle * intensity)
+				return original_value + deg_to_rad(target_offset.x)
 	return original_value
+
+func _get_target_offset(params: GFFParams) -> Vector3:
+	## 从params中获取目标偏移量
+	var x = params.get_float("target_x", 0.0)
+	var y = params.get_float("target_y", 0.0)
+	var z = params.get_float("target_z", 0.0)
+	return Vector3(x, y, z)
 
 func _get_default_intensity() -> float:
 	return 1.0
