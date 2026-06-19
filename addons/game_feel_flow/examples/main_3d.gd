@@ -241,7 +241,7 @@ func _update_params(effect_type: String) -> void:
 		"shake":
 			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
 			_add_float_param("duration", 0.3, 0.01, 1.0, 0.01)
-			_add_float_param("amplitude", 5.0, 0.5, 20.0, 0.5)
+			_add_float_param("amplitude", 2.0, 0.5, 10.0, 0.5)
 			_add_float_param("frequency", 15.0, 5.0, 50.0, 1.0)
 		"scale":
 			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
