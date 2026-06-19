@@ -8,7 +8,6 @@ extends GFFFeedback
 # ===== Properties =====
 @export_group("Flash Settings")
 @export var flash_color: Color = Color.WHITE
-@export var flash_count: int = 3
 @export var flash_frequency: float = 15.0
 @export var lerp_mode: LerpMode = LerpMode.INSTANT
 
@@ -25,7 +24,11 @@ func _execute(node: Node, params: GFFParams) -> void:
 	var final_duration = params.get_float("duration", duration)
 	var color = params.get_color("color", flash_color)
 	var frequency = params.get_float("frequency", flash_frequency)
-	var count = params.get_int("flash_count", flash_count)
+	
+	# 计算闪烁次数
+	var count = int(final_duration * frequency)
+	if count < 1:
+		count = 1
 
 	# 检查节点类型，选择合适的方式改变颜色
 	if node is Node3D:

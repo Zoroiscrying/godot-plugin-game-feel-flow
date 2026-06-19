@@ -250,7 +250,6 @@ func _update_params(effect_type: String) -> void:
 			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
 			_add_float_param("duration", 0.3, 0.01, 1.0, 0.01)
 			_add_float_param("frequency", 15.0, 5.0, 30.0, 1.0)
-			_add_float_param("flash_count", 3, 1, 10, 1)
 			_add_color_param("color", Color.WHITE)
 		"color":
 			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
