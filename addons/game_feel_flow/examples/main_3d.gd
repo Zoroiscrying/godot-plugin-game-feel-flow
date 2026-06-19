@@ -47,8 +47,14 @@ func _ready() -> void:
 	play_button.pressed.connect(_on_play_pressed)
 	reset_button.pressed.connect(_on_reset_pressed)
 
-	# Select first object
-	_select_target(objects.get_child(0))
+	# Select first object (find first MeshInstance3D in containers)
+	for child in objects.get_children():
+		for grandchild in child.get_children():
+			if grandchild is MeshInstance3D:
+				_select_target(grandchild)
+				break
+		if _selected_target:
+			break
 
 func _process(delta: float) -> void:
 	_time += delta
