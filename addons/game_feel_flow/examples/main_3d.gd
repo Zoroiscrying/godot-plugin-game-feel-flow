@@ -63,18 +63,27 @@ func _input(event: InputEvent) -> void:
 func _store_original() -> void:
 	for child in objects.get_children():
 		if child is MeshInstance3D:
-			# 创建Visual层用于效果应用
-			var visual = child.duplicate()
-			visual.name = child.name + "_Visual"
-			child.add_child(visual)
-			# 将原始网格隐藏，使用Visual层
-			child.visible = false
-			visual.visible = true
+			# 创建容器作为逻辑层（负责运动）
+			var container = Node3D.new()
+			container.name = child.name + "_Container"
+			container.position = child.position
+			container.rotation = child.rotation
+			container.scale = child.scale
 			
-			_original_values[child] = {
-				"position": child.position,
-				"rotation": child.rotation,
-				"scale": child.scale,
+			# 将原始物体移动到容器下作为视觉层（负责显示和效果）
+			child.position = Vector3.ZERO
+			child.rotation = Vector3.ZERO
+			child.scale = Vector3.ONE
+			
+			# 重新组织层级
+			objects.add_child(container)
+			objects.remove_child(child)
+			container.add_child(child)
+			
+			_original_values[container] = {
+				"position": container.position,
+				"rotation": container.rotation,
+				"scale": container.scale,
 			}
 
 func _find_moving_objects() -> void:
@@ -155,9 +164,16 @@ func _on_effect_selected(index: int) -> void:
 # ===== Effect Playback =====
 
 func _get_visual_target(target: Node) -> Node:
-	## 获取Visual层，如果不存在则返回原始目标
-	var visual = target.get_node_or_null(target.name + "_Visual")
-	return visual if visual else target
+	## 获取Visual层（容器中的MeshInstance3D）
+	if target is MeshInstance3D:
+		return target
+	
+	# 查找容器中的MeshInstance3D子节点
+	for child in target.get_children():
+		if child is MeshInstance3D:
+			return child
+	
+	return target
 
 func _play_effect(effect_type: String) -> void:
 	if not _selected_target:
@@ -193,16 +209,16 @@ func _reset_all() -> void:
 			child.position = vals["position"]
 			child.rotation = vals["rotation"]
 			child.scale = vals["scale"]
-			if child.material_override:
-				child.material_override.emission_enabled = false
 			
-			# 重置Visual层
-			var visual = child.get_node_or_null(child.name + "_Visual")
-			if visual:
-				visual.position = Vector3.ZERO
-				visual.rotation = Vector3.ZERO
-				visual.scale = Vector3.ONE
-				visual.modulate = Color.WHITE
+			# 重置视觉层（容器中的MeshInstance3D）
+			for visual in child.get_children():
+				if visual is MeshInstance3D:
+					visual.position = Vector3.ZERO
+					visual.rotation = Vector3.ZERO
+					visual.scale = Vector3.ONE
+					visual.modulate = Color.WHITE
+					if visual.material_override:
+						visual.material_override.emission_enabled = false
 
 	camera.fov = 75.0
 	Engine.time_scale = 1.0

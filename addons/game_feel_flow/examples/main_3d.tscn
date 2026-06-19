@@ -3,16 +3,18 @@
 [ext_resource type="Script" uid="uid://dsu45asqq7j6l" path="res://addons/game_feel_flow/examples/main_3d.gd" id="1"]
 [ext_resource type="Script" uid="uid://c731ls1wu0npd" path="res://addons/game_feel_flow/editor/gff_param_panel.gd" id="2"]
 
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f4sby"]
+
+[sub_resource type="Sky" id="Sky_7i3b7"]
+sky_material = SubResource("ProceduralSkyMaterial_f4sby")
+
 [sub_resource type="Environment" id="Environment_1"]
-background_mode = 1
+background_mode = 2
 background_color = Color(0.4, 0.6, 0.8, 1)
+background_energy_multiplier = 1.25
+sky = SubResource("Sky_7i3b7")
 ambient_light_source = 2
 ambient_light_color = Color(0.5, 0.5, 0.5, 1)
-
-[sub_resource type="StandardMaterial3D" id="Material_Blue"]
-albedo_color = Color(0.2, 0.6, 1, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_1"]
 
 [sub_resource type="StandardMaterial3D" id="Material_Red"]
 albedo_color = Color(1, 0.2, 0.2, 1)
@@ -28,6 +30,11 @@ height = 1.0
 
 [sub_resource type="StandardMaterial3D" id="Material_Green"]
 albedo_color = Color(0.2, 1, 0.2, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_1"]
+
+[sub_resource type="StandardMaterial3D" id="Material_Blue"]
+albedo_color = Color(0.2, 0.6, 1, 1)
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleMat"]
 emission_shape = 1
@@ -48,11 +55,6 @@ environment = SubResource("Environment_1")
 
 [node name="Objects" type="Node3D" parent="." unique_id=1236425624]
 
-[node name="StaticBox" type="MeshInstance3D" parent="Objects" unique_id=1795255000]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 0)
-material_override = SubResource("Material_Blue")
-mesh = SubResource("BoxMesh_1")
-
 [node name="DynamicSphere" type="MeshInstance3D" parent="Objects" unique_id=414089230]
 material_override = SubResource("Material_Red")
 mesh = SubResource("SphereMesh_1")
@@ -67,8 +69,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3)
 material_override = SubResource("Material_Green")
 mesh = SubResource("BoxMesh_1")
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=528520320]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 8)
+[node name="StaticBox" type="MeshInstance3D" parent="Objects" unique_id=1795255000]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 0)
+material_override = SubResource("Material_Blue")
+mesh = SubResource("BoxMesh_1")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=819215039]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.7336173, 9.203724)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=470499722]
 transform = Transform3D(1, 0, 0, 0, 0.707, 0.707, 0, -0.707, 0.707, 0, 5, 0)
