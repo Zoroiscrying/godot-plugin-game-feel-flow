@@ -31,6 +31,3 @@ func set_value(node: Node, value: Variant) -> void:
 
 func get_default_value() -> Variant:
 	return 0.0
-
-func get_value_type() -> int:
-	return TYPE_FLOAT

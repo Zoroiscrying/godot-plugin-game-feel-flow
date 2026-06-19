@@ -37,6 +37,3 @@ func set_value(node: Node, value: Variant) -> void:
 
 func get_default_value() -> Variant:
 	return Vector2.ZERO
-
-func get_value_type() -> int:
-	return TYPE_VECTOR2
