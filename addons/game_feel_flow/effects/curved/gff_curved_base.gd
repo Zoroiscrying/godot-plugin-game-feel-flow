@@ -47,12 +47,15 @@ enum TweenerType {
 # ===== 组合对象 =====
 var _target_function: GFFTargetFunction = null
 var _value_tweener: GFFValueTweener = null
+var _initialized: bool = false
 
 # ===== 初始化 =====
 
-func _init() -> void:
-	_target_function = _create_target_function()
-	_value_tweener = _create_tweener()
+func _ensure_initialized() -> void:
+	if not _initialized:
+		_target_function = _create_target_function()
+		_value_tweener = _create_tweener()
+		_initialized = true
 
 func _create_target_function() -> GFFTargetFunction:
 	match target_type:
@@ -94,6 +97,8 @@ func _create_tweener() -> GFFValueTweener:
 # ===== 重写方法 =====
 
 func _execute(node: Node, params: GFFParams) -> void:
+	_ensure_initialized()
+	
 	if not _target_function or not _value_tweener:
 		push_error("GFFCurvedBase: Target function or value tweener not initialized")
 		return
