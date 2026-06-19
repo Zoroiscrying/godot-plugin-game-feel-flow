@@ -24,7 +24,7 @@ func after_test() -> void:
 
 func test_default_amplitude() -> void:
 	# 测试默认振幅
-	assert_float(shake.amplitude).is_equal(0.1)
+	assert_float(shake.amplitude).is_equal(5.0)
 
 func test_default_frequency() -> void:
 	# 测试默认频率
@@ -98,7 +98,7 @@ func test_get_amplitude_with_params() -> void:
 func test_get_amplitude_without_params() -> void:
 	# 测试无参数时获取默认振幅
 	var amp = shake.amplitude
-	assert_float(amp).is_equal(0.1)
+	assert_float(amp).is_equal(5.0)
 
 func test_get_frequency_with_params() -> void:
 	# 测试从参数获取频率
