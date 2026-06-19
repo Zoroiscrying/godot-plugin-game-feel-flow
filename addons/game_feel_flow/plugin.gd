@@ -9,7 +9,6 @@ const AUTOLOAD_PATH = "res://addons/game_feel_flow/core/game_feel_flow.gd"
 var _inspector_plugin: EditorInspectorPlugin = null
 var _editor_dock: Control = null
 var _current_effect: GFFCurvedBase = null
-var _test_scene: Node = null
 
 func _enter_tree() -> void:
 	# Add autoload singleton
@@ -40,33 +39,20 @@ func _exit_tree() -> void:
 		_editor_dock.queue_free()
 		_editor_dock = null
 	
-	# 清理测试场景
-	_cleanup_test_scene()
-	
 	print("Game Feel Flow: Plugin disabled")
 
 func _create_editor_dock() -> Control:
 	## 创建编辑器Dock
 	var main_container = VBoxContainer.new()
-	main_container.custom_minimum_size = Vector2(0, 300)
+	main_container.custom_minimum_size = Vector2(0, 200)
 	
 	# 工具栏
 	var toolbar = _create_toolbar()
 	main_container.add_child(toolbar)
 	
-	# 内容区域
-	var content = HSplitContainer.new()
-	content.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	
-	# 左侧：效果配置
-	var left_panel = _create_effect_config_panel()
-	content.add_child(left_panel)
-	
-	# 右侧：测试区域
-	var right_panel = _create_test_panel()
-	content.add_child(right_panel)
-	
-	main_container.add_child(content)
+	# 效果配置
+	var config_panel = _create_effect_config()
+	main_container.add_child(config_panel)
 	
 	# 状态栏
 	var status_bar = _create_status_bar()
@@ -101,44 +87,35 @@ func _create_toolbar() -> Control:
 	
 	# 测试按钮
 	var test_button = Button.new()
-	test_button.text = "Test"
+	test_button.text = "Test in Scene"
 	test_button.pressed.connect(_on_test_pressed)
 	toolbar.add_child(test_button)
 	
-	# 重置按钮
-	var reset_button = Button.new()
-	reset_button.text = "Reset"
-	reset_button.pressed.connect(_on_reset_pressed)
-	toolbar.add_child(reset_button)
-	
 	return toolbar
 
-func _create_effect_config_panel() -> Control:
-	## 创建效果配置面板
-	var panel = ScrollContainer.new()
-	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	
-	var vbox = VBoxContainer.new()
-	vbox.name = "EffectConfig"
+func _create_effect_config() -> Control:
+	## 创建效果配置
+	var config = VBoxContainer.new()
+	config.name = "EffectConfig"
 	
 	# 效果名称
 	var name_hbox = HBoxContainer.new()
 	var name_label = Label.new()
 	name_label.text = "Name:"
-	name_label.custom_minimum_size.x = 100
+	name_label.custom_minimum_size.x = 80
 	name_hbox.add_child(name_label)
 	
 	var name_edit = LineEdit.new()
 	name_edit.name = "EffectName"
 	name_edit.text = "new_effect"
 	name_hbox.add_child(name_edit)
-	vbox.add_child(name_hbox)
+	config.add_child(name_hbox)
 	
 	# Target Type
 	var target_hbox = HBoxContainer.new()
 	var target_label = Label.new()
 	target_label.text = "Target:"
-	target_label.custom_minimum_size.x = 100
+	target_label.custom_minimum_size.x = 80
 	target_hbox.add_child(target_label)
 	
 	var target_option = OptionButton.new()
@@ -148,13 +125,13 @@ func _create_effect_config_panel() -> Control:
 	target_option.add_item("Rotation", 2)
 	target_option.add_item("Modulate", 3)
 	target_hbox.add_child(target_option)
-	vbox.add_child(target_hbox)
+	config.add_child(target_hbox)
 	
 	# Tweener Type
 	var tweener_hbox = HBoxContainer.new()
 	var tweener_label = Label.new()
 	tweener_label.text = "Tweener:"
-	tweener_label.custom_minimum_size.x = 100
+	tweener_label.custom_minimum_size.x = 80
 	tweener_hbox.add_child(tweener_label)
 	
 	var tweener_option = OptionButton.new()
@@ -165,13 +142,13 @@ func _create_effect_config_panel() -> Control:
 	tweener_option.add_item("Flash", 3)
 	tweener_option.add_item("Color", 4)
 	tweener_hbox.add_child(tweener_option)
-	vbox.add_child(tweener_hbox)
+	config.add_child(tweener_hbox)
 	
 	# Duration
 	var duration_hbox = HBoxContainer.new()
 	var duration_label = Label.new()
 	duration_label.text = "Duration:"
-	duration_label.custom_minimum_size.x = 100
+	duration_label.custom_minimum_size.x = 80
 	duration_hbox.add_child(duration_label)
 	
 	var duration_slider = HSlider.new()
@@ -185,17 +162,17 @@ func _create_effect_config_panel() -> Control:
 	
 	var duration_value = Label.new()
 	duration_value.text = "0.30"
-	duration_value.custom_minimum_size.x = 50
+	duration_value.custom_minimum_size.x = 40
 	duration_hbox.add_child(duration_value)
 	
 	duration_slider.value_changed.connect(func(value): duration_value.text = "%.2f" % value)
-	vbox.add_child(duration_hbox)
+	config.add_child(duration_hbox)
 	
 	# Intensity
 	var intensity_hbox = HBoxContainer.new()
 	var intensity_label = Label.new()
 	intensity_label.text = "Intensity:"
-	intensity_label.custom_minimum_size.x = 100
+	intensity_label.custom_minimum_size.x = 80
 	intensity_hbox.add_child(intensity_label)
 	
 	var intensity_slider = HSlider.new()
@@ -209,142 +186,13 @@ func _create_effect_config_panel() -> Control:
 	
 	var intensity_value = Label.new()
 	intensity_value.text = "1.00"
-	intensity_value.custom_minimum_size.x = 50
+	intensity_value.custom_minimum_size.x = 40
 	intensity_hbox.add_child(intensity_value)
 	
 	intensity_slider.value_changed.connect(func(value): intensity_value.text = "%.2f" % value)
-	vbox.add_child(intensity_hbox)
+	config.add_child(intensity_hbox)
 	
-	# Target Values
-	var target_x_hbox = HBoxContainer.new()
-	var target_x_label = Label.new()
-	target_x_label.text = "Target X:"
-	target_x_label.custom_minimum_size.x = 100
-	target_x_hbox.add_child(target_x_label)
-	
-	var target_x_slider = HSlider.new()
-	target_x_slider.name = "TargetX"
-	target_x_slider.min_value = -50.0
-	target_x_slider.max_value = 50.0
-	target_x_slider.value = 10.0
-	target_x_slider.step = 0.5
-	target_x_slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	target_x_hbox.add_child(target_x_slider)
-	
-	var target_x_value = Label.new()
-	target_x_value.text = "10.00"
-	target_x_value.custom_minimum_size.x = 50
-	target_x_hbox.add_child(target_x_value)
-	
-	target_x_slider.value_changed.connect(func(value): target_x_value.text = "%.2f" % value)
-	vbox.add_child(target_x_hbox)
-	
-	var target_y_hbox = HBoxContainer.new()
-	var target_y_label = Label.new()
-	target_y_label.text = "Target Y:"
-	target_y_label.custom_minimum_size.x = 100
-	target_y_hbox.add_child(target_y_label)
-	
-	var target_y_slider = HSlider.new()
-	target_y_slider.name = "TargetY"
-	target_y_slider.min_value = -50.0
-	target_y_slider.max_value = 50.0
-	target_y_slider.value = 0.0
-	target_y_slider.step = 0.5
-	target_y_slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	target_y_hbox.add_child(target_y_slider)
-	
-	var target_y_value = Label.new()
-	target_y_value.text = "0.00"
-	target_y_value.custom_minimum_size.x = 50
-	target_y_hbox.add_child(target_y_value)
-	
-	target_y_slider.value_changed.connect(func(value): target_y_value.text = "%.2f" % value)
-	vbox.add_child(target_y_hbox)
-	
-	# Shake Settings
-	var amplitude_hbox = HBoxContainer.new()
-	var amplitude_label = Label.new()
-	amplitude_label.text = "Amplitude:"
-	amplitude_label.custom_minimum_size.x = 100
-	amplitude_hbox.add_child(amplitude_label)
-	
-	var amplitude_slider = HSlider.new()
-	amplitude_slider.name = "Amplitude"
-	amplitude_slider.min_value = 0.0
-	amplitude_slider.max_value = 10.0
-	amplitude_slider.value = 0.5
-	amplitude_slider.step = 0.1
-	amplitude_slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	amplitude_hbox.add_child(amplitude_slider)
-	
-	var amplitude_value = Label.new()
-	amplitude_value.text = "0.50"
-	amplitude_value.custom_minimum_size.x = 50
-	amplitude_hbox.add_child(amplitude_value)
-	
-	amplitude_slider.value_changed.connect(func(value): amplitude_value.text = "%.2f" % value)
-	vbox.add_child(amplitude_hbox)
-	
-	# Elastic Settings
-	var elasticity_hbox = HBoxContainer.new()
-	var elasticity_label = Label.new()
-	elasticity_label.text = "Elasticity:"
-	elasticity_label.custom_minimum_size.x = 100
-	elasticity_hbox.add_child(elasticity_label)
-	
-	var elasticity_slider = HSlider.new()
-	elasticity_slider.name = "Elasticity"
-	elasticity_slider.min_value = 0.0
-	elasticity_slider.max_value = 1.0
-	elasticity_slider.value = 0.5
-	elasticity_slider.step = 0.1
-	elasticity_slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	elasticity_hbox.add_child(elasticity_slider)
-	
-	var elasticity_value = Label.new()
-	elasticity_value.text = "0.50"
-	elasticity_value.custom_minimum_size.x = 50
-	elasticity_hbox.add_child(elasticity_value)
-	
-	elasticity_slider.value_changed.connect(func(value): elasticity_value.text = "%.2f" % value)
-	vbox.add_child(elasticity_hbox)
-	
-	panel.add_child(vbox)
-	return panel
-
-func _create_test_panel() -> Control:
-	## 创建测试面板
-	var panel = VBoxContainer.new()
-	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	
-	var label = Label.new()
-	label.text = "Test Preview"
-	label.add_theme_font_size_override("font_size", 14)
-	panel.add_child(label)
-	
-	# 预览容器
-	var preview_container = SubViewportContainer.new()
-	preview_container.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	preview_container.stretch = true
-	preview_container.custom_minimum_size = Vector2(200, 200)
-	
-	# 创建SubViewport
-	var viewport = SubViewport.new()
-	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
-	preview_container.add_child(viewport)
-	
-	# 创建测试目标
-	var target = ColorRect.new()
-	target.size = Vector2(100, 100)
-	target.color = Color.WHITE
-	target.position = Vector2(150, 150)
-	viewport.add_child(target)
-	_test_scene = target
-	
-	panel.add_child(preview_container)
-	
-	return panel
+	return config
 
 func _create_status_bar() -> Control:
 	## 创建状态栏
@@ -390,6 +238,9 @@ func _on_save_pressed() -> void:
 		_update_status("Error: No effect to save")
 		return
 	
+	# 从UI读取配置
+	_update_effect_from_ui()
+	
 	var dialog = EditorFileDialog.new()
 	dialog.file_mode = EditorFileDialog.FILE_MODE_SAVE_FILE
 	dialog.add_filter("*.tres", "Resource files")
@@ -406,27 +257,13 @@ func _on_save_file_selected(path: String) -> void:
 		if error == OK:
 			_update_status("Saved: " + path)
 		else:
-			_update_status("Error: Failed to save")
+			_update_status("Error: failed to save")
 
 func _on_test_pressed() -> void:
 	## 测试效果 - 打开测试场景
-	if not _current_effect:
-		_update_status("Error: No effect to test")
-		return
-	
-	# 打开测试场景
 	var scene_path = "res://addons/game_feel_flow/editor/test_scene_2d.tscn"
 	EditorInterface.open_scene_from_path(scene_path)
 	_update_status("Opened test scene")
-
-func _on_reset_pressed() -> void:
-	## 重置测试场景
-	if _test_scene:
-		_test_scene.position = Vector2(150, 150)
-		_test_scene.scale = Vector2.ONE
-		_test_scene.rotation = 0
-		_test_scene.modulate = Color.WHITE
-	_update_status("Reset")
 
 # ===== 辅助方法 =====
 
@@ -436,29 +273,22 @@ func _update_status(message: String) -> void:
 	if status_label:
 		status_label.text = message
 
-func _get_params() -> GFFParams:
-	## 获取参数
-	var params = GFFParams.new()
+func _update_effect_from_ui() -> void:
+	## 从UI更新效果配置
+	if not _current_effect:
+		_current_effect = GFFCurvedBase.new()
 	
-	var config_panel = _editor_dock.get_node("EffectConfig")
-	if config_panel:
-		for child in config_panel.get_children():
-			if child is HBoxContainer:
-				for subchild in child.get_children():
-					if subchild is HSlider:
-						if subchild.name == "Intensity":
-							params.intensity = subchild.value
-						elif subchild.name == "Duration":
-							params.duration = subchild.value
-						else:
-							params.with_float(subchild.name, subchild.value)
-					elif subchild is ColorPickerButton:
-						params.with_color(subchild.name, subchild.color)
+	var config = _editor_dock.get_node("EffectConfig")
+	if not config:
+		return
 	
-	return params
-
-func _cleanup_test_scene() -> void:
-	## 清理测试场景
-	if _test_scene:
-		_test_scene.queue_free()
-		_test_scene = null
+	for child in config.get_children():
+		if child is HBoxContainer:
+			for subchild in child.get_children():
+				if subchild is LineEdit and subchild.name == "EffectName":
+					_current_effect.resource_name = subchild.text
+				elif subchild is OptionButton:
+					if subchild.name == "TargetType":
+						_current_effect.target_type = subchild.selected as GFFCurvedBase.TargetType
+					elif subchild.name == "TweenerType":
+						_current_effect.tweener_type = subchild.selected as GFFCurvedBase.TweenerType
