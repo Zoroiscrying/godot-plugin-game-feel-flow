@@ -279,20 +279,20 @@ func _update_params(effect_type: String) -> void:
 			_add_float_param("target_x", 10.0, 0.0, 50.0, 1.0)
 			_add_float_param("target_y", 0.0, -50.0, 50.0, 1.0)
 			_add_float_param("elasticity", 0.5, 0.0, 1.0, 0.1)
-			_add_int_param("punch_mode", 0, 0, 1)  # 0=TO_TARGET, 1=TO_ORIGIN
+			_add_option_param("punch_mode", ["To Target", "To Origin"])
 		"punch_scale":
 			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
 			_add_float_param("duration", 0.3, 0.01, 1.0, 0.01)
 			_add_float_param("target_x", 0.3, 0.0, 1.0, 0.1)
 			_add_float_param("target_y", 0.3, 0.0, 1.0, 0.1)
 			_add_float_param("elasticity", 0.5, 0.0, 1.0, 0.1)
-			_add_int_param("punch_mode", 0, 0, 1)  # 0=TO_TARGET, 1=TO_ORIGIN
+			_add_option_param("punch_mode", ["To Target", "To Origin"])
 		"punch_rotation":
 			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
 			_add_float_param("duration", 0.3, 0.01, 1.0, 0.01)
 			_add_float_param("target_x", 15.0, 0.0, 90.0, 1.0)
 			_add_float_param("elasticity", 0.5, 0.0, 1.0, 0.1)
-			_add_int_param("punch_mode", 0, 0, 1)  # 0=TO_TARGET, 1=TO_ORIGIN
+			_add_option_param("punch_mode", ["To Target", "To Origin"])
 		"scale":
 			_add_float_param("intensity", 1.0, 0.0, 3.0, 0.1)
 			_add_float_param("duration", 0.3, 0.01, 1.0, 0.01)
@@ -357,6 +357,25 @@ func _add_int_param(param_name: String, default: int, min_val: int, max_val: int
 	
 	param_panel.add_child(hbox)
 
+func _add_option_param(param_name: String, options: Array[String]) -> void:
+	var hbox = HBoxContainer.new()
+	
+	var label = Label.new()
+	label.text = param_name
+	label.custom_minimum_size.x = 100
+	hbox.add_child(label)
+	
+	var option_button = OptionButton.new()
+	for i in range(options.size()):
+		option_button.add_item(options[i], i)
+	option_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	option_button.name = param_name
+	hbox.add_child(option_button)
+	
+	option_button.item_selected.connect(func(index): pass)
+	
+	param_panel.add_child(hbox)
+
 func _add_color_param(param_name: String, default: Color) -> void:
 	var hbox = HBoxContainer.new()
 	
@@ -387,6 +406,8 @@ func _get_params() -> GFFParams:
 						params.with_float(subchild.name, subchild.value)
 				elif subchild is SpinBox:
 					params.with_int(subchild.name, int(subchild.value))
+				elif subchild is OptionButton:
+					params.with_int(subchild.name, subchild.selected)
 				elif subchild is ColorPickerButton:
 					params.with_color(subchild.name, subchild.color)
 	
