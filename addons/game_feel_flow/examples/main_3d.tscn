@@ -59,7 +59,7 @@ material_override = SubResource("Material_Green")
 mesh = SubResource("BoxMesh_1")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=528520320]
-transform = Transform3D(1, 0, 0, 0, 0.866, 0.5, 0, -0.5, 0.866, 0, 4, 6)
+transform = Transform3D(1, 0, 0, 0, 0.966, 0.259, 0, -0.259, 0.966, 0, 5, 8)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=470499722]
 transform = Transform3D(1, 0, 0, 0, 0.707, 0.707, 0, -0.707, 0.707, 0, 5, 0)
@@ -74,10 +74,9 @@ process_material = SubResource("ParticleMat")
 [node name="UI" type="CanvasLayer" parent="." unique_id=806343261]
 
 [node name="Panel" type="Panel" parent="UI" unique_id=508960059]
-anchors_preset = 0
+anchors_preset = -1
 anchor_right = 0.3
 anchor_bottom = 1.0
-grow_horizontal = 1
 grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UI/Panel" unique_id=897244046]
