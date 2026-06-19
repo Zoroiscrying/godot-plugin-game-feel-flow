@@ -4,5 +4,4 @@
 
 [resource]
 script = ExtResource("1_d6vlb")
-target_value = Vector2(10, 0)
 duration = 0.5

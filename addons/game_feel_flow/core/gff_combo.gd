@@ -85,8 +85,9 @@ static func _create_shake(p_amplitude: float, p_duration: float):
 	var effect = GFFCurvedBase.new()
 	effect.target_type = GFFCurvedBase.TargetType.POSITION
 	effect.tweener_type = GFFCurvedBase.TweenerType.SHAKE
-	effect.amplitude = p_amplitude
 	effect.duration = p_duration
+	# 通过默认参数传递amplitude
+	effect._default_amplitude = p_amplitude
 	return effect
 
 static func _create_flash(color: Color, p_duration: float):
@@ -94,8 +95,9 @@ static func _create_flash(color: Color, p_duration: float):
 	var effect = GFFCurvedBase.new()
 	effect.target_type = GFFCurvedBase.TargetType.MODULATE
 	effect.tweener_type = GFFCurvedBase.TweenerType.FLASH
-	effect.flash_color = color
 	effect.duration = p_duration
+	# 通过默认参数传递color
+	effect._default_flash_color = color
 	return effect
 
 static func _create_freeze(p_duration: float):

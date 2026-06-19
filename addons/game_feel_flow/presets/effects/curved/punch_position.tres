@@ -5,5 +5,4 @@
 [resource]
 script = ExtResource("1_v2les")
 tweener_type = 1
-target_value = Vector2(10, 0)
 duration = 0.4
