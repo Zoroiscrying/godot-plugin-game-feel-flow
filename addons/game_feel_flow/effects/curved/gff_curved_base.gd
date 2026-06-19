@@ -24,6 +24,11 @@ extends GFFFeedback
 @export_group("Punch Settings")
 @export var elasticity: float = 0.5
 
+@export_group("Flash Settings")
+@export var flash_color: Color = Color.WHITE
+@export var flash_frequency: float = 15.0
+@export var lerp_mode: int = 0  # 0=INSTANT, 1=LINEAR, 2=SMOOTH
+
 enum TargetType {
 	POSITION,
 	SCALE,
