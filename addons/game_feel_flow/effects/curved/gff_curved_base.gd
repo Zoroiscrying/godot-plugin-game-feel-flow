@@ -123,10 +123,11 @@ func _calculate_target_value(original_value: Variant, intensity: float) -> Varia
 			elif original_value is Vector2:
 				return original_value + Vector2(target_value.x * intensity, target_value.y * intensity)
 		TargetType.SCALE:
+			# Scale使用增量模式
 			if original_value is Vector3:
-				return target_value_3d * intensity
+				return original_value + target_value_3d * intensity
 			elif original_value is Vector2:
-				return Vector2(target_value.x * intensity, target_value.y * intensity)
+				return original_value + Vector2(target_value.x * intensity, target_value.y * intensity)
 		TargetType.ROTATION:
 			if original_value is float:
 				return original_value + deg_to_rad(target_angle * intensity)

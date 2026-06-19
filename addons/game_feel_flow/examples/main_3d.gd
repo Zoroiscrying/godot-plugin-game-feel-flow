@@ -242,7 +242,6 @@ func _reset_all() -> void:
 					visual.position = Vector3.ZERO
 					visual.rotation = Vector3.ZERO
 					visual.scale = Vector3.ONE
-					visual.modulate = Color.WHITE
 					if visual.material_override:
 						visual.material_override.emission_enabled = false
 
