@@ -5,10 +5,12 @@ extends GFFValueTweener
 ##
 ## 震动变化
 
+# ===== 属性 =====
+var amplitude: float = 0.5
+var frequency: float = 15.0
+
 func tween_value(node: Node, target_function: GFFTargetFunction, from: Variant, to: Variant, duration: float, curve: Curve = null) -> void:
 	var elapsed = 0.0
-	var frequency = 20.0  # 默认频率
-	var amplitude = 0.5   # 默认振幅
 	
 	while elapsed < duration:
 		var t = elapsed / duration

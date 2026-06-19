@@ -72,11 +72,20 @@ func _create_tweener() -> GFFValueTweener:
 		TweenerType.LINEAR:
 			return GFFLinearTweener.new()
 		TweenerType.ELASTIC:
-			return GFFElasticTweener.new()
+			var tweener = GFFElasticTweener.new()
+			tweener.elasticity = elasticity
+			return tweener
 		TweenerType.SHAKE:
-			return GFFShakeTweener.new()
+			var tweener = GFFShakeTweener.new()
+			tweener.amplitude = amplitude
+			tweener.frequency = frequency
+			return tweener
 		TweenerType.FLASH:
-			return GFFFlashTweener.new()
+			var tweener = GFFFlashTweener.new()
+			tweener.flash_color = flash_color
+			tweener.flash_frequency = flash_frequency
+			tweener.lerp_mode = lerp_mode
+			return tweener
 		TweenerType.COLOR:
 			return GFFColorTweener.new()
 		_:

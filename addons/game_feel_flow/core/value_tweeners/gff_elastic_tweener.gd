@@ -5,6 +5,9 @@ extends GFFValueTweener
 ##
 ## 弹性变化
 
+# ===== 属性 =====
+var elasticity: float = 0.5
+
 func tween_value(node: Node, target_function: GFFTargetFunction, from: Variant, to: Variant, duration: float, curve: Curve = null) -> void:
 	var tween = node.create_tween()
 	if curve:
