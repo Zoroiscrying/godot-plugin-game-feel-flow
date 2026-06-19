@@ -127,13 +127,15 @@ func _handle_click(click_pos: Vector2) -> void:
 	var closest: MeshInstance3D = null
 	var min_dist = 80.0  # Max pixel distance
 
+	# 在容器层级中查找MeshInstance3D
 	for child in objects.get_children():
-		if child is MeshInstance3D:
-			var screen_pos = camera.unproject_position(child.global_position)
-			var dist = click_pos.distance_to(screen_pos)
-			if dist < min_dist:
-				min_dist = dist
-				closest = child
+		for grandchild in child.get_children():
+			if grandchild is MeshInstance3D:
+				var screen_pos = camera.unproject_position(grandchild.global_position)
+				var dist = click_pos.distance_to(screen_pos)
+				if dist < min_dist:
+					min_dist = dist
+					closest = grandchild
 
 	if closest:
 		_select_target(closest)
