@@ -137,42 +137,35 @@ var _signal_listeners: Dictionary = {}
 
 func _register_effects() -> void:
 	## 注册内置效果
-	var effects = {
-		"shake": "res://addons/game_feel_flow/effects/transform/gff_shake.gd",
-		"scale": "res://addons/game_feel_flow/effects/transform/gff_scale.gd",
-		"position": "res://addons/game_feel_flow/effects/transform/gff_position.gd",
-		"rotation": "res://addons/game_feel_flow/effects/transform/gff_rotation.gd",
-		"camera_shake": "res://addons/game_feel_flow/effects/camera/gff_camera_shake.gd",
-		"camera_zoom": "res://addons/game_feel_flow/effects/camera/gff_camera_zoom.gd",
-		"camera_flash": "res://addons/game_feel_flow/effects/camera/gff_camera_flash.gd",
-		"flash": "res://addons/game_feel_flow/effects/visual/gff_flash.gd",
-		"color": "res://addons/game_feel_flow/effects/visual/gff_color.gd",
-		"alpha": "res://addons/game_feel_flow/effects/visual/gff_alpha.gd",
-		"flicker": "res://addons/game_feel_flow/effects/visual/gff_flicker.gd",
-		"sound": "res://addons/game_feel_flow/effects/audio/gff_sound.gd",
-		"audio_volume": "res://addons/game_feel_flow/effects/audio/gff_audio_volume.gd",
-		"freeze_frame": "res://addons/game_feel_flow/effects/time/gff_freeze_frame.gd",
-		"time_scale": "res://addons/game_feel_flow/effects/time/gff_time_scale.gd",
-		"particles": "res://addons/game_feel_flow/effects/particles/gff_particles.gd",
-		"gpu_particles": "res://addons/game_feel_flow/effects/particles/gff_gpu_particles.gd",
-		"impulse": "res://addons/game_feel_flow/effects/physics/gff_impulse.gd",
-		"velocity": "res://addons/game_feel_flow/effects/physics/gff_velocity.gd",
-		"tween": "res://addons/game_feel_flow/effects/animation/gff_tween.gd",
-		"animator": "res://addons/game_feel_flow/effects/animation/gff_animator.gd",
-		"ui_shake": "res://addons/game_feel_flow/effects/ui/gff_ui_shake.gd",
-		"ui_color": "res://addons/game_feel_flow/effects/ui/gff_ui_color.gd",
-		"ui_scale": "res://addons/game_feel_flow/effects/ui/gff_ui_scale.gd",
-		"ui_alpha": "res://addons/game_feel_flow/effects/ui/gff_ui_alpha.gd",
-	}
+	# Shake系列
+	_effect_registry["shake_position"] = _create_curved_effect(GFFCurvedBase.TargetType.POSITION, GFFCurvedBase.TweenerType.SHAKE)
+	_effect_registry["shake_scale"] = _create_curved_effect(GFFCurvedBase.TargetType.SCALE, GFFCurvedBase.TweenerType.SHAKE)
+	_effect_registry["shake_rotation"] = _create_curved_effect(GFFCurvedBase.TargetType.ROTATION, GFFCurvedBase.TweenerType.SHAKE)
+	
+	# Punch系列
+	_effect_registry["punch_position"] = _create_curved_effect(GFFCurvedBase.TargetType.POSITION, GFFCurvedBase.TweenerType.ELASTIC)
+	_effect_registry["punch_scale"] = _create_curved_effect(GFFCurvedBase.TargetType.SCALE, GFFCurvedBase.TweenerType.ELASTIC)
+	_effect_registry["punch_rotation"] = _create_curved_effect(GFFCurvedBase.TargetType.ROTATION, GFFCurvedBase.TweenerType.ELASTIC)
+	
+	# Curved系列
+	_effect_registry["curved_position"] = _create_curved_effect(GFFCurvedBase.TargetType.POSITION, GFFCurvedBase.TweenerType.LINEAR)
+	_effect_registry["curved_scale"] = _create_curved_effect(GFFCurvedBase.TargetType.SCALE, GFFCurvedBase.TweenerType.LINEAR)
+	_effect_registry["curved_rotation"] = _create_curved_effect(GFFCurvedBase.TargetType.ROTATION, GFFCurvedBase.TweenerType.LINEAR)
+	
+	# 特殊效果
+	_effect_registry["flash"] = _create_curved_effect(GFFCurvedBase.TargetType.MODULATE, GFFCurvedBase.TweenerType.FLASH)
+	_effect_registry["color"] = _create_curved_effect(GFFCurvedBase.TargetType.MODULATE, GFFCurvedBase.TweenerType.COLOR)
+	
+	# 保留旧的名称作为别名
+	_effect_registry["shake"] = _effect_registry["shake_position"]
+	_effect_registry["scale"] = _effect_registry["curved_scale"]
 
-	for name in effects:
-		var path = effects[name]
-		if ResourceLoader.exists(path):
-			var script = load(path)
-			if script:
-				var effect = script.new()
-				if effect is GFFFeedback:
-					_effect_registry[name] = effect
+func _create_curved_effect(target_type: int, tweener_type: int) -> GFFCurvedBase:
+	## 创建曲线效果
+	var effect = GFFCurvedBase.new()
+	effect.target_type = target_type
+	effect.tweener_type = tweener_type
+	return effect
 
 func _register_combos() -> void:
 	## 注册内置组合效果
