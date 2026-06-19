@@ -82,14 +82,18 @@ func execute(target: Node, params: GFFParams = null) -> void:
 
 static func _create_shake(p_amplitude: float, p_duration: float):
 	## 创建震动效果
-	var effect = load("res://addons/game_feel_flow/effects/transform/gff_shake.gd").new()
+	var effect = GFFCurvedBase.new()
+	effect.target_type = GFFCurvedBase.TargetType.POSITION
+	effect.tweener_type = GFFCurvedBase.TweenerType.SHAKE
 	effect.amplitude = p_amplitude
 	effect.duration = p_duration
 	return effect
 
 static func _create_flash(color: Color, p_duration: float):
 	## 创建闪白效果
-	var effect = load("res://addons/game_feel_flow/effects/visual/gff_flash.gd").new()
+	var effect = GFFCurvedBase.new()
+	effect.target_type = GFFCurvedBase.TargetType.MODULATE
+	effect.tweener_type = GFFCurvedBase.TweenerType.FLASH
 	effect.flash_color = color
 	effect.duration = p_duration
 	return effect
@@ -102,14 +106,18 @@ static func _create_freeze(p_duration: float):
 
 static func _create_scale(target_scale: Vector2, p_duration: float):
 	## 创建缩放效果
-	var effect = load("res://addons/game_feel_flow/effects/transform/gff_scale.gd").new()
-	effect.target_scale = target_scale
+	var effect = GFFCurvedBase.new()
+	effect.target_type = GFFCurvedBase.TargetType.SCALE
+	effect.tweener_type = GFFCurvedBase.TweenerType.LINEAR
+	effect.target_value = target_scale
 	effect.duration = p_duration
 	return effect
 
 static func _create_alpha(target_alpha: float, p_duration: float):
 	## 创建透明度效果
-	var effect = load("res://addons/game_feel_flow/effects/visual/gff_alpha.gd").new()
-	effect.target_alpha = target_alpha
+	var effect = GFFCurvedBase.new()
+	effect.target_type = GFFCurvedBase.TargetType.MODULATE
+	effect.tweener_type = GFFCurvedBase.TweenerType.COLOR
+	effect.target_value = Vector2(target_alpha, target_alpha)
 	effect.duration = p_duration
 	return effect
