@@ -27,13 +27,16 @@ extends GFFFeedback
 enum TargetType {
 	POSITION,
 	SCALE,
-	ROTATION
+	ROTATION,
+	MODULATE
 }
 
 enum TweenerType {
 	LINEAR,
 	ELASTIC,
-	SHAKE
+	SHAKE,
+	FLASH,
+	COLOR
 }
 
 # ===== 组合对象 =====
@@ -54,6 +57,8 @@ func _create_target_function() -> GFFTargetFunction:
 			return GFFScaleTarget.new()
 		TargetType.ROTATION:
 			return GFFRotationTarget.new()
+		TargetType.MODULATE:
+			return GFFModulateTarget.new()
 		_:
 			return GFFPositionTarget.new()
 
@@ -65,6 +70,10 @@ func _create_tweener() -> GFFValueTweener:
 			return GFFElasticTweener.new()
 		TweenerType.SHAKE:
 			return GFFShakeTweener.new()
+		TweenerType.FLASH:
+			return GFFFlashTweener.new()
+		TweenerType.COLOR:
+			return GFFColorTweener.new()
 		_:
 			return GFFLinearTweener.new()
 
