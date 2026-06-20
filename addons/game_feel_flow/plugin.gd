@@ -9,6 +9,7 @@ const AUTOLOAD_PATH = "res://addons/game_feel_flow/core/game_feel_flow.gd"
 var _inspector_plugin: EditorInspectorPlugin = null
 var _editor_dock: Control = null
 var _current_effect: GFFCurvedBase = null
+var _preview_target: Control = null
 var _status_label: Label = null
 
 func _enter_tree() -> void:
@@ -45,15 +46,25 @@ func _exit_tree() -> void:
 func _create_editor_dock() -> Control:
 	## 创建编辑器Dock
 	var main_container = VBoxContainer.new()
-	main_container.custom_minimum_size = Vector2(0, 200)
+	main_container.custom_minimum_size = Vector2(0, 400)
 	
 	# 工具栏
 	var toolbar = _create_toolbar()
 	main_container.add_child(toolbar)
 	
-	# 效果配置
-	var config_panel = _create_effect_config()
-	main_container.add_child(config_panel)
+	# 内容区域
+	var content = HSplitContainer.new()
+	content.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	
+	# 左侧：效果配置
+	var left_panel = _create_effect_config()
+	content.add_child(left_panel)
+	
+	# 右侧：预览区域
+	var right_panel = _create_preview_panel()
+	content.add_child(right_panel)
+	
+	main_container.add_child(content)
 	
 	# 状态栏
 	var status_bar = _create_status_bar()
@@ -86,18 +97,33 @@ func _create_toolbar() -> Control:
 	var separator = VSeparator.new()
 	toolbar.add_child(separator)
 	
-	# 测试按钮
-	var test_button = Button.new()
-	test_button.text = "Test in Scene"
-	test_button.pressed.connect(_on_test_pressed)
-	toolbar.add_child(test_button)
+	# 播放按钮
+	var play_button = Button.new()
+	play_button.text = "Play"
+	play_button.pressed.connect(_on_play_pressed)
+	toolbar.add_child(play_button)
+	
+	# 停止按钮
+	var stop_button = Button.new()
+	stop_button.text = "Stop"
+	stop_button.pressed.connect(_on_stop_pressed)
+	toolbar.add_child(stop_button)
+	
+	# 重置按钮
+	var reset_button = Button.new()
+	reset_button.text = "Reset"
+	reset_button.pressed.connect(_on_reset_pressed)
+	toolbar.add_child(reset_button)
 	
 	return toolbar
 
 func _create_effect_config() -> Control:
 	## 创建效果配置
-	var config = VBoxContainer.new()
-	config.name = "EffectConfig"
+	var config = ScrollContainer.new()
+	config.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	
+	var vbox = VBoxContainer.new()
+	vbox.name = "EffectConfig"
 	
 	# 效果名称
 	var name_hbox = HBoxContainer.new()
@@ -110,7 +136,7 @@ func _create_effect_config() -> Control:
 	name_edit.name = "EffectName"
 	name_edit.text = "new_effect"
 	name_hbox.add_child(name_edit)
-	config.add_child(name_hbox)
+	vbox.add_child(name_hbox)
 	
 	# Target Type
 	var target_hbox = HBoxContainer.new()
@@ -126,7 +152,7 @@ func _create_effect_config() -> Control:
 	target_option.add_item("Rotation", 2)
 	target_option.add_item("Modulate", 3)
 	target_hbox.add_child(target_option)
-	config.add_child(target_hbox)
+	vbox.add_child(target_hbox)
 	
 	# Tweener Type
 	var tweener_hbox = HBoxContainer.new()
@@ -143,7 +169,7 @@ func _create_effect_config() -> Control:
 	tweener_option.add_item("Flash", 3)
 	tweener_option.add_item("Color", 4)
 	tweener_hbox.add_child(tweener_option)
-	config.add_child(tweener_hbox)
+	vbox.add_child(tweener_hbox)
 	
 	# Duration
 	var duration_hbox = HBoxContainer.new()
@@ -167,7 +193,7 @@ func _create_effect_config() -> Control:
 	duration_hbox.add_child(duration_value)
 	
 	duration_slider.value_changed.connect(func(value): duration_value.text = "%.2f" % value)
-	config.add_child(duration_hbox)
+	vbox.add_child(duration_hbox)
 	
 	# Intensity
 	var intensity_hbox = HBoxContainer.new()
@@ -191,9 +217,90 @@ func _create_effect_config() -> Control:
 	intensity_hbox.add_child(intensity_value)
 	
 	intensity_slider.value_changed.connect(func(value): intensity_value.text = "%.2f" % value)
-	config.add_child(intensity_hbox)
+	vbox.add_child(intensity_hbox)
 	
+	# Target X
+	var target_x_hbox = HBoxContainer.new()
+	var target_x_label = Label.new()
+	target_x_label.text = "Target X:"
+	target_x_label.custom_minimum_size.x = 80
+	target_x_hbox.add_child(target_x_label)
+	
+	var target_x_slider = HSlider.new()
+	target_x_slider.name = "TargetX"
+	target_x_slider.min_value = -10.0
+	target_x_slider.max_value = 10.0
+	target_x_slider.value = 1.0
+	target_x_slider.step = 0.1
+	target_x_slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	target_x_hbox.add_child(target_x_slider)
+	
+	var target_x_value = Label.new()
+	target_x_value.text = "1.00"
+	target_x_value.custom_minimum_size.x = 40
+	target_x_hbox.add_child(target_x_value)
+	
+	target_x_slider.value_changed.connect(func(value): target_x_value.text = "%.2f" % value)
+	vbox.add_child(target_x_hbox)
+	
+	# Target Y
+	var target_y_hbox = HBoxContainer.new()
+	var target_y_label = Label.new()
+	target_y_label.text = "Target Y:"
+	target_y_label.custom_minimum_size.x = 80
+	target_y_hbox.add_child(target_y_label)
+	
+	var target_y_slider = HSlider.new()
+	target_y_slider.name = "TargetY"
+	target_y_slider.min_value = -10.0
+	target_y_slider.max_value = 10.0
+	target_y_slider.value = 0.0
+	target_y_slider.step = 0.1
+	target_y_slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	target_y_hbox.add_child(target_y_slider)
+	
+	var target_y_value = Label.new()
+	target_y_value.text = "0.00"
+	target_y_value.custom_minimum_size.x = 40
+	target_y_hbox.add_child(target_y_value)
+	
+	target_y_slider.value_changed.connect(func(value): target_y_value.text = "%.2f" % value)
+	vbox.add_child(target_y_hbox)
+	
+	config.add_child(vbox)
 	return config
+
+func _create_preview_panel() -> Control:
+	## 创建预览面板
+	var panel = VBoxContainer.new()
+	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	
+	var label = Label.new()
+	label.text = "Preview"
+	label.add_theme_font_size_override("font_size", 14)
+	panel.add_child(label)
+	
+	# 预览容器
+	var preview_container = SubViewportContainer.new()
+	preview_container.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	preview_container.stretch = true
+	preview_container.custom_minimum_size = Vector2(200, 200)
+	
+	# 创建SubViewport
+	var viewport = SubViewport.new()
+	viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+	preview_container.add_child(viewport)
+	
+	# 创建预览目标
+	_preview_target = ColorRect.new()
+	_preview_target.size = Vector2(100, 100)
+	_preview_target.color = Color.WHITE
+	_preview_target.position = Vector2(50, 50)
+	viewport.add_child(_preview_target)
+	
+	panel.add_child(preview_container)
+	
+	return panel
 
 func _create_status_bar() -> Control:
 	## 创建状态栏
@@ -259,11 +366,45 @@ func _on_save_file_selected(path: String) -> void:
 		else:
 			_update_status("Error: failed to save")
 
-func _on_test_pressed() -> void:
-	## 测试效果 - 打开测试场景
-	var scene_path = "res://addons/game_feel_flow/editor/test_scene_2d.tscn"
-	EditorInterface.open_scene_from_path(scene_path)
-	_update_status("Opened test scene")
+func _on_play_pressed() -> void:
+	## 播放效果
+	if not _current_effect:
+		_update_status("Error: No effect to test")
+		return
+	
+	if not _preview_target:
+		_update_status("Error: No preview target")
+		return
+	
+	# 更新效果配置
+	_update_effect_from_ui()
+	
+	# 获取参数
+	var params = _get_params()
+	
+	# 播放效果
+	var game_feel_flow = Engine.get_singleton(AUTOLOAD_NAME)
+	if game_feel_flow:
+		game_feel_flow.play(_current_effect, _preview_target, params)
+		_update_status("Playing...")
+	else:
+		_update_status("Error: GameFeelFlow singleton not found")
+
+func _on_stop_pressed() -> void:
+	## 停止效果
+	var game_feel_flow = Engine.get_singleton(AUTOLOAD_NAME)
+	if game_feel_flow:
+		game_feel_flow.stop(_preview_target)
+	_update_status("Stopped")
+
+func _on_reset_pressed() -> void:
+	## 重置预览
+	if _preview_target:
+		_preview_target.position = Vector2(50, 50)
+		_preview_target.scale = Vector2.ONE
+		_preview_target.rotation = 0
+		_preview_target.modulate = Color.WHITE
+	_update_status("Reset")
 
 # ===== 辅助方法 =====
 
@@ -291,3 +432,24 @@ func _update_effect_from_ui() -> void:
 						_current_effect.target_type = subchild.selected as GFFCurvedBase.TargetType
 					elif subchild.name == "TweenerType":
 						_current_effect.tweener_type = subchild.selected as GFFCurvedBase.TweenerType
+
+func _get_params() -> GFFParams:
+	## 获取参数
+	var params = GFFParams.new()
+	
+	var config = _editor_dock.get_node("EffectConfig")
+	if config:
+		for child in config.get_children():
+			if child is HBoxContainer:
+				for subchild in child.get_children():
+					if subchild is HSlider:
+						if subchild.name == "Intensity":
+							params.intensity = subchild.value
+						elif subchild.name == "Duration":
+							params.duration = subchild.value
+						else:
+							params.with_float(subchild.name, subchild.value)
+					elif subchild is ColorPickerButton:
+						params.with_color(subchild.name, subchild.color)
+	
+	return params
