@@ -5,7 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.0] - 2026-07-15
+
+First public release: free version submitted to the Godot Asset Library,
+Pro extension distributed via itch.io.
 
 ### Changed
 - **Free / Pro 拆分**：UI 与 Material target 迁移到 `addons/game_feel_flow_pro`，Free 核心不再包含这些 effect。
