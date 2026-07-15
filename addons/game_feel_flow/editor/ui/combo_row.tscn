@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://bq8kfvkl6jq8n"]
+
+[ext_resource type="Script" path="res://addons/game_feel_flow/editor/ui/combo_row.gd" id="1_7i3b7"]
+
+[node name="ComboRow" type="PanelContainer"]
+custom_minimum_size = Vector2(0, 28)
+script = ExtResource("1_7i3b7")

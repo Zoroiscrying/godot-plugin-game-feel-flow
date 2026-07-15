@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="GFFEffectCommon" format=3]
+
+[ext_resource type="Script" path="res://addons/game_feel_flow/effects/curved/gff_effect_common.gd" id="1_7swx7"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/targets/gff_scale_target.gd" id="2_704y8"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/tweeners/gff_shake_tweener.gd" id="3_uakh5"]
+
+[sub_resource type="Resource" id="Resource_bbgql"]
+script = ExtResource("2_704y8")
+
+[sub_resource type="Resource" id="Resource_m6c57"]
+script = ExtResource("3_uakh5")
+amplitude = 0.2
+
+[resource]
+script = ExtResource("1_7swx7")
+target = SubResource("Resource_bbgql")
+tweener = SubResource("Resource_m6c57")

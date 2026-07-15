@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="GFFEffectCommon" format=3]
+
+[ext_resource type="Script" path="res://addons/game_feel_flow/effects/curved/gff_effect_common.gd" id="1_qtyjn"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/targets/gff_color_target.gd" id="2_uvh44"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/tweeners/gff_flash_tweener.gd" id="3_gp73j"]
+
+[sub_resource type="Resource" id="Resource_mcrsk"]
+script = ExtResource("2_uvh44")
+
+[sub_resource type="Resource" id="Resource_m30of"]
+script = ExtResource("3_gp73j")
+
+[resource]
+script = ExtResource("1_qtyjn")
+target = SubResource("Resource_mcrsk")
+tweener = SubResource("Resource_m30of")
+label = "flash_white"
+duration = 0.1
+restore_after_play = false

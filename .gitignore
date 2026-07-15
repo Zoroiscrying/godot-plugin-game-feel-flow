@@ -1,0 +1,21 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# GdUnit4 reports
+reports/
+
+# Isolated development worktrees
+.worktrees/
+
+# MkDocs build output
+site/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# IDE / tool folders
+.idea/
+.reasonix/
+.superpowers/

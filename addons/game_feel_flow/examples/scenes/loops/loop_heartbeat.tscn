@@ -1,0 +1,106 @@
+[gd_scene format=3 uid="uid://b1hpkiv8m60fm"]
+
+[ext_resource type="Script" uid="uid://b6hb1c3t0eppb" path="res://addons/game_feel_flow/core/gff_player.gd" id="1_gffplayer"]
+[ext_resource type="Script" uid="uid://q1rhxo4pw2yt" path="res://addons/game_feel_flow/core/gff_combo.gd" id="2_combo"]
+[ext_resource type="Script" uid="uid://4uoyf4ncegfi" path="res://addons/game_feel_flow/core/gff_combo_entry.gd" id="3_entry"]
+[ext_resource type="Script" uid="uid://cw1adefvk3suo" path="res://addons/game_feel_flow/effects/curved/gff_effect_common.gd" id="5_common"]
+[ext_resource type="Script" uid="uid://cc2fg8p4orpqh" path="res://addons/game_feel_flow/core/targets/gff_scale_target.gd" id="6_scale"]
+[ext_resource type="Script" uid="uid://ykq0gv32kka" path="res://addons/game_feel_flow/core/tweeners/gff_elastic_tweener.gd" id="7_elastic"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_red"]
+albedo_color = Color(1, 0.2, 0.2, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cube"]
+
+[sub_resource type="Resource" id="Resource_scale_target"]
+script = ExtResource("6_scale")
+target_value = Vector3(0.5, 0.5, 0.5)
+mode = 1
+
+[sub_resource type="Resource" id="Resource_tweener"]
+script = ExtResource("7_elastic")
+punch_mode = 1
+elasticity = 0.4
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("5_common")
+target = SubResource("Resource_scale_target")
+tweener = SubResource("Resource_tweener")
+label = "heartbeat"
+duration = 0.4
+loop_count = -1
+loop_delay = 0.4
+
+[sub_resource type="Resource" id="Resource_entry"]
+script = ExtResource("3_entry")
+effect = SubResource("Resource_effect")
+duration = 0.4
+
+[sub_resource type="Resource" id="Resource_combo"]
+script = ExtResource("2_combo")
+label = "heartbeat"
+entries = Array[ExtResource("3_entry")]([SubResource("Resource_entry")])
+
+[node name="LoopHeartbeat" type="Node3D" unique_id=25120167]
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=2010398963]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 1.5, 3)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1215997537]
+transform = Transform3D(0.866025, -0.353553, 0.353553, 0, 0.707107, 0.707107, -0.5, -0.612372, 0.612372, 0, 0, 0)
+
+[node name="HeartbeatCube" type="MeshInstance3D" parent="." unique_id=899125357]
+transform = Transform3D(0.99564123, 0, 0, 0, 0.99564123, 0, 0, 0, 0.99564123, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_red")
+mesh = SubResource("BoxMesh_cube")
+
+[node name="GFFPlayer" type="Node" parent="HeartbeatCube" unique_id=1570311304]
+script = ExtResource("1_gffplayer")
+auto_play = true
+default_combo_index = 0
+combo_dictionary = Dictionary[String, ExtResource("2_combo")]({
+"heartbeat": SubResource("Resource_combo")
+})
+active_combo_key = "heartbeat"
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=902198318]
+
+[node name="Panel" type="Panel" parent="HUD" unique_id=2057243254]
+custom_minimum_size = Vector2(0, 140)
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 140.0
+grow_horizontal = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/Panel" unique_id=1282403833]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="HUD/Panel/VBoxContainer" unique_id=1187238608]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Loop Demo: Heartbeat (3D)"
+autowrap_mode = 3
+
+[node name="Desc" type="Label" parent="HUD/Panel/VBoxContainer" unique_id=2068154416]
+layout_mode = 2
+text = "The red cube pulses like a heartbeat using an Elastic tweener with loop_count = -1."
+autowrap_mode = 3
+
+[node name="ConfigHint" type="Label" parent="HUD/Panel/VBoxContainer" unique_id=1833729656]
+layout_mode = 2
+text = "Config: select HeartbeatCube/GFFPlayer and inspect combo_dictionary / Timeline Editor."
+autowrap_mode = 3
+
+[node name="CodeHint" type="Label" parent="HUD/Panel/VBoxContainer" unique_id=172786203]
+layout_mode = 2
+text = "Code: none — driven by GFFPlayer auto_play + combo_dictionary Inspector config. Hub switcher: loop_demo.gd"
+autowrap_mode = 3

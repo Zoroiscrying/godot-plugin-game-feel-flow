@@ -1,0 +1,102 @@
+[gd_scene format=3 uid="uid://c2hpkiv8m60fm"]
+
+[ext_resource type="Script" uid="uid://b6hb1c3t0eppb" path="res://addons/game_feel_flow/core/gff_player.gd" id="1_gffplayer"]
+[ext_resource type="Script" uid="uid://q1rhxo4pw2yt" path="res://addons/game_feel_flow/core/gff_combo.gd" id="2_combo"]
+[ext_resource type="Script" uid="uid://4uoyf4ncegfi" path="res://addons/game_feel_flow/core/gff_combo_entry.gd" id="3_entry"]
+[ext_resource type="Script" uid="uid://cw1adefvk3suo" path="res://addons/game_feel_flow/effects/curved/gff_effect_common.gd" id="5_common"]
+[ext_resource type="Script" uid="uid://cc2fg8p4orpqh" path="res://addons/game_feel_flow/core/targets/gff_scale_target.gd" id="6_scale"]
+[ext_resource type="Script" uid="uid://dnkh4qq46q2rr" path="res://addons/game_feel_flow/core/tweeners/gff_linear_tweener.gd" id="7_linear"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cyan"]
+albedo_color = Color(0, 0.9, 0.9, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_sphere"]
+
+[sub_resource type="Resource" id="Resource_scale_target"]
+script = ExtResource("6_scale")
+target_value = Vector3(0.25, 0.25, 0.25)
+mode = 1
+
+[sub_resource type="Resource" id="Resource_l3avq"]
+script = ExtResource("7_linear")
+
+[sub_resource type="Resource" id="Resource_effect"]
+script = ExtResource("5_common")
+target = SubResource("Resource_scale_target")
+tweener = SubResource("Resource_l3avq")
+label = "breathing"
+duration = 1.5
+loop_count = -1
+loop_mode = 1
+
+[sub_resource type="Resource" id="Resource_entry"]
+script = ExtResource("3_entry")
+effect = SubResource("Resource_effect")
+duration = 1.5
+
+[sub_resource type="Resource" id="Resource_combo"]
+script = ExtResource("2_combo")
+label = "breathing"
+entries = Array[ExtResource("3_entry")]([SubResource("Resource_entry")])
+
+[node name="LoopBreathing" type="Node3D" unique_id=806967828]
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=575650752]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 1.5, 3)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1507405775]
+transform = Transform3D(0.866025, -0.353553, 0.353553, 0, 0.707107, 0.707107, -0.5, -0.612372, 0.612372, 0, 0, 0)
+
+[node name="BreathingSphere" type="MeshInstance3D" parent="." unique_id=1867385253]
+material_override = SubResource("StandardMaterial3D_cyan")
+mesh = SubResource("SphereMesh_sphere")
+
+[node name="GFFPlayer" type="Node" parent="BreathingSphere" unique_id=273938292]
+script = ExtResource("1_gffplayer")
+auto_play = true
+combo_dictionary = Dictionary[String, ExtResource("2_combo")]({
+"breathing": SubResource("Resource_combo")
+})
+active_combo_key = "breathing"
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=479302472]
+
+[node name="Panel" type="Panel" parent="HUD" unique_id=73531545]
+custom_minimum_size = Vector2(0, 140)
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 140.0
+grow_horizontal = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/Panel" unique_id=1500352053]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="HUD/Panel/VBoxContainer" unique_id=2000642676]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Loop Demo: Breathing (3D)"
+autowrap_mode = 3
+
+[node name="Desc" type="Label" parent="HUD/Panel/VBoxContainer" unique_id=949578806]
+layout_mode = 2
+text = "The cyan sphere breathes smoothly using a Linear tweener with loop_mode = PING_PONG and loop_count = -1."
+autowrap_mode = 3
+
+[node name="ConfigHint" type="Label" parent="HUD/Panel/VBoxContainer" unique_id=1765092184]
+layout_mode = 2
+text = "Config: select BreathingSphere/GFFPlayer and inspect combo_dictionary / Timeline Editor."
+autowrap_mode = 3
+
+[node name="CodeHint" type="Label" parent="HUD/Panel/VBoxContainer" unique_id=1981164232]
+layout_mode = 2
+text = "Code: none — driven by GFFPlayer auto_play + combo_dictionary Inspector config. Hub switcher: loop_demo.gd"
+autowrap_mode = 3

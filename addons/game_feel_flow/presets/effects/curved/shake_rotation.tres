@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="GFFEffectCommon" format=3]
+
+[ext_resource type="Script" path="res://addons/game_feel_flow/effects/curved/gff_effect_common.gd" id="1_busph"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/targets/gff_rotation_target.gd" id="2_tk0q1"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/tweeners/gff_shake_tweener.gd" id="3_hmasv"]
+
+[sub_resource type="Resource" id="Resource_038vy"]
+script = ExtResource("2_tk0q1")
+
+[sub_resource type="Resource" id="Resource_no5hm"]
+script = ExtResource("3_hmasv")
+amplitude = 10.0
+
+[resource]
+script = ExtResource("1_busph")
+target = SubResource("Resource_038vy")
+tweener = SubResource("Resource_no5hm")

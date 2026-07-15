@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://6T1dojR1dwqu2"]
+
+[ext_resource type="Script" path="res://addons/game_feel_flow/editor/ui/effect_row.gd" id="1_8asc7"]
+
+[node name="EffectRow" type="PanelContainer"]
+size_flags_horizontal = 3
+script = ExtResource("1_8asc7")

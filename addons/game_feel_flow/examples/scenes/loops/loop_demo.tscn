@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://82tygyy2y4nu"]
+
+[ext_resource type="Script" uid="uid://cav6b4537oxk5" path="res://addons/game_feel_flow/examples/scenes/loops/loop_demo.gd" id="1_hub"]
+
+[node name="LoopDemo" type="Control" unique_id=1379632089]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hub")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1796494063]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TopBar" type="HBoxContainer" parent="VBoxContainer" unique_id=1889387868]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TopBar" unique_id=2103575536]
+layout_mode = 2
+text = "Select loop demo:"
+
+[node name="DemoSelector" type="OptionButton" parent="VBoxContainer/TopBar" unique_id=1877343123]
+layout_mode = 2
+
+[node name="ViewportContainer" type="SubViewportContainer" parent="VBoxContainer" unique_id=1766137254]
+layout_mode = 2
+size_flags_vertical = 3
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="VBoxContainer/ViewportContainer" unique_id=113271918]
+handle_input_locally = false
+size = Vector2i(1600, 873)
+render_target_update_mode = 4

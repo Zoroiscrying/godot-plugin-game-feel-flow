@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://e5smw2p4r7u1"]
+
+[ext_resource type="Script" path="res://addons/game_feel_flow/editor/ui/combos_panel.gd" id="1_6rcj4"]
+
+[node name="CombosPanel" type="VBoxContainer"]
+size_flags_horizontal = 3
+script = ExtResource("1_6rcj4")

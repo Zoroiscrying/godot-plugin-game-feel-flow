@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="GFFEffectCommon" format=3]
+
+[ext_resource type="Script" path="res://addons/game_feel_flow/effects/curved/gff_effect_common.gd" id="1_0wd88"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/targets/gff_scale_target.gd" id="2_2telo"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/tweeners/gff_elastic_tweener.gd" id="3_eoptw"]
+
+[sub_resource type="Resource" id="Resource_41h44"]
+script = ExtResource("2_2telo")
+target_value = Vector3(1.3, 1.3, 1)
+
+[sub_resource type="Resource" id="Resource_p7cym"]
+script = ExtResource("3_eoptw")
+punch_mode = 1
+
+[resource]
+script = ExtResource("1_0wd88")
+target = SubResource("Resource_41h44")
+tweener = SubResource("Resource_p7cym")
+duration = 0.4

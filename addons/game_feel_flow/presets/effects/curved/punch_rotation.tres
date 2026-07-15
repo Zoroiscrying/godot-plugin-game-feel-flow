@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="GFFEffectCommon" format=3]
+
+[ext_resource type="Script" path="res://addons/game_feel_flow/effects/curved/gff_effect_common.gd" id="1_tysyi"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/targets/gff_rotation_target.gd" id="2_vvgkj"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/tweeners/gff_elastic_tweener.gd" id="3_km2oe"]
+
+[sub_resource type="Resource" id="Resource_7nngd"]
+script = ExtResource("2_vvgkj")
+target_value = 15.0
+
+[sub_resource type="Resource" id="Resource_5lppw"]
+script = ExtResource("3_km2oe")
+punch_mode = 1
+
+[resource]
+script = ExtResource("1_tysyi")
+target = SubResource("Resource_7nngd")
+tweener = SubResource("Resource_5lppw")
+duration = 0.4
