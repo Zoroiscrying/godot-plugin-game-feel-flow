@@ -79,11 +79,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#game-feel-flow" class="md-skip">
-          Skip to content
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -417,7 +412,9 @@
           
             
               
-              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -452,26 +449,6 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Home
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
       
       <a href="." class="md-nav__link md-nav__link--active">
         
@@ -489,69 +466,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#what-is-it" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What is it?
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#quick-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Quick Example
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#where-to-go-next" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Where to go next
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#license" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        License
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
       
     </li>
   
@@ -1678,7 +1592,9 @@
             
             
               
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -1687,60 +1603,6 @@
   
   
   
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#what-is-it" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What is it?
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#quick-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Quick Example
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#where-to-go-next" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Where to go next
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#license" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        License
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
   
 </nav>
                   </div>
@@ -1754,42 +1616,149 @@
               <article class="md-content__inner md-typeset">
                 
                   
+  
 
 
 
-<h1 id="game-feel-flow">Game Feel Flow</h1>
-<p>A <strong>Godot 4</strong> plugin for building polished, composable game feel effects — shakes, flashes, scales, freezes, camera zooms, and much more — without writing boilerplate tween code.</p>
-<h2 id="what-is-it">What is it?</h2>
-<p>Game Feel Flow gives you:</p>
-<ul>
-<li><strong>30+ built-in effects</strong> in the free core, covering transform, camera, audio, time and events.</li>
-<li><strong><a href="pro/">Pro extension</a></strong> with UI and Material targets for advanced use cases.</li>
-<li><strong>Combo system</strong> to chain and layer effects on a timeline.</li>
-<li><strong>GFFPlayer</strong> node to organize, preview and play combos directly in your scene.</li>
-<li><strong>Inspector combo editor</strong> for visual editing in the free core.</li>
-<li><strong>Timeline Editor</strong> dock for advanced time-based editing in the Pro extension.</li>
-<li><strong>Loop modes</strong> (<code>Repeat</code>, <code>PingPong</code>, <code>Mirror</code>) for breathing, heartbeat and ambient effects.</li>
-<li><strong>Events effects</strong> to call methods, emit signals or fire global events from a combo.</li>
-<li><strong>Curve presets</strong> for common easing, shake and decay curves.</li>
-</ul>
-<blockquote>
-<p><img alt="GFFPlayer Inspector" src="images/gffplayer-inspector.png" /></p>
-</blockquote>
-<h2 id="quick-example">Quick Example</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># One-shot helper</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">GFUtil</span><span class="o">.</span><span class="n">hit</span><span class="p">(</span><span class="n">target_node</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="p">)</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Or use the GFFPlayer node</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="o">$</span><span class="n">GFFPlayer</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="s2">&quot;hit_light&quot;</span><span class="p">)</span>
+
+<div class="gff-hero">
+  <div class="gff-hero__eyebrow">Godot 4 Plugin</div>
+  <h1 class="gff-hero__title">Juice your game <br><span>in minutes</span></h1>
+  <p class="gff-hero__subtitle">
+    Game Feel Flow gives you polished, reusable feedback effects — shake, flash,
+    freeze frames, camera work, loops and more — without boilerplate tween code.
+  </p>
+  <div class="gff-hero__actions">
+    <a class="gff-button gff-button--primary" href="getting-started/installation/">
+      📥 Install
+    </a>
+    <a class="gff-button gff-button--secondary" href="getting-started/quick-start/">
+      📖 Quick Start
+    </a>
+    <a class="gff-button gff-button--pro" href="pro/">
+      💎 Get Pro
+    </a>
+  </div>
+  <div class="gff-trust-bar">
+    <span>✅ Free & MIT</span>
+    <span>🎮 Godot 4.6+</span>
+    <span>✨ 29 free effects</span>
+    <span>🛡️ 25 tests passing</span>
+  </div>
+</div>
+
+<div class="gff-section">
+  <h2 class="gff-section__title">Everything you need for game feel</h2>
+  <p class="gff-section__subtitle">
+    Chain effects into combos, preview them in the editor, and play them with one line of code.
+  </p>
+
+  <div class="gff-features">
+    <div class="gff-feature-card">
+      <div class="gff-feature-card__icon">⚡</div>
+      <h3>One-line effects</h3>
+      <p><code>GFUtil.hit(target, 2.0)</code> or <code>$GFFPlayer.play("hit")</code>. No tween boilerplate.</p>
+    </div>
+    <div class="gff-feature-card">
+      <div class="gff-feature-card__icon">🎨</div>
+      <h3>Visual Inspector editing</h3>
+      <p>Build and tweak combos directly in the Godot Inspector with real-time preview and Undo/Redo.</p>
+    </div>
+    <div class="gff-feature-card">
+      <div class="gff-feature-card__icon">🔁</div>
+      <h3>Loop modes</h3>
+      <p>Repeat, Ping-Pong and Mirror — finite or infinite — for breathing, heartbeat and ambient effects.</p>
+    </div>
+    <div class="gff-feature-card">
+      <div class="gff-feature-card__icon">📈</div>
+      <h3>Curve overrides</h3>
+      <p>Drop a custom <code>Curve</code> onto any effect to replace the built-in easing or shake decay.</p>
+    </div>
+    <div class="gff-feature-card">
+      <div class="gff-feature-card__icon">🧱</div>
+      <h3>Smart stacking</h3>
+      <p>Ignore, Cancel, Replace, Queue or Add when effects overlap. No more fighting tweens.</p>
+    </div>
+    <div class="gff-feature-card">
+      <div class="gff-feature-card__icon">🚀</div>
+      <h3>Production-ready</h3>
+      <p>15 built-in combos, resource-based reuse, event effects and a full test suite.</p>
+    </div>
+  </div>
+</div>
+
+<div class="gff-section">
+  <h2 class="gff-section__title">Edit combos without leaving Godot</h2>
+  <p class="gff-section__subtitle">
+    The GFFPlayer node exposes every combo and effect in the Inspector.
+  </p>
+  <div class="gff-screenshot">
+    ![GFFPlayer Inspector](images/gffplayer-inspector.png)
+  </div>
+</div>
+
+<div class="gff-section">
+  <h2 class="gff-section__title">Three ways to play</h2>
+
+  === "GFUtil shortcut"
+
+      <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Fastest: built-in presets for common moments</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">GFUtil</span><span class="o">.</span><span class="n">hit</span><span class="p">(</span><span class="n">target_node</span><span class="p">,</span><span class="w"> </span><span class="mf">2.0</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">GFUtil</span><span class="o">.</span><span class="n">pickup</span><span class="p">(</span><span class="n">target_node</span><span class="p">)</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">GFUtil</span><span class="o">.</span><span class="n">death</span><span class="p">(</span><span class="n">target_node</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="where-to-go-next">Where to go next</h2>
-<ol>
-<li><a href="getting-started/installation/">Installation</a></li>
-<li><a href="getting-started/quick-start/">Quick Start</a></li>
-<li><a href="getting-started/first-combo/">Your First Combo</a></li>
-</ol>
-<h2 id="license">License</h2>
-<p>The plugin is released under the MIT License.</p>
+
+  === "GameFeelFlow singleton"
+
+      <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Direct access with custom parameters</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">GameFeelFlow</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="s2">&quot;shake&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">target_node</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;intensity&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">2.0</span><span class="p">})</span>
+</code></pre></div>
+
+  === "GFFPlayer node"
+
+      <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Data-driven combos configured in the Inspector</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="o">$</span><span class="n">GFFPlayer</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="s2">&quot;hit_light&quot;</span><span class="p">)</span>
+</code></pre></div>
+</div>
+
+<div class="gff-section gff-comparison">
+  <h2 class="gff-section__title">Free vs Pro</h2>
+
+  | | Free | Pro |
+  |---|:---:|:---:|
+  | Built-in effects | 29 | +23 |
+  | Built-in combos | 15 | 15 |
+  | Inspector combo editor | ✅ | ✅ |
+  | Custom curves & loops | ✅ | ✅ |
+  | Timeline Editor | — | ✅ |
+  | UI / Material / Screen effects | — | ✅ |
+  | License | MIT | Personal / Studio |
+  | Price | Free | $29 / $79 |
+</div>
+
+<div class="gff-section">
+  <h2 class="gff-section__title">Level up with the Timeline Editor</h2>
+  <p class="gff-section__subtitle">
+    Pro adds a full timeline dock for arranging effect blocks, with multi-select,
+    copy/paste, snap-to-grid, event blocks and zoom.
+  </p>
+  <div class="gff-screenshot">
+    ![Timeline Editor](images/timeline-editor.png)
+  </div>
+</div>
+
+<div class="gff-cta">
+  <h2>Ready to add juice?</h2>
+  <p>Install the free plugin from the Godot Asset Library and start with the Quick Start guide.</p>
+  <div class="gff-hero__actions">
+    <a class="gff-button gff-button--primary" href="getting-started/installation/">
+      📥 Install Now
+    </a>
+    <a class="gff-button gff-button--pro" href="pro/">
+      💎 Explore Pro
+    </a>
+  </div>
+</div>
 
 
 
@@ -1797,8 +1766,13 @@
 
 
 
+  
+  
 
 
+
+
+  
 
 
 
