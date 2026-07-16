@@ -68,109 +68,152 @@ h2 .pro-badge {
    Premium dark landing page
    ========================================================= */
 
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap');
+
 .gff-hero {
   text-align: center;
-  padding: 5rem 1.5rem 6rem;
+  padding: 4rem 1rem 5rem;
   margin: -1rem -1.5rem 4rem;
-  background:
-    radial-gradient(ellipse 80% 60% at 50% -20%, rgba(59, 130, 246, 0.22) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 80% 120%, rgba(6, 182, 212, 0.12) 0%, transparent 50%),
-    linear-gradient(180deg, #0b1220 0%, #0f172a 50%, #0b1220 100%);
-  color: #f8fafc;
+  background: linear-gradient(180deg, #0ea5e9 0%, #0284c7 100%);
+  color: #fff;
   position: relative;
   overflow: hidden;
-}
-
-/* Soft grid overlay */
-.gff-hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 70%);
-  -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 70%);
-  pointer-events: none;
-}
-
-.gff-hero__inner {
-  position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(2.5rem, 5vw, 4.5rem);
-  flex-wrap: wrap;
-  max-width: 1120px;
-  margin: 0 auto;
+  min-height: calc(100vh - 6rem);
+}
+
+/* Doodle decorations */
+.gff-doodle {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.35;
+}
+
+.gff-doodle--grid {
+  width: 140px;
+  height: 140px;
+  right: 8%;
+  top: 18%;
+  background-image:
+    linear-gradient(#fff 2px, transparent 2px),
+    linear-gradient(90deg, #fff 2px, transparent 2px);
+  background-size: 24px 24px;
+  border-radius: 0.5rem;
+  transform: rotate(8deg);
+}
+
+.gff-doodle--graph {
+  width: 120px;
+  height: 70px;
+  left: 8%;
+  bottom: 22%;
+  background: transparent;
+  border-bottom: 3px solid #fff;
+  border-left: 3px solid #fff;
+  position: absolute;
+}
+
+.gff-doodle--graph::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top right, transparent 45%, #fff 45%, #fff 55%, transparent 55%);
+  clip-path: polygon(0 80%, 25% 60%, 50% 75%, 75% 30%, 100% 50%, 100% 100%, 0 100%);
+}
+
+.gff-doodle--orbit {
+  width: 80px;
+  height: 80px;
+  left: 12%;
+  top: 15%;
+  border: 3px dashed #fff;
+  border-radius: 50%;
+  animation: gff-spin 20s linear infinite;
+}
+
+@keyframes gff-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.gff-hero__card {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  padding: clamp(2rem, 5vw, 3.5rem);
+  border-radius: 2rem;
+  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+  border: 3px solid #fff;
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .gff-hero__logo {
   position: relative;
-  width: clamp(150px, 22vw, 240px);
+  width: clamp(130px, 22vw, 200px);
   height: auto;
-  flex: 0 0 auto;
-  border-radius: 2rem;
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.08),
-    0 24px 60px rgba(0, 0, 0, 0.45),
-    0 0 100px rgba(59, 130, 246, 0.2);
-}
-
-.gff-hero__content {
-  position: relative;
-  flex: 1 1 480px;
-  text-align: left;
-  max-width: 600px;
+  border-radius: 1.75rem;
+  border: 4px solid #fff;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+  margin-bottom: 1.25rem;
 }
 
 .gff-hero__eyebrow {
   position: relative;
   display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #60a5fa;
-  margin-bottom: 1rem;
-  padding: 0.35rem 0.9rem;
-  border-radius: 999px;
-  background: rgba(96, 165, 250, 0.1);
-  border: 1px solid rgba(96, 165, 250, 0.25);
+  color: #7dd3fc;
+  margin-bottom: 0.75rem;
 }
 
 .gff-hero__title {
   position: relative;
-  font-size: clamp(3.25rem, 7vw, 6.5rem);
-  font-weight: 900;
-  line-height: 0.98;
-  margin: 0 0 1.25rem;
-  letter-spacing: -0.04em;
-  color: #ffffff;
+  font-family: 'Fredoka', sans-serif;
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0 0 1rem;
+  letter-spacing: 0.02em;
 }
 
-.gff-hero__title span {
-  background: linear-gradient(135deg, #60a5fa 0%, #22d3ee 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+.gff-hero__title-frame {
+  display: inline-block;
+  padding: 0.35em 0.7em;
+  border: 4px solid #fff;
+  border-radius: 1rem;
+  background: linear-gradient(180deg, #0ea5e9 0%, #0284c7 100%);
+  color: #fff;
+  text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.2);
 }
 
 .gff-hero__subtitle {
   position: relative;
-  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  font-family: 'Fredoka', sans-serif;
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
   max-width: 520px;
-  margin: 0 0 2rem;
-  color: rgba(226, 232, 240, 0.82);
-  line-height: 1.6;
+  margin: 0 auto 1.75rem;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.5;
+  font-weight: 500;
 }
 
 .gff-hero__actions {
   position: relative;
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: center;
   gap: 0.875rem;
 }
 
@@ -178,50 +221,36 @@ h2 .pro-badge {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.8rem 1.5rem;
+  padding: 0.85rem 1.6rem;
   border-radius: 999px;
-  font-weight: 700;
-  font-size: 0.95rem;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
   text-decoration: none;
-  transition: all 0.2s ease;
-  border: 1px solid transparent;
+  transition: all 0.15s ease;
+  border: 3px solid #fff;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
 }
 
 .gff-button:hover {
-  transform: translateY(-2px);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.2);
   text-decoration: none;
 }
 
 .gff-button--primary {
-  background: #2563eb;
-  color: #fff;
-  box-shadow: 0 4px 18px rgba(37, 99, 235, 0.35);
-}
-
-.gff-button--primary:hover {
-  background: #3b82f6;
-  box-shadow: 0 6px 24px rgba(37, 99, 235, 0.45);
+  background: #fff;
+  color: #0284c7;
 }
 
 .gff-button--secondary {
-  background: rgba(255, 255, 255, 0.06);
-  color: #e2e8f0;
-  border-color: rgba(255, 255, 255, 0.15);
-}
-
-.gff-button--secondary:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.25);
+  background: transparent;
+  color: #fff;
 }
 
 .gff-button--pro {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  background: #f59e0b;
   color: #fff;
-  box-shadow: 0 4px 18px rgba(217, 119, 6, 0.3);
-}
-
-.gff-button--pro:hover {
-  box-shadow: 0 6px 24px rgba(217, 119, 6, 0.4);
 }
 
 .gff-trust-bar {
@@ -230,10 +259,11 @@ h2 .pro-badge {
   flex-wrap: wrap;
   justify-content: center;
   gap: 1.25rem;
-  margin-top: 3rem;
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: rgba(226, 232, 240, 0.6);
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .gff-trust-bar span {
