@@ -1,6 +1,10 @@
+<p align="center">
+  <img src="icon.png" alt="Game Feel Flow" width="160">
+</p>
+
 # Game Feel Flow
 
-> 🎮 One-stop game feel (juice) system for Godot — shake, flash, freeze frames, camera work and more, as composable data-driven effects.
+<p align="center">🎮 One-stop game feel (juice) system for Godot — shake, flash, freeze frames, camera work and more, as composable data-driven effects.</p>
 
 [![Godot Engine](https://img.shields.io/badge/Godot%20Engine-4.6+-478cbf?logo=godotengine&logoColor=white)](https://godotengine.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
