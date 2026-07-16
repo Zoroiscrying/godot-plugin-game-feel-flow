@@ -145,8 +145,8 @@ h2 .pro-badge {
 .gff-hero__card {
   position: relative;
   width: 100%;
-  max-width: 720px;
-  padding: clamp(2rem, 5vw, 3.5rem);
+  max-width: 960px;
+  padding: clamp(2rem, 4vw, 3rem);
   border-radius: 2rem;
   background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
   border: 3px solid #fff;
@@ -155,14 +155,27 @@ h2 .pro-badge {
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
+.gff-hero__card-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(2rem, 4vw, 3rem);
+  flex-wrap: wrap;
+}
+
 .gff-hero__logo {
   position: relative;
-  width: clamp(130px, 22vw, 200px);
+  width: clamp(150px, 20vw, 220px);
   height: auto;
-  border-radius: 1.75rem;
-  border: 4px solid #fff;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
-  margin-bottom: 1.25rem;
+  border-radius: 2rem;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  flex-shrink: 0;
+}
+
+.gff-hero__card-content {
+  flex: 1 1 420px;
+  text-align: left;
+  min-width: 320px;
 }
 
 .gff-hero__eyebrow {
@@ -180,7 +193,7 @@ h2 .pro-badge {
 .gff-hero__title {
   position: relative;
   font-family: 'Fredoka', sans-serif;
-  font-size: clamp(3rem, 8vw, 5.5rem);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
   font-weight: 700;
   line-height: 1.1;
   margin: 0 0 1rem;
@@ -201,9 +214,9 @@ h2 .pro-badge {
 .gff-hero__subtitle {
   position: relative;
   font-family: 'Fredoka', sans-serif;
-  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-  max-width: 520px;
-  margin: 0 auto 1.75rem;
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  max-width: 480px;
+  margin: 0 0 1.5rem;
   color: rgba(255, 255, 255, 0.85);
   line-height: 1.5;
   font-weight: 500;
@@ -213,7 +226,7 @@ h2 .pro-badge {
   position: relative;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 0.875rem;
 }
 
@@ -382,11 +395,11 @@ h2 .pro-badge {
 
 /* Stack hero vertically on smaller screens */
 @media (max-width: 820px) {
-  .gff-hero__inner {
+  .gff-hero__card-inner {
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.5rem;
   }
-  .gff-hero__content {
+  .gff-hero__card-content {
     text-align: center;
     flex-basis: auto;
   }
