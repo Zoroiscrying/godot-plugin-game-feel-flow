@@ -83,6 +83,15 @@ h2 .pro-badge {
   pointer-events: none;
 }
 
+.gff-hero__logo {
+  position: relative;
+  width: clamp(100px, 18vw, 160px);
+  height: auto;
+  margin: 0 auto 1.25rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+}
+
 .gff-hero__eyebrow {
   position: relative;
   display: inline-block;
