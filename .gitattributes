@@ -61,6 +61,7 @@
 # Project file (users install the addon into their own project)
 /project.godot export-ignore
 
-# Editor icon (only needed for the GitHub repo page)
+# Editor icons (marketing assets, not needed in the distributed addon)
 /icon.svg export-ignore
 /icon.svg.import export-ignore
+/icon.png export-ignore
