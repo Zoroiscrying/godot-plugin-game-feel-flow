@@ -25,7 +25,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -33,7 +33,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -1452,6 +1452,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#rendering-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rendering Paths
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#available-effects" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1467,6 +1478,17 @@
     <span class="md-ellipsis">
       
         How It Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#project-setup-3d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project Setup (3D)
       
     </span>
   </a>
@@ -1713,6 +1735,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#rendering-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rendering Paths
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#available-effects" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1728,6 +1761,17 @@
     <span class="md-ellipsis">
       
         How It Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#project-setup-3d" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project Setup (3D)
       
     </span>
   </a>
@@ -1786,7 +1830,31 @@
 
 <h1 id="screen-effects">Screen Effects</h1>
 <p><span class="pro-badge"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 16 3 5l5.5 5L12 4l3.5 6L21 5l-2 11zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14z"/></svg></span> Pro Extension</span></p>
-<p>Pro screen effects are shader-based fullscreen post-processing effects. They automatically create a <code>CanvasLayer</code> + <code>ColorRect</code> overlay on the target node, so the same effect works in 2D and 3D scenes.</p>
+<p>Pro screen effects are shader-based fullscreen post-processing effects.</p>
+<h2 id="rendering-paths">Rendering Paths</h2>
+<table>
+<thead>
+<tr>
+<th>Scene / renderer</th>
+<th>Path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>2D</strong> (any renderer)</td>
+<td><code>CanvasLayer</code> + <code>ColorRect</code> with a <code>canvas_item</code> shader</td>
+</tr>
+<tr>
+<td><strong>3D + Compatibility / Mobile</strong></td>
+<td>Same CanvasLayer overlay (CompositorEffect is unavailable)</td>
+</tr>
+<tr>
+<td><strong>3D + Forward+</strong></td>
+<td><code>CompositorEffect</code> compute shader on a <code>WorldEnvironment</code></td>
+</tr>
+</tbody>
+</table>
+<p>Routing is automatic. If compositor setup fails under Forward+, the effect falls back to CanvasLayer and logs a warning.</p>
 <blockquote>
 <p><img alt="Screen Effects" src="../images/screen-effects-overview.png" /></p>
 </blockquote>
@@ -1835,12 +1903,19 @@
 <h2 id="how-it-works">How It Works</h2>
 <p>Each screen effect extends <code>GFFScreenEffectBase</code> and:</p>
 <ol>
-<li>Searches for an existing overlay on the target (or its children).</li>
-<li>If none exists, creates a <code>CanvasLayer</code> with a fullscreen <code>ColorRect</code> and a <code>ShaderMaterial</code>.</li>
-<li>Animates shader uniforms over the effect duration.</li>
-<li>On finish or stop, removes the overlay (if it created it) or restores uniforms (if it reused one).</li>
+<li>Chooses a render path (see table above).</li>
+<li>For CanvasLayer: finds or creates a fullscreen overlay and animates shader uniforms.</li>
+<li>For Forward+ compositor: attaches a compute <code>CompositorEffect</code>, maps animated uniforms to push constants (<code>effect.x</code> / <code>effect.y</code>, plus <code>extra</code> for time / baked params), and cleans up on restore.</li>
+<li>On finish or stop, removes owned overlays / compositor effects, or restores uniforms if an overlay was reused.</li>
 </ol>
 <p>If the shader cannot be compiled, the effect pushes a warning and does nothing.</p>
+<h2 id="project-setup-3d">Project Setup (3D)</h2>
+<p>To get the compositor path in a 3D game:</p>
+<ol>
+<li>Set <strong>Project → Project Settings → Rendering → Renderer → Rendering Method</strong> to <strong>Forward+</strong> (desktop) or <strong>Mobile</strong>.</li>
+<li>Prefer a scene <code>WorldEnvironment</code> if you already have one; GFF will reuse it. Otherwise it creates a temporary one for the effect and frees it on cleanup.</li>
+<li>Compatibility renderer always uses the CanvasLayer path — that is expected, not a bug.</li>
+</ol>
 <h2 id="code-example">Code Example</h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Fullscreen vignette on damage</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">GameFeelFlow</span><span class="o">.</span><span class="n">play</span><span class="p">(</span><span class="s2">&quot;vignette&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">$</span><span class="n">Player</span><span class="p">)</span>
@@ -1858,9 +1933,9 @@
 </code></pre></div>
 <h2 id="performance-notes">Performance Notes</h2>
 <ul>
-<li>Each effect creates at most one overlay per target node. Replaying the same effect reuses the overlay.</li>
-<li>Overlays are <code>CanvasLayer</code> + <code>ColorRect</code>, which is cheap for simple shaders.</li>
-<li>Avoid stacking many different screen effects on the same target simultaneously; each adds one fullscreen draw call.</li>
+<li>Each effect creates at most one overlay / compositor attachment per play owner. Replaying the same effect reuses what it owns.</li>
+<li>Canvas overlays are cheap for simple shaders; compositor compute runs once per view after transparent passes.</li>
+<li>Avoid stacking many different screen effects on the same target simultaneously.</li>
 <li>For persistent screen effects (e.g. permanent vignette), create the overlay once and animate uniforms manually instead of replaying the effect every frame.</li>
 </ul>
 <h2 id="custom-screen-effects">Custom Screen Effects</h2>
@@ -1885,6 +1960,12 @@
 <a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>
 <a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="k">func</span><span class="w"> </span><span class="n">_get_animated_uniforms</span><span class="p">(</span><span class="n">params</span><span class="p">:</span><span class="w"> </span><span class="n">GFFParams</span><span class="p">,</span><span class="w"> </span><span class="n">intensity</span><span class="p">:</span><span class="w"> </span><span class="nb nb-Type">float</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb nb-Type">Dictionary</span><span class="p">:</span>
 <a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;my_param&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="n">intensity</span><span class="p">]}</span>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="c1"># Optional: Forward+ 3D compute path (snippet runs inside GFFCompositorEffectBase template)</span>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="k">func</span><span class="w"> </span><span class="n">_get_compute_code</span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nb nb-Type">String</span><span class="p">:</span>
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="s2">&quot;&quot;&quot;</span>
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="s2">color.rgb = mix(color.rgb, vec3(1.0, 0.0, 0.0), params.effect.x);</span>
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="s2">&quot;&quot;&quot;</span>
 </code></pre></div>
 
 
@@ -1960,7 +2041,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>
