@@ -1,0 +1,119 @@
+[gd_resource type="Theme" load_steps=7 format=3]
+
+[ext_resource type="FontFile" path="res://addons/game_feel_flow/examples/assets/fonts/Outfit-VariableFont_wght.ttf" id="1_font"]
+
+[sub_resource type="FontVariation" id="FontVariation_bold"]
+base_font = ExtResource("1_font")
+variation_opentype = {
+"wght": 700
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.08, 0.1, 0.14, 0.85)
+border_width_top = 2
+border_color = Color(0.2392157, 0.8627451, 0.5921569, 0.9)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_normal"]
+bg_color = Color(0.1137255, 0.1333333, 0.172549, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2392157, 0.8627451, 0.5921569, 0.45)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
+bg_color = Color(0.1490196, 0.2117647, 0.1921569, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2392157, 0.8627451, 0.5921569, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_pressed"]
+bg_color = Color(0.2392157, 0.8627451, 0.5921569, 0.28)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2392157, 0.8627451, 0.5921569, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_disabled"]
+bg_color = Color(0.1019608, 0.1098039, 0.1294118, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.3, 0.32, 0.36, 0.4)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
+
+[resource]
+default_font = ExtResource("1_font")
+default_font_size = 16
+
+TitleLabel/base_type = &"Label"
+TitleLabel/fonts/font = SubResource("FontVariation_bold")
+TitleLabel/font_sizes/font_size = 20
+TitleLabel/colors/font_color = Color(0.9294118, 0.9490196, 0.9647059, 1)
+
+Label/colors/font_color = Color(0.8039216, 0.8392157, 0.9568627, 1)
+Label/fonts/font = ExtResource("1_font")
+Label/font_sizes/font_size = 16
+
+Button/colors/font_color = Color(0.8039216, 0.8392157, 0.9568627, 1)
+Button/colors/font_hover_color = Color(0.2392157, 0.8627451, 0.5921569, 1)
+Button/colors/font_pressed_color = Color(0.2392157, 0.8627451, 0.5921569, 1)
+Button/colors/font_disabled_color = Color(0.4, 0.42, 0.5, 1)
+Button/colors/font_focus_color = Color(0.2392157, 0.8627451, 0.5921569, 1)
+Button/fonts/font = ExtResource("1_font")
+Button/font_sizes/font_size = 16
+Button/styles/normal = SubResource("StyleBoxFlat_button_normal")
+Button/styles/hover = SubResource("StyleBoxFlat_button_hover")
+Button/styles/pressed = SubResource("StyleBoxFlat_button_pressed")
+Button/styles/focus = SubResource("StyleBoxFlat_button_hover")
+Button/styles/disabled = SubResource("StyleBoxFlat_button_disabled")
+
+CheckButton/colors/font_color = Color(0.8039216, 0.8392157, 0.9568627, 1)
+CheckButton/colors/font_hover_color = Color(0.2392157, 0.8627451, 0.5921569, 1)
+CheckButton/colors/font_pressed_color = Color(0.2392157, 0.8627451, 0.5921569, 1)
+CheckButton/fonts/font = ExtResource("1_font")
+CheckButton/font_sizes/font_size = 16
+
+Panel/styles/panel = SubResource("StyleBoxFlat_panel")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_panel")

@@ -1,0 +1,60 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://addons/game_feel_flow/examples/showcase.gd" id="1_script"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/examples/components/gff_showcase_controller.gd" id="2_controller"]
+[ext_resource type="PackedScene" path="res://addons/game_feel_flow/examples/components/showcase_chrome.tscn" id="3_chrome"]
+
+[sub_resource type="Gradient" id="Gradient_backdrop"]
+colors = PackedColorArray(0.070588, 0.086275, 0.14902, 1, 0.023529, 0.027451, 0.043137, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_backdrop"]
+gradient = SubResource("Gradient_backdrop")
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 1)
+
+[node name="Showcase" type="Control"]
+custom_minimum_size = Vector2(1600, 900)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Stage" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Backdrop" type="TextureRect" parent="Stage"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_backdrop")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="Subject" type="Polygon2D" parent="Stage"]
+color = Color(0.2392157, 0.8627451, 0.5921569, 1)
+polygon = PackedVector2Array(-140, -140, 140, -140, 140, 140, -140, 140)
+
+[node name="SubjectOutline" type="Line2D" parent="Stage/Subject"]
+points = PackedVector2Array(-140, -140, 140, -140, 140, 140, -140, 140, -140, -140)
+width = 4.0
+default_color = Color(0.9294118, 0.9490196, 0.9647059, 0.6)
+
+[node name="ShowcaseController" type="Node" parent="."]
+script = ExtResource("2_controller")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ShowcaseChrome" parent="CanvasLayer" instance=ExtResource("3_chrome")]

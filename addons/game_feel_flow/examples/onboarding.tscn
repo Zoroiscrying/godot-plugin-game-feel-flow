@@ -1,0 +1,132 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://addons/game_feel_flow/examples/onboarding.gd" id="1_script"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/gff_player.gd" id="2_player"]
+[ext_resource type="Theme" path="res://addons/game_feel_flow/examples/resources/themes/showcase_theme.tres" id="3_theme"]
+
+[sub_resource type="Gradient" id="Gradient_backdrop"]
+colors = PackedColorArray(0.070588, 0.086275, 0.14902, 1, 0.023529, 0.027451, 0.043137, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_backdrop"]
+gradient = SubResource("Gradient_backdrop")
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 1)
+
+[node name="Onboarding" type="Control"]
+custom_minimum_size = Vector2(1600, 900)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_theme")
+script = ExtResource("1_script")
+
+[node name="Stage" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Backdrop" type="TextureRect" parent="Stage"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_backdrop")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="Subject" type="Polygon2D" parent="Stage"]
+color = Color(0.2392157, 0.8627451, 0.5921569, 1)
+polygon = PackedVector2Array(-120, -120, 120, -120, 120, 120, -120, 120)
+
+[node name="SubjectOutline" type="Line2D" parent="Stage/Subject"]
+points = PackedVector2Array(-120, -120, 120, -120, 120, 120, -120, 120, -120, -120)
+width = 4.0
+default_color = Color(0.9294118, 0.9490196, 0.9647059, 0.6)
+
+[node name="GFFPlayer" type="Node" parent="Stage/Subject"]
+script = ExtResource("2_player")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ContentPanel" type="PanelContainer" parent="CanvasLayer"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -360.0
+offset_top = 60.0
+offset_right = 360.0
+offset_bottom = 240.0
+grow_horizontal = 2
+
+[node name="Margin" type="MarginContainer" parent="CanvasLayer/ContentPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
+
+[node name="VBox" type="VBoxContainer" parent="CanvasLayer/ContentPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="BodyLabel" type="Label" parent="CanvasLayer/ContentPanel/Margin/VBox"]
+layout_mode = 2
+autowrap_mode = 3
+text = "Body text"
+
+[node name="EffectsLabel" type="Label" parent="CanvasLayer/ContentPanel/Margin/VBox"]
+layout_mode = 2
+visible = false
+autowrap_mode = 3
+text = "Effects list"
+
+[node name="ActionButton" type="Button" parent="CanvasLayer/ContentPanel/Margin/VBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Play"
+
+[node name="StepChrome" type="PanelContainer" parent="CanvasLayer"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = -80.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("3_theme")
+
+[node name="Margin" type="MarginContainer" parent="CanvasLayer/StepChrome"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 10
+
+[node name="HBox" type="HBoxContainer" parent="CanvasLayer/StepChrome/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="CanvasLayer/StepChrome/Margin/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_type_variation = &"TitleLabel"
+text = "Step Title"
+vertical_alignment = 1
+
+[node name="NextButton" type="Button" parent="CanvasLayer/StepChrome/Margin/HBox"]
+layout_mode = 2
+text = "Next Step"

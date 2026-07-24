@@ -71,6 +71,19 @@ GameFeelFlow.play("shake", self, GFFParams.create(2.0, 0.5)
 
 ---
 
+## 🎬 Open this first
+
+Try the example scenes in this order:
+
+1. **`addons/game_feel_flow/examples/showcase.tscn`** — Free reel for recording and first impressions (**16:9**). Shots **loop in place**; use **Prev / Next** to change shots and **H** to hide the chrome bar.
+2. **`addons/game_feel_flow/examples/onboarding.tscn`** — Short walkthrough of `GFFPlayer` and combos.
+3. **`addons/game_feel_flow/examples/effect_library.tscn`** — Full effect catalog / lab.
+4. **`addons/game_feel_flow_pro/examples/showcase.tscn`** *(Pro)* — Pro-only reel with the same transport controls.
+
+📖 [Examples documentation](https://zoroiscrying.github.io/godot-plugin-game-feel-flow/examples/)
+
+---
+
 ## 🎯 Built-in Effects (Free — 29)
 
 | Category | Effects |
