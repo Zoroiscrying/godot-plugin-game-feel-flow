@@ -4,17 +4,32 @@ extends Control
 ## motion, time, and looping game feel effects. Prev/Next change shots manually;
 ## Replay restarts the current shot; H (handled by GFFShowcaseController) hides chrome.
 ## No shot ever auto-advances to the next one.
+##
+## Subject is a CC0 Kenney character (2D). The same effects work on 3D Node3D targets —
+## see the Pro showcase for a 3D mesh example.
+
+const SUBJECT_TEXTURE := preload("res://addons/game_feel_flow/examples/assets/sprites/kenney_character.png")
 
 @onready var stage: Control = $Stage
 @onready var subject: Node2D = $Stage/Subject
+@onready var subject_sprite: Sprite2D = $Stage/Subject/Sprite
 @onready var controller: GFFShowcaseController = $ShowcaseController
 @onready var chrome = $CanvasLayer/ShowcaseChrome
 
 var _loop_timer: Timer
 var _subject_default_position: Vector2
+var _bounce_tween: Tween
+var _shot_token: int = 0
 
 
 func _ready() -> void:
+	if subject_sprite and SUBJECT_TEXTURE:
+		subject_sprite.texture = SUBJECT_TEXTURE
+		# Keep the character large for 16:9 recording (~280px tall).
+		var target_h := 280.0
+		if subject_sprite.texture.get_height() > 0:
+			subject_sprite.scale = Vector2.ONE * (target_h / float(subject_sprite.texture.get_height()))
+
 	_subject_default_position = subject.position
 	stage.resized.connect(_center_subject)
 	_center_subject()
@@ -30,7 +45,7 @@ func _ready() -> void:
 		_shot("impact", "Impact — hit_light combo", _start_impact, _stop_shot),
 		_shot("hit_combo", "Hit Combo — hit_heavy combo", _start_hit_combo, _stop_shot),
 		_shot("motion", "Motion — punch position", _start_motion, _stop_shot),
-		_shot("time", "Time — freeze frame", _start_time, _stop_shot),
+		_shot("time", "Time — freeze mid-motion", _start_time, _stop_shot),
 		_shot("loop", "Loop — breathing scale", _start_loop, _stop_shot),
 	])
 	controller.play_current()
@@ -57,12 +72,31 @@ func _on_loop_timeout() -> void:
 
 
 func _stop_shot() -> void:
+	_shot_token += 1
 	_loop_timer.stop()
+	_stop_bounce()
 	GameFeelFlow.stop_all(subject)
 	subject.position = _subject_default_position
 	subject.scale = Vector2.ONE
 	subject.rotation = 0.0
 	subject.modulate = Color.WHITE
+
+
+func _stop_bounce() -> void:
+	if _bounce_tween and _bounce_tween.is_valid():
+		_bounce_tween.kill()
+	_bounce_tween = null
+
+
+func _start_bounce() -> void:
+	_stop_bounce()
+	subject.position = _subject_default_position
+	# Continuous hop that respects Engine.time_scale so freeze_frame can pause it mid-air.
+	_bounce_tween = subject.create_tween().set_loops()
+	_bounce_tween.tween_property(subject, "position:y", _subject_default_position.y - 140.0, 0.42) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	_bounce_tween.tween_property(subject, "position:y", _subject_default_position.y, 0.42) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
 
 # ===== Shot 1: Impact =====
@@ -78,9 +112,6 @@ func _start_hit_combo() -> void:
 
 
 # ===== Shot 3: Motion =====
-# The registered "punch_position" preset defaults its target offset to zero,
-# so it produces no visible motion out of the box. Build a real hop using the
-# same Target/Tweener building blocks the registry itself uses.
 func _start_motion() -> void:
 	var effect := _build_effect("position", "elastic") as GFFEffectCommon
 	var pos_target := effect.target as GFFPositionTarget
@@ -92,22 +123,21 @@ func _start_motion() -> void:
 	_arm_loop(1.2)
 
 
-# ===== Shot 4: Time =====
+# ===== Shot 4: Time — continuous motion, then freeze mid-flight =====
 func _start_time() -> void:
-	var punch := _build_effect("scale", "elastic") as GFFEffectCommon
-	var scale_target := punch.target as GFFScaleTarget
-	scale_target.mode = GFFScaleTarget.Mode.BY_AMOUNT
-	scale_target.target_value = Vector3(0.3, 0.3, 0.0)
-	punch.duration = 0.5
-	punch.label = "showcase_time_punch"
-	GameFeelFlow.play(punch, subject)
-	GameFeelFlow.play("freeze_frame", subject, {"duration": 0.18})
-	_arm_loop(1.5)
+	var token := _shot_token
+	_start_bounce()
+	# Let the hop be visible, then hitstop. ignore_time_scale so the wait itself
+	# isn't affected if a previous freeze is somehow still draining.
+	await get_tree().create_timer(0.65).timeout
+	if token != _shot_token:
+		return
+	# Host on self — freeze is global (time_scale) and needs a valid tween host.
+	GameFeelFlow.play("freeze_frame", self, {"duration": 0.4})
+	_arm_loop(2.4)
 
 
 # ===== Shot 5: Loop =====
-# Mirrors the loop_breathing.tscn pattern: a scale effect that pings-pong loops
-# forever until stop() is called by _stop_shot / GameFeelFlow.stop_all.
 func _start_loop() -> void:
 	var effect := _build_effect("scale", "linear") as GFFEffectCommon
 	var scale_target := effect.target as GFFScaleTarget

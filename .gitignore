@@ -22,3 +22,7 @@ __pycache__/
 
 # Build output (Pro packaging)
 /dist/
+
+# Example asset download scratch
+addons/game_feel_flow/examples/assets/_download/
+

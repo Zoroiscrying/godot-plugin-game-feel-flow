@@ -1,8 +1,10 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=7 format=3 uid="uid://dntockp8ly7ci"]
 
-[ext_resource type="Script" path="res://addons/game_feel_flow/examples/showcase.gd" id="1_script"]
-[ext_resource type="Script" path="res://addons/game_feel_flow/examples/components/gff_showcase_controller.gd" id="2_controller"]
+[ext_resource type="Script" uid="uid://chlu77fnsoaus" path="res://addons/game_feel_flow/examples/showcase.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://hsh2wowj52v7" path="res://addons/game_feel_flow/examples/components/gff_showcase_controller.gd" id="2_controller"]
 [ext_resource type="PackedScene" path="res://addons/game_feel_flow/examples/components/showcase_chrome.tscn" id="3_chrome"]
+[ext_resource type="Texture2D" path="res://addons/game_feel_flow/examples/assets/sprites/kenney_character.png" id="4_subject"]
+[ext_resource type="Theme" path="res://addons/game_feel_flow/examples/resources/themes/showcase_theme.tres" id="5_theme"]
 
 [sub_resource type="Gradient" id="Gradient_backdrop"]
 colors = PackedColorArray(0.070588, 0.086275, 0.14902, 1, 0.023529, 0.027451, 0.043137, 1)
@@ -20,6 +22,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("5_theme")
 script = ExtResource("1_script")
 
 [node name="Stage" type="Control" parent="."]
@@ -43,14 +46,10 @@ texture = SubResource("GradientTexture2D_backdrop")
 expand_mode = 1
 stretch_mode = 1
 
-[node name="Subject" type="Polygon2D" parent="Stage"]
-color = Color(0.2392157, 0.8627451, 0.5921569, 1)
-polygon = PackedVector2Array(-140, -140, 140, -140, 140, 140, -140, 140)
+[node name="Subject" type="Node2D" parent="Stage"]
 
-[node name="SubjectOutline" type="Line2D" parent="Stage/Subject"]
-points = PackedVector2Array(-140, -140, 140, -140, 140, 140, -140, 140, -140, -140)
-width = 4.0
-default_color = Color(0.9294118, 0.9490196, 0.9647059, 0.6)
+[node name="Sprite" type="Sprite2D" parent="Stage/Subject"]
+texture = ExtResource("4_subject")
 
 [node name="ShowcaseController" type="Node" parent="."]
 script = ExtResource("2_controller")
@@ -58,3 +57,15 @@ script = ExtResource("2_controller")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="ShowcaseChrome" parent="CanvasLayer" instance=ExtResource("3_chrome")]
+
+[node name="HintLabel" type="Label" parent="CanvasLayer"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = -118.0
+offset_right = 720.0
+offset_bottom = -90.0
+theme_override_colors/font_color = Color(0.75, 0.8, 0.86, 0.85)
+theme_override_font_sizes/font_size = 14
+text = "2D subject (Kenney CC0) — the same effects work on 3D Node3D targets too"
