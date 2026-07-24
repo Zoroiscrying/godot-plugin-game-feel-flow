@@ -2,12 +2,17 @@
 
 [ext_resource type="Script" uid="uid://dsu45asqq7j6l" path="res://addons/game_feel_flow/examples/main_3d.gd" id="1"]
 [ext_resource type="Script" uid="uid://c731ls1wu0npd" path="res://addons/game_feel_flow/editor/gff_param_panel.gd" id="2"]
+[ext_resource type="Script" uid="uid://gqijirp27b11" path="res://addons/game_feel_flow_pro/effects/screen/gff_compositor_effect_base.gd" id="2_upnw2"]
 [ext_resource type="Script" uid="uid://b6hb1c3t0eppb" path="res://addons/game_feel_flow/core/gff_player.gd" id="3_7i3b7"]
 [ext_resource type="Script" uid="uid://cw1adefvk3suo" path="res://addons/game_feel_flow/effects/curved/gff_effect_common.gd" id="5_8asc7"]
 [ext_resource type="Script" uid="uid://q1rhxo4pw2yt" path="res://addons/game_feel_flow/core/gff_combo.gd" id="6_6rcj4"]
 [ext_resource type="Script" uid="uid://4uoyf4ncegfi" path="res://addons/game_feel_flow/core/gff_combo_entry.gd" id="7_xxvdb"]
 [ext_resource type="Script" uid="uid://fyjcrjchjdog" path="res://addons/game_feel_flow/core/targets/gff_position_target.gd" id="8_3vbn2"]
 [ext_resource type="Script" uid="uid://b58y4glp3isku" path="res://addons/game_feel_flow/core/tweeners/gff_shake_tweener.gd" id="8_xxvdb"]
+[ext_resource type="Script" uid="uid://cc2fg8p4orpqh" path="res://addons/game_feel_flow/core/targets/gff_scale_target.gd" id="9_7i1oh"]
+[ext_resource type="Script" uid="uid://bskbla0idq385" path="res://addons/game_feel_flow/core/targets/gff_rotation_target.gd" id="10_g8k0p"]
+[ext_resource type="Script" uid="uid://ciqqie8w60ceo" path="res://addons/game_feel_flow_pro/effects/screen/gff_chromatic_aberration.gd" id="11_tster"]
+[ext_resource type="Script" uid="uid://d0raprnpaulqm" path="res://addons/game_feel_flow/effects/particles/gff_particles.gd" id="13_4utdx"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f4sby"]
 
@@ -21,6 +26,179 @@ background_energy_multiplier = 1.25
 sky = SubResource("Sky_7i3b7")
 ambient_light_source = 2
 ambient_light_color = Color(0.5, 0.5, 0.5, 1)
+
+[sub_resource type="CompositorEffect" id="CompositorEffect_4utdx"]
+resource_local_to_scene = false
+resource_name = ""
+enabled = true
+effect_callback_type = 4
+needs_motion_vectors = false
+needs_normal_roughness = false
+script = ExtResource("2_upnw2")
+compute_code = "
+vec2 dir = vec2(1.000000, 0.000000);
+ivec2 offset = ivec2(round(dir * params.effect.x * params.raster_size));
+float r = imageLoad(color_image, clamp(uv + offset, ivec2(0), size - 1)).r;
+float g = color.g;
+float b = imageLoad(color_image, clamp(uv - offset, ivec2(0), size - 1)).b;
+color = vec4(r, g, b, color.a);
+"
+
+[sub_resource type="CompositorEffect" id="CompositorEffect_2pquj"]
+resource_local_to_scene = false
+resource_name = ""
+enabled = true
+effect_callback_type = 4
+needs_motion_vectors = false
+needs_normal_roughness = false
+script = ExtResource("2_upnw2")
+compute_code = "
+vec2 dir = vec2(1.000000, 0.000000);
+ivec2 offset = ivec2(round(dir * params.effect.x * params.raster_size));
+float r = imageLoad(color_image, clamp(uv + offset, ivec2(0), size - 1)).r;
+float g = color.g;
+float b = imageLoad(color_image, clamp(uv - offset, ivec2(0), size - 1)).b;
+color = vec4(r, g, b, color.a);
+"
+
+[sub_resource type="CompositorEffect" id="CompositorEffect_txyab"]
+resource_local_to_scene = false
+resource_name = ""
+enabled = true
+effect_callback_type = 4
+needs_motion_vectors = false
+needs_normal_roughness = false
+script = ExtResource("2_upnw2")
+compute_code = "
+vec2 dir = vec2(1.000000, 0.000000);
+ivec2 offset = ivec2(round(dir * params.effect.x * params.raster_size));
+float r = imageLoad(color_image, clamp(uv + offset, ivec2(0), size - 1)).r;
+float g = color.g;
+float b = imageLoad(color_image, clamp(uv - offset, ivec2(0), size - 1)).b;
+color = vec4(r, g, b, color.a);
+"
+
+[sub_resource type="CompositorEffect" id="CompositorEffect_fktqx"]
+resource_local_to_scene = false
+resource_name = ""
+enabled = true
+effect_callback_type = 4
+needs_motion_vectors = false
+needs_normal_roughness = false
+script = ExtResource("2_upnw2")
+compute_code = "
+vec2 dir = vec2(1.000000, 0.000000);
+ivec2 offset = ivec2(round(dir * params.effect.x * params.raster_size));
+float r = imageLoad(color_image, clamp(uv + offset, ivec2(0), size - 1)).r;
+float g = color.g;
+float b = imageLoad(color_image, clamp(uv - offset, ivec2(0), size - 1)).b;
+color = vec4(r, g, b, color.a);
+"
+
+[sub_resource type="CompositorEffect" id="CompositorEffect_upnw2"]
+resource_local_to_scene = false
+resource_name = ""
+enabled = true
+effect_callback_type = 4
+needs_motion_vectors = false
+needs_normal_roughness = false
+script = ExtResource("2_upnw2")
+compute_code = "
+vec2 dir = vec2(1.000000, 0.000000);
+ivec2 offset = ivec2(round(dir * params.effect.x * params.raster_size));
+float r = imageLoad(color_image, clamp(uv + offset, ivec2(0), size - 1)).r;
+float g = color.g;
+float b = imageLoad(color_image, clamp(uv - offset, ivec2(0), size - 1)).b;
+color = vec4(r, g, b, color.a);
+"
+
+[sub_resource type="CompositorEffect" id="CompositorEffect_aqr5g"]
+resource_local_to_scene = false
+resource_name = ""
+enabled = true
+effect_callback_type = 4
+needs_motion_vectors = false
+needs_normal_roughness = false
+script = ExtResource("2_upnw2")
+compute_code = "
+vec2 dir = vec2(1.000000, 0.000000);
+ivec2 offset = ivec2(round(dir * params.effect.x * params.raster_size));
+float r = imageLoad(color_image, clamp(uv + offset, ivec2(0), size - 1)).r;
+float g = color.g;
+float b = imageLoad(color_image, clamp(uv - offset, ivec2(0), size - 1)).b;
+color = vec4(r, g, b, color.a);
+"
+
+[sub_resource type="CompositorEffect" id="CompositorEffect_x6pni"]
+resource_local_to_scene = false
+resource_name = ""
+enabled = true
+effect_callback_type = 4
+needs_motion_vectors = false
+needs_normal_roughness = false
+script = ExtResource("2_upnw2")
+compute_code = "
+vec2 dir = vec2(1.000000, 0.000000);
+ivec2 offset = ivec2(round(dir * params.effect.x * params.raster_size));
+float r = imageLoad(color_image, clamp(uv + offset, ivec2(0), size - 1)).r;
+float g = color.g;
+float b = imageLoad(color_image, clamp(uv - offset, ivec2(0), size - 1)).b;
+color = vec4(r, g, b, color.a);
+"
+
+[sub_resource type="CompositorEffect" id="CompositorEffect_5i5vr"]
+resource_local_to_scene = false
+resource_name = ""
+enabled = true
+effect_callback_type = 4
+needs_motion_vectors = false
+needs_normal_roughness = false
+script = ExtResource("2_upnw2")
+compute_code = "
+vec2 dir = vec2(1.000000, 0.000000);
+ivec2 offset = ivec2(round(dir * params.effect.x * params.raster_size));
+float r = imageLoad(color_image, clamp(uv + offset, ivec2(0), size - 1)).r;
+float g = color.g;
+float b = imageLoad(color_image, clamp(uv - offset, ivec2(0), size - 1)).b;
+color = vec4(r, g, b, color.a);
+"
+
+[sub_resource type="CompositorEffect" id="CompositorEffect_h5fwd"]
+resource_local_to_scene = false
+resource_name = ""
+enabled = true
+effect_callback_type = 4
+needs_motion_vectors = false
+needs_normal_roughness = false
+script = ExtResource("2_upnw2")
+compute_code = "
+vec2 dir = vec2(1.000000, 0.000000);
+ivec2 offset = ivec2(round(dir * params.effect.x * params.raster_size));
+float r = imageLoad(color_image, clamp(uv + offset, ivec2(0), size - 1)).r;
+float g = color.g;
+float b = imageLoad(color_image, clamp(uv - offset, ivec2(0), size - 1)).b;
+color = vec4(r, g, b, color.a);
+"
+
+[sub_resource type="CompositorEffect" id="CompositorEffect_1h4mv"]
+resource_local_to_scene = false
+resource_name = ""
+enabled = true
+effect_callback_type = 4
+needs_motion_vectors = false
+needs_normal_roughness = false
+script = ExtResource("2_upnw2")
+compute_code = "
+vec2 dir = vec2(1.000000, 0.000000);
+ivec2 offset = ivec2(round(dir * params.effect.x * params.raster_size));
+float r = imageLoad(color_image, clamp(uv + offset, ivec2(0), size - 1)).r;
+float g = color.g;
+float b = imageLoad(color_image, clamp(uv - offset, ivec2(0), size - 1)).b;
+color = vec4(r, g, b, color.a);
+"
+
+[sub_resource type="Compositor" id="Compositor_aqr5g"]
+compositor_effects = Array[CompositorEffect]([SubResource("CompositorEffect_4utdx"), SubResource("CompositorEffect_2pquj"), SubResource("CompositorEffect_txyab"), SubResource("CompositorEffect_fktqx"), SubResource("CompositorEffect_upnw2"), SubResource("CompositorEffect_aqr5g"), SubResource("CompositorEffect_x6pni"), SubResource("CompositorEffect_5i5vr"), SubResource("CompositorEffect_h5fwd"), SubResource("CompositorEffect_1h4mv")])
 
 [sub_resource type="StandardMaterial3D" id="Material_Red"]
 albedo_color = Color(1, 0.2, 0.2, 1)
@@ -53,30 +231,6 @@ gravity = Vector3(0, -2, 0)
 scale_min = 0.05
 scale_max = 0.1
 
-[sub_resource type="Resource" id="Resource_pos_target"]
-script = ExtResource("8_3vbn2")
-target_value = Vector3(0, 1, 0)
-
-[sub_resource type="Resource" id="Resource_g8k0p"]
-script = ExtResource("8_xxvdb")
-
-[sub_resource type="Resource" id="Resource_6rcj4"]
-script = ExtResource("5_8asc7")
-target = SubResource("Resource_pos_target")
-tweener = SubResource("Resource_g8k0p")
-duration = 0.49
-
-[sub_resource type="Resource" id="Resource_imvwj"]
-script = ExtResource("7_xxvdb")
-effect = SubResource("Resource_6rcj4")
-duration = 0.49
-
-[sub_resource type="Resource" id="Resource_d75d2"]
-resource_name = "GFFPlayer_combo"
-script = ExtResource("6_6rcj4")
-label = "GFFPlayer_combo"
-entries = Array[ExtResource("7_xxvdb")]([SubResource("Resource_imvwj")])
-
 [sub_resource type="Resource" id="Resource_xxvdb"]
 script = ExtResource("6_6rcj4")
 label = "GFFPlayer"
@@ -85,11 +239,121 @@ label = "GFFPlayer"
 script = ExtResource("6_6rcj4")
 label = "GFFPlayer_1"
 
+[sub_resource type="Resource" id="Resource_pos_target"]
+script = ExtResource("8_3vbn2")
+target_value = Vector3(0, 1, 0)
+
+[sub_resource type="Resource" id="Resource_g8k0p"]
+script = ExtResource("8_xxvdb")
+amplitude = 0.19999999995343387
+frequency = 45.0
+
+[sub_resource type="Resource" id="Resource_6rcj4"]
+script = ExtResource("5_8asc7")
+target = SubResource("Resource_pos_target")
+tweener = SubResource("Resource_g8k0p")
+duration = 0.33
+loop_delay = 0.19999999995343387
+metadata/_gff_expanded_groups = Array[String](["Tweener Settings", "Timing", "Looping"])
+
+[sub_resource type="Resource" id="Resource_tster"]
+script = ExtResource("7_xxvdb")
+effect = SubResource("Resource_6rcj4")
+duration = 0.33
+
+[sub_resource type="Resource" id="Resource_upnw2"]
+script = ExtResource("9_7i1oh")
+
+[sub_resource type="Resource" id="Resource_4utdx"]
+script = ExtResource("8_xxvdb")
+
+[sub_resource type="Resource" id="Resource_2pquj"]
+script = ExtResource("5_8asc7")
+target = SubResource("Resource_upnw2")
+tweener = SubResource("Resource_4utdx")
+
+[sub_resource type="Resource" id="Resource_txyab"]
+script = ExtResource("7_xxvdb")
+effect = SubResource("Resource_2pquj")
+track_idx = 2
+
+[sub_resource type="Resource" id="Resource_fktqx"]
+script = ExtResource("10_g8k0p")
+
+[sub_resource type="Resource" id="Resource_aqr5g"]
+script = ExtResource("8_xxvdb")
+amplitude = 50.0
+
+[sub_resource type="Resource" id="Resource_x6pni"]
+script = ExtResource("5_8asc7")
+target = SubResource("Resource_fktqx")
+tweener = SubResource("Resource_aqr5g")
+metadata/_gff_expanded_groups = Array[String](["Target Settings", "Tweener Settings"])
+
+[sub_resource type="Resource" id="Resource_5i5vr"]
+script = ExtResource("7_xxvdb")
+effect = SubResource("Resource_x6pni")
+track_idx = 1
+
+[sub_resource type="Resource" id="Resource_h5fwd"]
+resource_name = "GFFPlayer_combo"
+script = ExtResource("6_6rcj4")
+label = "GFFPlayer_combo"
+entries = Array[ExtResource("7_xxvdb")]([SubResource("Resource_tster"), SubResource("Resource_txyab"), SubResource("Resource_5i5vr")])
+
+[sub_resource type="Resource" id="Resource_c1cd7"]
+script = ExtResource("8_3vbn2")
+
+[sub_resource type="Resource" id="Resource_w8nbn"]
+script = ExtResource("8_xxvdb")
+
+[sub_resource type="Resource" id="Resource_qoade"]
+script = ExtResource("5_8asc7")
+target = SubResource("Resource_c1cd7")
+tweener = SubResource("Resource_w8nbn")
+duration = 0.59
+
+[sub_resource type="Resource" id="Resource_sadvt"]
+script = ExtResource("7_xxvdb")
+effect = SubResource("Resource_qoade")
+duration = 0.59
+
+[sub_resource type="Resource" id="Resource_ga1ne"]
+script = ExtResource("11_tster")
+max_intensity = 0.01000000000931322
+duration = 1.33
+restore_mode = 1
+metadata/_gff_expanded_groups = Array[String](["Chromatic Aberration Settings", "Screen Effect", "Timing", "Restore", "Looping"])
+
+[sub_resource type="Resource" id="Resource_2vt52"]
+script = ExtResource("7_xxvdb")
+effect = SubResource("Resource_ga1ne")
+start_time = 0.6
+duration = 1.33
+
+[sub_resource type="Resource" id="Resource_popqr"]
+script = ExtResource("13_4utdx")
+duration = 0.99
+metadata/_gff_expanded_groups = Array[String](["Particles Settings"])
+
+[sub_resource type="Resource" id="Resource_ox2ub"]
+script = ExtResource("7_xxvdb")
+effect = SubResource("Resource_popqr")
+start_time = 1.94
+duration = 0.99
+
+[sub_resource type="Resource" id="Resource_rg4up"]
+resource_name = "GFFPlayer_combo_1"
+script = ExtResource("6_6rcj4")
+label = "GFFPlayer_combo_1"
+entries = Array[ExtResource("7_xxvdb")]([SubResource("Resource_sadvt"), SubResource("Resource_2vt52"), SubResource("Resource_ox2ub")])
+
 [node name="Main3D" type="Node3D" unique_id=555120623]
 script = ExtResource("1")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=785335325]
 environment = SubResource("Environment_1")
+compositor = SubResource("Compositor_aqr5g")
 
 [node name="Objects" type="Node3D" parent="." unique_id=1236425624]
 
@@ -204,7 +468,10 @@ script = ExtResource("3_7i3b7")
 combo_dictionary = Dictionary[String, ExtResource("6_6rcj4")]({
 "GFFPlayer": SubResource("Resource_xxvdb"),
 "GFFPlayer_1": SubResource("Resource_7i1oh"),
-"GFFPlayer_combo": SubResource("Resource_d75d2")
+"GFFPlayer_combo": SubResource("Resource_h5fwd"),
+"GFFPlayer_combo_1": SubResource("Resource_rg4up")
 })
-active_combo_key = "GFFPlayer_combo"
+active_combo_key = "GFFPlayer_combo_1"
 metadata/_custom_type_script = "uid://b6hb1c3t0eppb"
+metadata/_gff_inspector_selected_combo = "GFFPlayer_combo_1"
+metadata/_gff_inspector_expanded_entry = 1

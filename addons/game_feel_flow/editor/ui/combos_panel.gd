@@ -25,12 +25,36 @@ var _auto_play_btn: CheckButton
 var _selected_combo_key: String = ""
 var _expanded_entry_index: int = -1
 
+## Inspector foldout/selection state is stored on the inspected GFFPlayer via
+## metadata. Godot rebuilds the entire CombosPanel whenever the inspected object
+## changes, so instance variables are not enough to keep foldouts open.
+const META_SELECTED_COMBO := &"_gff_inspector_selected_combo"
+const META_EXPANDED_ENTRY := &"_gff_inspector_expanded_entry"
+
 func set_player(player: GFFPlayer) -> void:
 	_player = player
 	_undo_redo = EditorInterface.get_editor_undo_redo()
-	if _player:
-		_selected_combo_key = _player.active_combo_key
+	_restore_state()
 	_refresh()
+
+func _restore_state() -> void:
+	if _player == null:
+		_selected_combo_key = ""
+		_expanded_entry_index = -1
+		return
+	if _player.has_meta(META_SELECTED_COMBO):
+		_selected_combo_key = _player.get_meta(META_SELECTED_COMBO)
+		_expanded_entry_index = _player.get_meta(META_EXPANDED_ENTRY)
+	else:
+		_selected_combo_key = _player.active_combo_key
+		_expanded_entry_index = -1
+		_save_state()
+
+func _save_state() -> void:
+	if _player == null:
+		return
+	_player.set_meta(META_SELECTED_COMBO, _selected_combo_key)
+	_player.set_meta(META_EXPANDED_ENTRY, _expanded_entry_index)
 
 func _ready() -> void:
 	_build_ui()
@@ -135,6 +159,7 @@ func _refresh() -> void:
 		_auto_play_btn.set_block_signals(false)
 	_refresh_combo_list()
 	_refresh_effect_list()
+	_save_state()
 
 func _refresh_combo_list() -> void:
 	if not _combo_list:
@@ -177,6 +202,7 @@ func _refresh_effect_list() -> void:
 		if "is_expanded" in child and child.is_expanded:
 			_expanded_entry_index = child.entry_index
 			break
+	_save_state()
 	for child in _effect_list.get_children():
 		child.queue_free()
 
@@ -224,6 +250,7 @@ func _refresh_effect_list() -> void:
 		row.paste_requested.connect(_on_effect_paste.bind(i))
 		row.effect_property_changed.connect(_on_effect_property_changed)
 		row.entry_property_changed.connect(_on_entry_property_changed)
+		row.expand_toggled.connect(_on_effect_expand_toggled.bind(i))
 		_effect_list.add_child(row)
 
 func _on_combo_moved(last_index: int, new_index: int) -> void:
@@ -260,6 +287,8 @@ func _on_combo_selected(key: String) -> void:
 	_selected_combo_key = key
 	if _player:
 		_player.active_combo_key = key
+	_expanded_entry_index = -1
+	_save_state()
 	_refresh()
 
 func _on_combo_renamed(old_key: String, new_key: String) -> void:
@@ -314,6 +343,13 @@ func _on_effect_deleted(index: int) -> void:
 	_player.editor_remove_effect_from_combo(_selected_combo_key, index)
 	_commit_dict_action("Delete Effect", old_dict)
 	_mark_changed()
+
+func _on_effect_expand_toggled(index: int, is_expanded: bool) -> void:
+	if is_expanded:
+		_expanded_entry_index = index
+	elif _expanded_entry_index == index:
+		_expanded_entry_index = -1
+	_save_state()
 
 func _on_effect_type_changed(entry: GFFComboEntry, new_path: String) -> void:
 	if entry == null or entry.effect == null:

@@ -269,7 +269,23 @@ func _execute_track(target: Node, track_entries: Array, params: GFFParams) -> vo
 			return
 		
 		var effect_instance: GFFEffect = entry.effect.duplicate(true)
-		await effect_instance.apply(target, params)
+		# Timeline entry duration should override the effect's own duration.
+		if entry.duration > 0.0:
+			effect_instance.duration = entry.duration
+			var entry_params: GFFParams = params
+			if entry_params == null:
+				entry_params = GFFParams.create()
+			else:
+				entry_params = entry_params.duplicate()
+			entry_params.duration = entry.duration
+			
+			# Apply intensity curve as a multiplier (sampled at midpoint for now).
+			if entry.intensity_curve:
+				entry_params.intensity *= entry.intensity_curve.sample(0.5)
+			
+			await effect_instance.apply(target, entry_params)
+		else:
+			await effect_instance.apply(target, params)
 		if not is_instance_valid(target):
 			return
 		

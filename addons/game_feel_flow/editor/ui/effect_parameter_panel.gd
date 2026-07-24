@@ -7,6 +7,8 @@ signal value_changed(property_path: String, value: Variant, previous: Variant)
 
 const CurveEditor := preload("res://addons/game_feel_flow/editor/ui/curve_editor.gd")
 
+const META_EXPANDED_GROUPS := &"_gff_expanded_groups"
+
 var _effect: GFFEffect = null
 var _group_headers: Dictionary[String, Button] = {}
 var _group_resources: Dictionary[String, Resource] = {}
@@ -35,13 +37,7 @@ func set_effect(effect: GFFEffect) -> void:
 	_rebuild()
 
 func _rebuild() -> void:
-	# Remember which groups were expanded so we can restore them after rebuild.
-	var expanded_groups: Array[String] = []
-	for child in get_children():
-		if child.has_meta("group_name"):
-			var content_margin = child.get_meta("content_margin") as Control
-			if content_margin and content_margin.visible:
-				expanded_groups.append(child.get_meta("group_name"))
+	var expanded_groups := _load_expanded_groups()
 
 	_group_headers.clear()
 	_group_resources.clear()
@@ -83,6 +79,14 @@ func _rebuild() -> void:
 		if prop.name in _ignore_list:
 			continue
 		if prop.name.begins_with("_"):
+			continue
+
+		# Full-width help block (not a cramped Label + LineEdit row).
+		if prop.name == "custom_restore_help":
+			var help := _create_help_block(str(_effect.get(prop.name)))
+			current_group.add_child(help)
+			if not current_group_name.is_empty():
+				_group_properties[current_group_name].append(prop.name)
 			continue
 
 		var row = _create_property_row(prop)
@@ -180,6 +184,7 @@ func _create_group(group_name: String) -> VBoxContainer:
 		content_margin.visible = not content_margin.visible
 		header.icon = _get_icon("GuiTreeArrowDown") if content_margin.visible else _get_icon("GuiTreeArrowRight")
 		sep.visible = content_margin.visible
+		_save_expanded_groups()
 	)
 
 	return group
@@ -195,7 +200,36 @@ func _expand_group(group: VBoxContainer) -> void:
 	if sep:
 		sep.visible = true
 
-func _on_value_changed(_property_path: String, _value: Variant, _previous: Variant) -> void:
+func _save_expanded_groups() -> void:
+	if _effect == null:
+		return
+	var expanded: Array[String] = []
+	for child in get_children():
+		if child.has_meta("group_name"):
+			var content_margin := child.get_meta("content_margin") as Control
+			if content_margin and content_margin.visible:
+				expanded.append(child.get_meta("group_name"))
+	_effect.set_meta(META_EXPANDED_GROUPS, expanded)
+
+func _load_expanded_groups() -> Array[String]:
+	if _effect == null:
+		return []
+	var raw := _effect.get_meta(META_EXPANDED_GROUPS, [])
+	if raw is Array[String]:
+		return raw
+	if raw is Array:
+		var result: Array[String] = []
+		for item in raw:
+			if item is String:
+				result.append(item)
+		return result
+	return []
+
+func _on_value_changed(property_path: String, _value: Variant, _previous: Variant) -> void:
+	# restore_mode toggles which Restore fields are editor-visible — rebuild the form.
+	if property_path == "restore_mode" or property_path.ends_with(":restore_mode"):
+		_rebuild()
+		return
 	_update_all_headers()
 
 func _update_all_headers() -> void:
@@ -305,9 +339,9 @@ func _build_restore_summary() -> String:
 		GFFEffect.RestoreMode.IMMEDIATE:
 			mode = "Immediate"
 		GFFEffect.RestoreMode.GRADUAL:
-			mode = "Gradual"
+			mode = "Gradual %.2fs" % _effect.restore_duration
 		GFFEffect.RestoreMode.CUSTOM:
-			mode = "Custom"
+			mode = "Custom %.2fs" % _effect.restore_duration
 	return "On, %s" % mode
 
 func _build_looping_summary() -> String:
@@ -489,6 +523,8 @@ func _create_editor_for_property(prop: Dictionary) -> Control:
 			return spin
 
 		TYPE_STRING:
+			if prop.hint == PROPERTY_HINT_MULTILINE_TEXT:
+				return _create_multiline_string_editor(prop, str(current_value))
 			var line := LineEdit.new()
 			line.text = current_value
 			line.custom_minimum_size = Vector2(120, 0)
@@ -666,6 +702,48 @@ func _create_spinbox(prop: Dictionary, is_float: bool) -> SpinBox:
 
 	return spin
 
+func _create_help_block(text: String) -> Control:
+	## Full-width, wrapping help text for read-only guidance (e.g. Custom restore).
+	var panel := PanelContainer.new()
+	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	panel.custom_minimum_size = Vector2(0, 0)
+
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.12, 0.14, 0.18, 0.95)
+	style.set_corner_radius_all(4)
+	style.content_margin_left = 8
+	style.content_margin_right = 8
+	style.content_margin_top = 8
+	style.content_margin_bottom = 8
+	style.border_color = Color(0.28, 0.32, 0.40, 0.8)
+	style.set_border_width_all(1)
+	panel.add_theme_stylebox_override("panel", style)
+
+	var label := Label.new()
+	label.text = text.strip_edges()
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	label.add_theme_color_override("font_color", Color(0.72, 0.78, 0.86))
+	label.add_theme_font_size_override("font_size", 12)
+	panel.add_child(label)
+	return panel
+
+func _create_multiline_string_editor(prop: Dictionary, current_value: String) -> Control:
+	var edit := TextEdit.new()
+	edit.text = current_value
+	edit.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
+	edit.custom_minimum_size = Vector2(120, 140)
+	edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	edit.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	var read_only: bool = (prop.usage & PROPERTY_USAGE_READ_ONLY) != 0
+	edit.editable = not read_only
+	if not read_only:
+		edit.text_changed.connect(func():
+			value_changed.emit(prop.name, edit.text, _effect.get(prop.name))
+			_effect.set(prop.name, edit.text)
+		)
+	return edit
+
 func _create_enum_editor(prop: Dictionary, current_value: int) -> OptionButton:
 	var select := OptionButton.new()
 	select.custom_minimum_size = Vector2(120, 0)
@@ -677,8 +755,9 @@ func _create_enum_editor(prop: Dictionary, current_value: int) -> OptionButton:
 		select.add_item(item_name, i)
 	select.selected = current_value
 	select.item_selected.connect(func(idx: int):
-		value_changed.emit(prop.name, idx, _effect.get(prop.name))
+		var previous: Variant = _effect.get(prop.name)
 		_effect.set(prop.name, idx)
+		value_changed.emit(prop.name, idx, previous)
 	)
 	return select
 

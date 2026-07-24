@@ -31,12 +31,38 @@ enum OverlapStrategy {
 # ===== Recovery Control =====
 @export_group("Restore")
 @export var restore_after_play: bool = true
-@export var restore_mode: RestoreMode = RestoreMode.IMMEDIATE
+## How to return to the pre-play state after the effect finishes.
+## - Immediate: snap back now
+## - Gradual: tween back over [member restore_duration]
+## - Custom: override [method _restore_custom] in a script (see help when Custom is selected)
+@export var restore_mode: RestoreMode = RestoreMode.IMMEDIATE:
+	set(value):
+		restore_mode = value
+		notify_property_list_changed()
+## Tween / timing length for Gradual; Custom overrides can read this same field.
+@export var restore_duration: float = 0.3
+## How to implement Custom restore (read-only). Only visible when mode is Custom.
+@export_multiline var custom_restore_help: String = CUSTOM_RESTORE_HELP
+
+const CUSTOM_RESTORE_HELP := """Custom restore is code, not Inspector settings.
+
+1. Attach a script that extends this effect (Script → Extend / New Script on the resource).
+2. Override:
+
+func _restore_custom(node: Node) -> void:
+	# restore_duration is available on self
+	await get_tree().create_timer(restore_duration).timeout
+	_restore_initial_state(node)
+
+3. Use restore_duration for your own timing.
+4. Call _restore_initial_state(node) for the default snap, or restore manually.
+
+A dedicated Restoration resource may replace this hook later."""
 
 enum RestoreMode {
-	IMMEDIATE,  # Immediate recovery
-	GRADUAL,    # Gradual recovery
-	CUSTOM      # Custom recovery
+	IMMEDIATE,  ## Snap properties back instantly
+	GRADUAL,    ## Tween back over restore_duration
+	CUSTOM,     ## Override _restore_custom() in a script; see custom_restore_help
 }
 
 # ===== Looping =====
@@ -186,7 +212,7 @@ func apply(target: Node, params: GFFParams = null) -> void:
 			RestoreMode.GRADUAL:
 				await _restore_gradual(node)
 			RestoreMode.CUSTOM:
-				_restore_custom(node)
+				await _restore_custom(node)
 
 	_is_playing = false
 	finished.emit.call_deferred()
@@ -294,24 +320,53 @@ func _restore_initial_state(node: Node) -> void:
 	_set_modulate(node, _initial_state["modulate"])
 
 func _restore_gradual(node: Node) -> void:
-	## Gradually restore initial state
+	## Gradually restore initial transform/modulate state over restore_duration.
 	if _initial_state.is_empty() or not is_instance_valid(node):
 		return
 
+	var duration := maxf(0.0, restore_duration)
+	if duration <= 0.0:
+		_restore_initial_state(node)
+		return
+
 	var tween = node.create_tween()
+	_register_active_tween(tween)
 	tween.set_parallel(true)
-	tween.tween_method(_set_position.bind(node), _get_position(node), _initial_state["position"], 0.3)
-	tween.tween_method(_set_rotation.bind(node), _get_rotation(node), _initial_state["rotation"], 0.3)
-	tween.tween_method(_set_scale.bind(node), _get_scale(node), _initial_state["scale"], 0.3)
-	tween.tween_method(_set_modulate.bind(node), _get_modulate(node), _initial_state["modulate"], 0.3)
-	await tween.finished
+	if _initial_state.has("position"):
+		tween.tween_method(_set_position.bind(node), _get_position(node), _initial_state["position"], duration)
+	if _initial_state.has("rotation"):
+		tween.tween_method(_set_rotation.bind(node), _get_rotation(node), _initial_state["rotation"], duration)
+	if _initial_state.has("scale"):
+		tween.tween_method(_set_scale.bind(node), _get_scale(node), _initial_state["scale"], duration)
+	if _initial_state.has("modulate"):
+		tween.tween_method(_set_modulate.bind(node), _get_modulate(node), _initial_state["modulate"], duration)
+	await _await_tween(tween)
 
 func _restore_custom(node: Node) -> void:
-	## Custom recovery (subclass override)
+	## Custom recovery hook. Override in a script subclass for full control.
+	## Default: wait [member restore_duration], then snap like Immediate.
+	## See [member custom_restore_help] in the Inspector when mode is Custom.
 	if not is_instance_valid(node):
 		return
-	_restore_initial_state(node)
+	var duration := maxf(0.0, restore_duration)
+	if duration > 0.0 and node.is_inside_tree():
+		var tree := node.get_tree()
+		if tree:
+			await tree.create_timer(duration, true, false, true).timeout
+	if is_instance_valid(node):
+		_restore_initial_state(node)
 
+func _validate_property(property: Dictionary) -> void:
+	match property.name:
+		"restore_duration":
+			if restore_mode != RestoreMode.GRADUAL and restore_mode != RestoreMode.CUSTOM:
+				property.usage = PROPERTY_USAGE_NO_EDITOR
+		"custom_restore_help":
+			if restore_mode != RestoreMode.CUSTOM:
+				property.usage = PROPERTY_USAGE_NO_EDITOR
+			else:
+				# Visible docs only — not serialized into .tres files.
+				property.usage = PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_READ_ONLY
 func _get_intensity(params: GFFParams) -> float:
 	## Get intensity parameter
 	if params:

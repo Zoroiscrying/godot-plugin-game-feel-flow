@@ -11,3 +11,4 @@ extends Resource
 @export var track_idx: int = 0        # Track index (0-based)
 @export var wait_for_previous: bool = false  # Whether to wait for previous effect to finish
 @export var enabled: bool = true
+@export var intensity_curve: Curve = null   # Intensity multiplier over normalized block time (0-1)
