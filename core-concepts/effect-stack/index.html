@@ -1737,10 +1737,12 @@
 <li><code>all_finished</code></li>
 </ul>
 <h2 id="stopping">Stopping</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="o">$</span><span class="n">GFFPlayer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span><span class="w">               </span><span class="c1"># stop all</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="o">$</span><span class="n">GFFPlayer</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span><span class="w">               </span><span class="c1"># stop all effects on this player</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="o">$</span><span class="n">GFFPlayer</span><span class="o">.</span><span class="n">stop_effect</span><span class="p">(</span><span class="s2">&quot;shake&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1"># stop one</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">GameFeelFlow</span><span class="o">.</span><span class="n">stop_all</span><span class="p">(</span><span class="n">target</span><span class="p">)</span><span class="w">   </span><span class="c1"># stop everything targeting a node (and descendants)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">GameFeelFlow</span><span class="o">.</span><span class="n">stop</span><span class="p">(</span><span class="n">target</span><span class="p">)</span><span class="w">       </span><span class="c1"># same as stop_all for that target</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">GameFeelFlow</span><span class="o">.</span><span class="n">stop_all</span><span class="p">(</span><span class="n">target</span><span class="p">)</span><span class="w">   </span><span class="c1"># stop everything targeting a node (and descendants)</span>
 </code></pre></div>
+<p>When replaying from a demo UI, call <code>stop</code> / <code>stop_all</code> and restore the node's transform before <code>play</code> again — otherwise mid-shake offsets become the next effect's "initial" state.</p>
 
 
 

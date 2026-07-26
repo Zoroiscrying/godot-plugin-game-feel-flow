@@ -1760,7 +1760,7 @@
 <li><code>play(effect, target, params)</code></li>
 <li><code>play_combo(combo, target, params)</code></li>
 <li><code>play_global(effect, params)</code> — for targetless effects such as <code>freeze_frame</code></li>
-<li><code>stop(target)</code> / <code>stop_all(target)</code></li>
+<li><code>stop(target)</code> / <code>stop_all(target)</code> — both stop GFFPlayer-owned and global-stack effects on the target (and descendants)</li>
 <li><code>emit(event, data)</code></li>
 <li><code>listen(event, callback)</code></li>
 <li><code>unlisten(event, callback)</code></li>
