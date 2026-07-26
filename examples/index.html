@@ -1831,6 +1831,10 @@
 <hr />
 <h2 id="free-showcase-shots">Free showcase shots</h2>
 <p>Scene: <code>addons/game_feel_flow/examples/showcase.tscn</code></p>
+<p><strong>How it is authored (recommended workflow):</strong> each shot is a <code>GFFCombo</code> resource under
+<code>addons/game_feel_flow/examples/resources/showcase_combos/</code>, assigned to
+<code>Subject/GFFPlayer.combo_dictionary</code>. The reel script only calls <code>player.play_combo("key")</code>.
+Select the <code>GFFPlayer</code> in the Inspector / Timeline Editor to inspect or edit combos.</p>
 <table>
 <thead>
 <tr>
@@ -1843,7 +1847,7 @@
 <tr>
 <td>1</td>
 <td><code>impact</code></td>
-<td><code>hit_light</code> combo</td>
+<td>Built-in-style <code>hit_light</code> combo (saved as resource)</td>
 </tr>
 <tr>
 <td>2</td>
@@ -1888,7 +1892,7 @@
 <tr>
 <td>10</td>
 <td><code>time</code></td>
-<td>Independent sine bob, then <code>freeze_frame</code> (<code>Engine.time_scale = 0</code>)</td>
+<td>Independent sine bob, then freeze combo (<code>Engine.time_scale = 0</code>)</td>
 </tr>
 <tr>
 <td>11</td>
@@ -1908,6 +1912,10 @@
 <hr />
 <h2 id="pro-showcase-shots">Pro showcase shots</h2>
 <p>Scene: <code>addons/game_feel_flow_pro/examples/showcase.tscn</code></p>
+<p><strong>How it is authored:</strong> combos under <code>addons/game_feel_flow_pro/examples/resources/showcase_combos/</code>,
+wired to <code>Subject/GFFPlayer</code>, <code>JuiceButton/GFFPlayer</code>, and <code>SfxPlayer/GFFPlayer</code>. The material shot
+attaches a <code>GFFPlayer</code> on the Knight mesh at runtime (material targets need a <code>MeshInstance3D</code>).
+Shots call <code>play_combo("key")</code> only.</p>
 <table>
 <thead>
 <tr>
@@ -1945,12 +1953,12 @@
 <tr>
 <td>6</td>
 <td><code>timeline</code></td>
-<td>Scripted combo (material flash + distortion + stretch)</td>
+<td>Multi-track combo (material flash + distortion + stretch)</td>
 </tr>
 <tr>
 <td>7</td>
 <td><code>xform</code></td>
-<td>Spring → wiggle → squash</td>
+<td>Spring → wiggle → squash (one timeline combo)</td>
 </tr>
 <tr>
 <td>8</td>
