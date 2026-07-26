@@ -8,7 +8,7 @@
 *.cfg text=auto eol=lf
 *.import text=auto eol=lf
 
-# Binary assets
+# Binary assets (no LFS — keep as regular Git binaries)
 *.png binary
 *.jpg binary
 *.jpeg binary
@@ -20,49 +20,16 @@
 *.otf binary
 
 # ==========================================
-# Godot Asset Library export rules
-# Files/folders marked export-ignore are excluded
-# from the ZIP downloaded via GitHub / Asset Library
+# Godot Asset Library — official addon pattern
+# Only ship addons/ in the downloaded ZIP.
+# https://docs.godotengine.org/en/stable/community/asset_library/submitting_to_assetlib.html
 # ==========================================
+/** export-ignore
+/addons !export-ignore
+/addons/** !export-ignore
 
-# IDE / tool / metadata folders
-/.github/ export-ignore
-/.godot/ export-ignore
-/.idea/ export-ignore
-/.reasonix/ export-ignore
-/.superpowers/ export-ignore
-/.worktrees/ export-ignore
-
-# Pro addon (paid, distributed via itch.io — never part of the free package
-# or the public mirror repository)
+# Free package only: keep Pro and test framework out of Asset Library ZIP
 /addons/game_feel_flow_pro/ export-ignore
-
-# Third-party test framework (not needed for plugin usage)
+/addons/game_feel_flow_pro/** export-ignore
 /addons/gdUnit4/ export-ignore
-
-# Documentation and website source
-/docs/ export-ignore
-/docsite/ export-ignore
-/mkdocs.yml export-ignore
-
-# Test files and reports
-/reports/ export-ignore
-/tests_optional/ export-ignore
-/run_tests.bat export-ignore
-/run_tests.sh export-ignore
-
-# Build / tool scripts
-/tools/ export-ignore
-
-# Git metadata (not needed in the package)
-/.gitattributes export-ignore
-/.gitignore export-ignore
-
-# Project file (users install the addon into their own project)
-/project.godot export-ignore
-
-# Editor icons (marketing assets, not needed in the distributed addon)
-/icon.svg export-ignore
-/icon.svg.import export-ignore
-/icon.png export-ignore
-/icon.png.import export-ignore
+/addons/gdUnit4/** export-ignore
