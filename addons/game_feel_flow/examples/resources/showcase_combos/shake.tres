@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="GFFCombo" format=3]
+
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/gff_combo_entry.gd" id="1_8ftef"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/effects/curved/gff_effect_common.gd" id="2_grh0l"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/targets/gff_position_target.gd" id="3_7fh8b"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/tweeners/gff_shake_tweener.gd" id="4_hbvn6"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/gff_combo.gd" id="5_5kqgo"]
+
+[sub_resource type="Resource" id="Resource_7mkse"]
+script = ExtResource("3_7fh8b")
+
+[sub_resource type="Resource" id="Resource_m4mx4"]
+script = ExtResource("4_hbvn6")
+amplitude = 12.0
+
+[sub_resource type="Resource" id="Resource_5xx5y"]
+script = ExtResource("2_grh0l")
+target = SubResource("Resource_7mkse")
+tweener = SubResource("Resource_m4mx4")
+label = "showcase_shake"
+duration = 0.35
+
+[sub_resource type="Resource" id="Resource_07k7w"]
+script = ExtResource("1_8ftef")
+effect = SubResource("Resource_5xx5y")
+duration = 0.35
+
+[resource]
+script = ExtResource("5_5kqgo")
+label = "shake"
+entries = Array[ExtResource("1_8ftef")]([SubResource("Resource_07k7w")])

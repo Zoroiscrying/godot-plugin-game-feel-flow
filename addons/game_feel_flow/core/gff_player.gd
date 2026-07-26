@@ -98,8 +98,12 @@ func play(effect = null, params = null) -> void:
 			await _play_feedback(feedback.duplicate(true), params)
 			return
 
-		# Then look up combo (local dictionary, built-in, presets)
+		# Then look up combo (local dictionary, built-in, presets, then global/project)
 		var combo = _combo_dictionary.get(effect)
+		if combo == null:
+			var gff = _game_feel_flow_autoload()
+			if gff and gff.has_method("resolve_combo"):
+				combo = gff.resolve_combo(effect)
 		if combo:
 			await _play_combo(combo.duplicate(true), params)
 		else:
@@ -114,6 +118,10 @@ func play_combo(combo, params = null) -> void:
 	## combo: String | GFFCombo
 	if combo is String:
 		var combo_resource = _combo_dictionary.get(combo)
+		if combo_resource == null:
+			var gff = _game_feel_flow_autoload()
+			if gff and gff.has_method("resolve_combo"):
+				combo_resource = gff.resolve_combo(combo)
 		if combo_resource:
 			await _play_combo(combo_resource.duplicate(true), params)
 		else:
@@ -499,6 +507,13 @@ func _get_effect(effect_name: String) -> GFFEffect:
 	for effect in effects:
 		if effect.label == effect_name:
 			return effect
+	return null
+
+func _game_feel_flow_autoload() -> Node:
+	## Resolve the GameFeelFlow autoload without requiring Engine singleton APIs.
+	var tree := get_tree()
+	if tree and tree.root:
+		return tree.root.get_node_or_null("GameFeelFlow")
 	return null
 
 func _on_stack_effect_started(effect_id: String) -> void:

@@ -2,10 +2,24 @@
 
 [ext_resource type="Script" uid="uid://chlu77fnsoaus" path="res://addons/game_feel_flow/examples/showcase.gd" id="1_script"]
 [ext_resource type="Script" uid="uid://hsh2wowj52v7" path="res://addons/game_feel_flow/examples/components/gff_showcase_controller.gd" id="2_controller"]
+[ext_resource type="Texture2D" uid="uid://ca5l24i613qjt" path="res://addons/game_feel_flow/examples/assets/sprites/kenney_character.png" id="3_17btt"]
 [ext_resource type="PackedScene" path="res://addons/game_feel_flow/examples/components/showcase_chrome.tscn" id="3_chrome"]
-[ext_resource type="Texture2D" uid="uid://b7nqa0a6820ij" path="res://addons/game_feel_flow/examples/assets/sprites/kenney_prop.png" id="4_subject"]
 [ext_resource type="Theme" uid="uid://ctifrqtvo7eb8" path="res://addons/game_feel_flow/examples/resources/themes/showcase_theme.tres" id="5_theme"]
-[ext_resource type="Script" path="res://addons/game_feel_flow/examples/components/showcase_sine_mover.gd" id="6_sine"]
+[ext_resource type="Script" uid="uid://cferq2d7ajwdl" path="res://addons/game_feel_flow/examples/components/showcase_sine_mover.gd" id="6_sine"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/gff_player.gd" id="7_player"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/gff_combo.gd" id="8_combo"]
+[ext_resource type="Resource" path="res://addons/game_feel_flow/examples/resources/showcase_combos/impact.tres" id="9_impact"]
+[ext_resource type="Resource" path="res://addons/game_feel_flow/examples/resources/showcase_combos/hit_combo.tres" id="10_hit"]
+[ext_resource type="Resource" path="res://addons/game_feel_flow/examples/resources/showcase_combos/shake.tres" id="11_shake"]
+[ext_resource type="Resource" path="res://addons/game_feel_flow/examples/resources/showcase_combos/flash.tres" id="12_flash"]
+[ext_resource type="Resource" path="res://addons/game_feel_flow/examples/resources/showcase_combos/punch.tres" id="13_punch"]
+[ext_resource type="Resource" path="res://addons/game_feel_flow/examples/resources/showcase_combos/motion.tres" id="14_motion"]
+[ext_resource type="Resource" path="res://addons/game_feel_flow/examples/resources/showcase_combos/color.tres" id="15_color"]
+[ext_resource type="Resource" path="res://addons/game_feel_flow/examples/resources/showcase_combos/alpha.tres" id="16_alpha"]
+[ext_resource type="Resource" path="res://addons/game_feel_flow/examples/resources/showcase_combos/rotate.tres" id="17_rotate"]
+[ext_resource type="Resource" path="res://addons/game_feel_flow/examples/resources/showcase_combos/time.tres" id="18_time"]
+[ext_resource type="Resource" path="res://addons/game_feel_flow/examples/resources/showcase_combos/loop.tres" id="19_loop"]
+[ext_resource type="Resource" path="res://addons/game_feel_flow/examples/resources/showcase_combos/pickup.tres" id="20_pickup"]
 
 [sub_resource type="Gradient" id="Gradient_backdrop"]
 colors = PackedColorArray(0.070588, 0.086275, 0.14902, 1, 0.023529, 0.027451, 0.043137, 1)
@@ -15,7 +29,7 @@ gradient = SubResource("Gradient_backdrop")
 fill_from = Vector2(0.5, 0)
 fill_to = Vector2(0.5, 1)
 
-[node name="Showcase" type="Control"]
+[node name="Showcase" type="Control" unique_id=464680220]
 custom_minimum_size = Vector2(1600, 900)
 layout_mode = 3
 anchors_preset = 15
@@ -26,7 +40,7 @@ grow_vertical = 2
 theme = ExtResource("5_theme")
 script = ExtResource("1_script")
 
-[node name="Stage" type="Control" parent="."]
+[node name="Stage" type="Control" parent="." unique_id=286880725]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -35,7 +49,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Backdrop" type="TextureRect" parent="Stage"]
+[node name="Backdrop" type="TextureRect" parent="Stage" unique_id=1930888983]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -43,32 +57,48 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-z_index = 0
 texture = SubResource("GradientTexture2D_backdrop")
 expand_mode = 1
 stretch_mode = 1
 
-[node name="SubjectLayer" type="CanvasLayer" parent="."]
-layer = 1
+[node name="SubjectLayer" type="CanvasLayer" parent="." unique_id=561671737]
 
-[node name="Subject" type="Node2D" parent="SubjectLayer"]
+[node name="Subject" type="Node2D" parent="SubjectLayer" unique_id=1709748697]
 z_index = 1
 
-[node name="Sprite" type="Sprite2D" parent="SubjectLayer/Subject"]
-texture = ExtResource("4_subject")
+[node name="Sprite" type="Sprite2D" parent="SubjectLayer/Subject" unique_id=1692488543]
+texture = ExtResource("3_17btt")
 
-[node name="SineMover" type="Node" parent="."]
+[node name="GFFPlayer" type="Node" parent="SubjectLayer/Subject"]
+script = ExtResource("7_player")
+combo_dictionary = Dictionary[String, ExtResource("8_combo")]({
+"impact": ExtResource("9_impact"),
+"hit_combo": ExtResource("10_hit"),
+"shake": ExtResource("11_shake"),
+"flash": ExtResource("12_flash"),
+"punch": ExtResource("13_punch"),
+"motion": ExtResource("14_motion"),
+"color": ExtResource("15_color"),
+"alpha": ExtResource("16_alpha"),
+"rotate": ExtResource("17_rotate"),
+"time": ExtResource("18_time"),
+"loop": ExtResource("19_loop"),
+"pickup": ExtResource("20_pickup")
+})
+active_combo_key = "impact"
+
+[node name="SineMover" type="Node" parent="." unique_id=10895099]
 script = ExtResource("6_sine")
 
-[node name="ShowcaseController" type="Node" parent="."]
+[node name="ShowcaseController" type="Node" parent="." unique_id=1986166835]
 script = ExtResource("2_controller")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1887402281]
 layer = 2
 
-[node name="ShowcaseChrome" parent="CanvasLayer" instance=ExtResource("3_chrome")]
+[node name="ShowcaseChrome" parent="CanvasLayer" unique_id=1814494072 instance=ExtResource("3_chrome")]
 
-[node name="HintLabel" type="Label" parent="CanvasLayer"]
+[node name="HintLabel" type="Label" parent="CanvasLayer" unique_id=643621774]
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -78,4 +108,4 @@ offset_right = 920.0
 offset_bottom = -90.0
 theme_override_colors/font_color = Color(0.75, 0.8, 0.86, 0.85)
 theme_override_font_sizes/font_size = 14
-text = "Kenney prop (CC0) · Subject on CanvasLayer 1 above backdrop · Freeze = Engine.time_scale 0"
+text = "Select Subject/GFFPlayer → combo_dictionary · shots call play_combo(key) · H hides chrome"

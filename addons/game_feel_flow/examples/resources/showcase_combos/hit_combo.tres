@@ -1,0 +1,88 @@
+[gd_resource type="Resource" script_class="GFFCombo" format=3]
+
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/gff_combo_entry.gd" id="1_au36c"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/effects/curved/gff_effect_common.gd" id="2_yesni"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/targets/gff_position_target.gd" id="3_sxdce"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/tweeners/gff_shake_tweener.gd" id="4_a0plr"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/targets/gff_color_target.gd" id="5_msboi"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/tweeners/gff_flash_tweener.gd" id="6_oqb8d"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/effects/time/gff_freeze_frame.gd" id="7_m8782"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/targets/gff_scale_target.gd" id="8_rt5p4"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/tweeners/gff_elastic_tweener.gd" id="9_rvo3h"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/gff_combo.gd" id="10_0t44v"]
+
+[sub_resource type="Resource" id="Resource_bqbfo"]
+script = ExtResource("3_sxdce")
+
+[sub_resource type="Resource" id="Resource_ugy8k"]
+script = ExtResource("4_a0plr")
+amplitude = 10.0
+
+[sub_resource type="Resource" id="Resource_7gi13"]
+script = ExtResource("2_yesni")
+target = SubResource("Resource_bqbfo")
+tweener = SubResource("Resource_ugy8k")
+duration = 0.14
+
+[sub_resource type="Resource" id="Resource_2sl5g"]
+script = ExtResource("1_au36c")
+effect = SubResource("Resource_7gi13")
+duration = 0.14
+
+[sub_resource type="Resource" id="Resource_5453s"]
+script = ExtResource("5_msboi")
+
+[sub_resource type="Resource" id="Resource_kuvf2"]
+script = ExtResource("6_oqb8d")
+
+[sub_resource type="Resource" id="Resource_wglny"]
+script = ExtResource("2_yesni")
+target = SubResource("Resource_5453s")
+tweener = SubResource("Resource_kuvf2")
+duration = 0.08
+
+[sub_resource type="Resource" id="Resource_irrsw"]
+script = ExtResource("1_au36c")
+effect = SubResource("Resource_wglny")
+duration = 0.08
+track_idx = 1
+
+[sub_resource type="Resource" id="Resource_7r2bu"]
+script = ExtResource("7_m8782")
+duration = 0.06
+restore_after_play = false
+requires_target = false
+
+[sub_resource type="Resource" id="Resource_pmwaw"]
+script = ExtResource("1_au36c")
+effect = SubResource("Resource_7r2bu")
+start_time = 0.04
+duration = 0.06
+track_idx = 2
+
+[sub_resource type="Resource" id="Resource_bubf4"]
+script = ExtResource("8_rt5p4")
+target_value = Vector3(0.18, 0.18, 0)
+mode = 1
+
+[sub_resource type="Resource" id="Resource_44ln5"]
+script = ExtResource("9_rvo3h")
+punch_mode = 1
+
+[sub_resource type="Resource" id="Resource_dathh"]
+script = ExtResource("2_yesni")
+target = SubResource("Resource_bubf4")
+tweener = SubResource("Resource_44ln5")
+duration = 0.22
+
+[sub_resource type="Resource" id="Resource_t5fxs"]
+script = ExtResource("1_au36c")
+effect = SubResource("Resource_dathh")
+start_time = 0.06
+duration = 0.22
+track_idx = 2
+
+[resource]
+script = ExtResource("10_0t44v")
+label = "hit_heavy"
+entries = Array[ExtResource("1_au36c")]([SubResource("Resource_2sl5g"), SubResource("Resource_irrsw"), SubResource("Resource_pmwaw"), SubResource("Resource_t5fxs")])

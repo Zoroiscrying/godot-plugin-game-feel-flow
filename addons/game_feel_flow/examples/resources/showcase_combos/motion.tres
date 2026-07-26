@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="GFFCombo" format=3]
+
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/gff_combo_entry.gd" id="1_xgxic"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/effects/curved/gff_effect_common.gd" id="2_43d0u"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/targets/gff_position_target.gd" id="3_lupcy"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/tweeners/gff_elastic_tweener.gd" id="4_ycy6n"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/gff_combo.gd" id="5_63rpp"]
+
+[sub_resource type="Resource" id="Resource_r0wmp"]
+script = ExtResource("3_lupcy")
+target_value = Vector3(0, -70, 0)
+mode = 1
+
+[sub_resource type="Resource" id="Resource_rv7xo"]
+script = ExtResource("4_ycy6n")
+
+[sub_resource type="Resource" id="Resource_w22uh"]
+script = ExtResource("2_43d0u")
+target = SubResource("Resource_r0wmp")
+tweener = SubResource("Resource_rv7xo")
+label = "showcase_motion"
+duration = 0.45
+
+[sub_resource type="Resource" id="Resource_sbbsi"]
+script = ExtResource("1_xgxic")
+effect = SubResource("Resource_w22uh")
+duration = 0.45
+
+[resource]
+script = ExtResource("5_63rpp")
+label = "motion"
+entries = Array[ExtResource("1_xgxic")]([SubResource("Resource_sbbsi")])

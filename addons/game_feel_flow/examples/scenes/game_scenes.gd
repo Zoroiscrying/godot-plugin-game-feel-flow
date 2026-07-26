@@ -87,10 +87,10 @@ func _setup_explosion_scene() -> void:
 # ===== UI Feedback Scene =====
 
 func _setup_ui_scene() -> void:
-	var button = Button.new()
+	var button := Button.new()
 	button.text = "Click Me"
 	button.position = Vector2(300, 200)
-	var button_origin := button.scale
+	var button_origin: Vector2 = button.scale
 	button.pressed.connect(func():
 		GameFeelFlow.stop_all(button)
 		button.scale = button_origin

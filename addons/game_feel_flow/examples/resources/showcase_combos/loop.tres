@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="GFFCombo" format=3]
+
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/gff_combo_entry.gd" id="1_y4qxs"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/effects/curved/gff_effect_common.gd" id="2_ssn8t"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/targets/gff_scale_target.gd" id="3_on7c0"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/tweeners/gff_linear_tweener.gd" id="4_ojkqq"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/gff_combo.gd" id="5_r1w5s"]
+
+[sub_resource type="Resource" id="Resource_ngwdc"]
+script = ExtResource("3_on7c0")
+target_value = Vector3(1.12, 1.12, 1)
+
+[sub_resource type="Resource" id="Resource_5m81m"]
+script = ExtResource("4_ojkqq")
+
+[sub_resource type="Resource" id="Resource_qeoar"]
+script = ExtResource("2_ssn8t")
+target = SubResource("Resource_ngwdc")
+tweener = SubResource("Resource_5m81m")
+label = "showcase_loop_breathing"
+duration = 1.1
+loop_count = -1
+loop_mode = 1
+
+[sub_resource type="Resource" id="Resource_ddrhy"]
+script = ExtResource("1_y4qxs")
+effect = SubResource("Resource_qeoar")
+duration = 1.1
+
+[resource]
+script = ExtResource("5_r1w5s")
+label = "loop"
+entries = Array[ExtResource("1_y4qxs")]([SubResource("Resource_ddrhy")])

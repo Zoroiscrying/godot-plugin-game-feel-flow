@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="GFFCombo" format=3]
+
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/gff_combo_entry.gd" id="1_pyklq"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/effects/curved/gff_effect_common.gd" id="2_kxyh6"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/targets/gff_rotation_target.gd" id="3_m2rms"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/tweeners/gff_elastic_tweener.gd" id="4_3q7u0"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/gff_combo.gd" id="5_2xsh8"]
+
+[sub_resource type="Resource" id="Resource_uu75p"]
+script = ExtResource("3_m2rms")
+target_value = 25.0
+mode = 1
+
+[sub_resource type="Resource" id="Resource_xpku7"]
+script = ExtResource("4_3q7u0")
+
+[sub_resource type="Resource" id="Resource_avjix"]
+script = ExtResource("2_kxyh6")
+target = SubResource("Resource_uu75p")
+tweener = SubResource("Resource_xpku7")
+label = "showcase_rotate"
+duration = 0.4
+
+[sub_resource type="Resource" id="Resource_ov28u"]
+script = ExtResource("1_pyklq")
+effect = SubResource("Resource_avjix")
+duration = 0.4
+
+[resource]
+script = ExtResource("5_2xsh8")
+label = "rotate"
+entries = Array[ExtResource("1_pyklq")]([SubResource("Resource_ov28u")])

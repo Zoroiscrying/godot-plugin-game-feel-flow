@@ -23,6 +23,9 @@ __pycache__/
 # Build output (Pro packaging)
 /dist/
 
+# Local storefront / channel copy (not for public repo)
+docs/afdian-listing-zh.md
+
 # Example asset download scratch
 addons/game_feel_flow/examples/assets/_download/
 

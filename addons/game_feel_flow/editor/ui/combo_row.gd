@@ -7,6 +7,7 @@ signal selected
 signal key_renamed(old_key: String, new_key: String)
 signal deleted
 signal duplicated
+signal save_as_project_requested
 signal set_default_requested
 
 @export var combo: GFFCombo = null:
@@ -119,6 +120,16 @@ func _refresh() -> void:
 	dup_btn.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	dup_btn.pressed.connect(func(): duplicated.emit())
 	row.add_child(dup_btn)
+
+	# Save as project combo
+	var save_btn = Button.new()
+	save_btn.icon = _get_icon("Save")
+	save_btn.flat = true
+	save_btn.custom_minimum_size = Vector2(ROW_HEIGHT, ROW_HEIGHT)
+	save_btn.tooltip_text = "Save as Project Combo (Project Settings → Game Feel Flow → save_path)"
+	save_btn.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	save_btn.pressed.connect(func(): save_as_project_requested.emit())
+	row.add_child(save_btn)
 
 	# Rename button
 	var rename_btn = Button.new()

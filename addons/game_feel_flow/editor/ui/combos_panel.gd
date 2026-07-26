@@ -191,6 +191,7 @@ func _refresh_combo_list() -> void:
 		row.key_renamed.connect(_on_combo_renamed)
 		row.deleted.connect(_on_combo_deleted.bind(key))
 		row.duplicated.connect(_on_combo_duplicated.bind(key))
+		row.save_as_project_requested.connect(_on_combo_save_as_project.bind(key))
 		row.set_default_requested.connect(_on_combo_set_default.bind(i))
 		_combo_list.add_child(row)
 
@@ -330,6 +331,36 @@ func _on_combo_duplicated(key: String) -> void:
 	_selected_combo_key = new_key
 	_commit_dict_action("Duplicate Combo", old_dict)
 	_mark_changed()
+
+func _on_combo_save_as_project(key: String) -> void:
+	var combo: GFFCombo = _player.combo_dictionary.get(key)
+	if combo == null:
+		return
+	var path := GFFProjectSettings.save_combo(combo, key, true)
+	if path.is_empty():
+		return
+	print("Game Feel Flow: Saved project combo to ", path)
+	_register_saved_project_combo(combo, path)
+	GFFEditorFS.reveal_path(path)
+
+func _register_saved_project_combo(combo: GFFCombo, path: String) -> void:
+	## When Pro is present, register into GameFeelFlow so play_combo works immediately.
+	if not FileAccess.file_exists("res://addons/game_feel_flow_pro/core/gff_project_combos.gd"):
+		return
+	var ProjectCombos = load("res://addons/game_feel_flow_pro/core/gff_project_combos.gd")
+	if ProjectCombos == null:
+		return
+	var tree := Engine.get_main_loop() as SceneTree
+	if tree == null or tree.root == null:
+		return
+	var runtime_gff = tree.root.get_node_or_null("/root/GameFeelFlow")
+	if runtime_gff:
+		ProjectCombos.register_combo_resource(runtime_gff, combo, path.get_file())
+	var free_plugin_script = load("res://addons/game_feel_flow/plugin.gd")
+	if free_plugin_script and free_plugin_script.editor_game_feel_flow:
+		var editor_gff = free_plugin_script.editor_game_feel_flow
+		if editor_gff and editor_gff != runtime_gff:
+			ProjectCombos.register_combo_resource(editor_gff, combo, path.get_file())
 
 func _on_add_combo() -> void:
 	var old_dict = _snapshot_dict()

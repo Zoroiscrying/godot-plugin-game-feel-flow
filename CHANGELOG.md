@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Pro project combos → global play**: Save as Project Combo now registers into `GameFeelFlow`, so `GameFeelFlow.play_combo("MyCombo", node)` works. Startup scans configured combo folders; string play also lazy-loads from those folders.
+- **Project Settings → Game Feel Flow → Combos**: configurable multi-path `search_paths` for loading project combos, plus `save_path` for Save as Project Combo (defaults: `res://presets/combos/`, `res://effects/combos/`).
+
 ### Fixed
 - Playgrounds and EffectLibrary demos now `stop_all` and restore transforms before replaying, so rapid Play no longer leaves subjects drifted off-center.
 - `GameFeelFlow.stop(target)` now delegates to `stop_all(target)` (GFFPlayer **and** global effect stack), matching the documented intent.
@@ -17,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Example docs (`examples.md`, QUICKSTART, PROJECT_SUMMARY) now list current entry points only.
 - Example subjects refreshed with Kenney CC0 character / coin assets (2D + 3D + Pro UI).
+- **Free + Pro showcases** now drive shots via `GFFPlayer.combo_dictionary` resources (`examples/resources/showcase_combos/`) and `play_combo(key)` — no runtime `GFFEffect.new()` assembly in the reel scripts.
 
 ### Documentation
 - Showcase / Pro reel shot lists, flash bleach, freeze (`Engine.time_scale`), punch `BY_AMOUNT`, and Effect Stack naming (`GFFEffect` / `GFFEffectStack`).

@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="GFFCombo" format=3]
+
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/gff_combo_entry.gd" id="1_gcbdv"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/effects/curved/gff_effect_common.gd" id="2_y3bp3"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/targets/gff_scale_target.gd" id="3_w5ctl"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/tweeners/gff_elastic_tweener.gd" id="4_ctv3n"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/gff_combo.gd" id="5_by1pu"]
+
+[sub_resource type="Resource" id="Resource_rcuv3"]
+script = ExtResource("3_w5ctl")
+target_value = Vector3(0.35, 0.35, 0)
+mode = 1
+
+[sub_resource type="Resource" id="Resource_ytobn"]
+script = ExtResource("4_ctv3n")
+punch_mode = 1
+
+[sub_resource type="Resource" id="Resource_gmi3f"]
+script = ExtResource("2_y3bp3")
+target = SubResource("Resource_rcuv3")
+tweener = SubResource("Resource_ytobn")
+label = "showcase_punch"
+duration = 0.4
+
+[sub_resource type="Resource" id="Resource_w7cb0"]
+script = ExtResource("1_gcbdv")
+effect = SubResource("Resource_gmi3f")
+duration = 0.4
+
+[resource]
+script = ExtResource("5_by1pu")
+label = "punch"
+entries = Array[ExtResource("1_gcbdv")]([SubResource("Resource_w7cb0")])

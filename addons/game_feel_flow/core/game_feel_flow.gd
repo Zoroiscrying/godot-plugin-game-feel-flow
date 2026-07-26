@@ -23,9 +23,11 @@ var _effect_stack: GFFEffectStack = null
 
 func _ready() -> void:
 	print("Game Feel Flow: Initializing...")
+	GFFProjectSettings.ensure_registered()
 	GFFEffectConfigManager.register_all()
 	_register_effects()
 	_register_combos()
+	_register_project_combos()
 	_effect_stack = GFFEffectStack.new()
 	_effect_stack.effect_started.connect(_on_stack_effect_started)
 	_effect_stack.effect_finished.connect(_on_stack_effect_finished)
@@ -105,12 +107,12 @@ func play_combo(combo, target: Node, params = null) -> void:
 	var player = _find_player(target)
 
 	if player:
-		# Play via GFFPlayer
+		# Play via GFFPlayer (player falls back to global/project combos for string keys)
 		await player.play_combo(combo, params)
 	else:
 		# Play directly
 		if combo is String:
-			var combo_resource = get_combo(combo)
+			var combo_resource = resolve_combo(combo)
 			if combo_resource:
 				combo_resource = combo_resource.duplicate(true)
 				effect_started.emit(combo)
@@ -177,6 +179,16 @@ func get_effect(name: String) -> GFFEffect:
 func get_combo(name: String) -> GFFCombo:
 	## Get combo
 	return _combo_registry.get(name)
+
+func resolve_combo(name: String) -> GFFCombo:
+	## Resolve a combo by name: global registry, then project `.tres` (Pro dirs).
+	var combo: GFFCombo = get_combo(name)
+	if combo:
+		return combo
+	combo = _try_load_project_combo(name)
+	if combo:
+		register_combo(name, combo)
+	return combo
 
 func get_effect_names() -> Array:
 	## Get all effect names
@@ -311,6 +323,27 @@ func _register_combos() -> void:
 	_combo_registry["explosion_large"] = GFFCombo.explosion_large()
 	_combo_registry["ui_button_press"] = GFFCombo.ui_button_press()
 	_combo_registry["ui_notification"] = GFFCombo.ui_notification()
+
+func _register_project_combos() -> void:
+	## Pro: load Save-as-Project-Combo `.tres` into the global table (no-op without Pro).
+	const PRO_PROJECT_COMBOS := "res://addons/game_feel_flow_pro/core/gff_project_combos.gd"
+	if not FileAccess.file_exists(PRO_PROJECT_COMBOS):
+		return
+	var script = load(PRO_PROJECT_COMBOS)
+	if script and script.has_method("register_into"):
+		var count: int = script.register_into(self)
+		if count > 0 and debug_enabled:
+			print("GameFeelFlow: Registered ", count, " project combo(s)")
+
+func _try_load_project_combo(combo_name: String) -> GFFCombo:
+	## Lazy fallback if a project combo was saved after startup / not yet scanned.
+	const PRO_PROJECT_COMBOS := "res://addons/game_feel_flow_pro/core/gff_project_combos.gd"
+	if not FileAccess.file_exists(PRO_PROJECT_COMBOS):
+		return null
+	var script = load(PRO_PROJECT_COMBOS)
+	if script and script.has_method("try_load"):
+		return script.try_load(combo_name)
+	return null
 
 func _find_player(target: Node) -> GFFPlayer:
 	## Recursively find GFFPlayer node

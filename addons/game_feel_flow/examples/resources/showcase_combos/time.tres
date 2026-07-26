@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="GFFCombo" format=3]
+
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/gff_combo_entry.gd" id="1_7mse4"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/effects/time/gff_freeze_frame.gd" id="2_gtuyx"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/gff_combo.gd" id="3_pqvws"]
+
+[sub_resource type="Resource" id="Resource_7367u"]
+script = ExtResource("2_gtuyx")
+label = "showcase_freeze"
+duration = 0.85
+restore_after_play = false
+requires_target = false
+
+[sub_resource type="Resource" id="Resource_dq3gs"]
+script = ExtResource("1_7mse4")
+effect = SubResource("Resource_7367u")
+duration = 0.85
+
+[resource]
+script = ExtResource("3_pqvws")
+label = "time"
+entries = Array[ExtResource("1_7mse4")]([SubResource("Resource_dq3gs")])

@@ -19,6 +19,9 @@ static var editor_game_feel_flow: Node = null
 static var inspector_plugin: EditorInspectorPlugin = null
 
 func _enter_tree() -> void:
+	# Project Settings → Game Feel Flow
+	GFFProjectSettings.ensure_registered()
+
 	# Add autoload singleton
 	add_autoload_singleton(AUTOLOAD_NAME, AUTOLOAD_PATH)
 	

@@ -1,0 +1,73 @@
+[gd_resource type="Resource" script_class="GFFCombo" format=3]
+
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/gff_combo_entry.gd" id="1_d7puo"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/effects/curved/gff_effect_common.gd" id="2_n8ao6"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/targets/gff_position_target.gd" id="3_mxtrq"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/tweeners/gff_shake_tweener.gd" id="4_1rlht"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/targets/gff_color_target.gd" id="5_3by6e"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/tweeners/gff_flash_tweener.gd" id="6_5jk6w"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/targets/gff_scale_target.gd" id="7_ac5pn"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/tweeners/gff_elastic_tweener.gd" id="8_fphmx"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/gff_combo.gd" id="9_p3bir"]
+
+[sub_resource type="Resource" id="Resource_sp7dd"]
+script = ExtResource("3_mxtrq")
+
+[sub_resource type="Resource" id="Resource_lt1it"]
+script = ExtResource("4_1rlht")
+amplitude = 3.0
+
+[sub_resource type="Resource" id="Resource_b5dhk"]
+script = ExtResource("2_n8ao6")
+target = SubResource("Resource_sp7dd")
+tweener = SubResource("Resource_lt1it")
+duration = 0.08
+
+[sub_resource type="Resource" id="Resource_ogdlg"]
+script = ExtResource("1_d7puo")
+effect = SubResource("Resource_b5dhk")
+duration = 0.08
+
+[sub_resource type="Resource" id="Resource_kdlhc"]
+script = ExtResource("5_3by6e")
+
+[sub_resource type="Resource" id="Resource_6vdrc"]
+script = ExtResource("6_5jk6w")
+
+[sub_resource type="Resource" id="Resource_ked54"]
+script = ExtResource("2_n8ao6")
+target = SubResource("Resource_kdlhc")
+tweener = SubResource("Resource_6vdrc")
+duration = 0.06
+
+[sub_resource type="Resource" id="Resource_5lnno"]
+script = ExtResource("1_d7puo")
+effect = SubResource("Resource_ked54")
+duration = 0.06
+track_idx = 1
+
+[sub_resource type="Resource" id="Resource_48kxx"]
+script = ExtResource("7_ac5pn")
+target_value = Vector3(0.04, 0.04, 0)
+mode = 1
+
+[sub_resource type="Resource" id="Resource_r5nte"]
+script = ExtResource("8_fphmx")
+punch_mode = 1
+
+[sub_resource type="Resource" id="Resource_v4xtv"]
+script = ExtResource("2_n8ao6")
+target = SubResource("Resource_48kxx")
+tweener = SubResource("Resource_r5nte")
+duration = 0.14
+
+[sub_resource type="Resource" id="Resource_rbbwr"]
+script = ExtResource("1_d7puo")
+effect = SubResource("Resource_v4xtv")
+duration = 0.14
+track_idx = 2
+
+[resource]
+script = ExtResource("9_p3bir")
+label = "hit_light"
+entries = Array[ExtResource("1_d7puo")]([SubResource("Resource_ogdlg"), SubResource("Resource_5lnno"), SubResource("Resource_rbbwr")])

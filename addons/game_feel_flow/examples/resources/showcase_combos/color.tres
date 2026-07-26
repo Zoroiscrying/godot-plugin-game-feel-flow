@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="GFFCombo" format=3]
+
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/gff_combo_entry.gd" id="1_05u1u"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/effects/curved/gff_effect_common.gd" id="2_koe2m"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/targets/gff_color_target.gd" id="3_42l4r"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/tweeners/gff_linear_tweener.gd" id="4_y68u3"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/core/gff_combo.gd" id="5_nj6gf"]
+
+[sub_resource type="Resource" id="Resource_ad25j"]
+script = ExtResource("3_42l4r")
+target_color = Color(0.35, 0.85, 1, 1)
+
+[sub_resource type="Resource" id="Resource_ru8tj"]
+script = ExtResource("4_y68u3")
+
+[sub_resource type="Resource" id="Resource_c7mgj"]
+script = ExtResource("2_koe2m")
+target = SubResource("Resource_ad25j")
+tweener = SubResource("Resource_ru8tj")
+label = "showcase_color"
+duration = 0.35
+restore_mode = 1
+restore_duration = 0.35
+
+[sub_resource type="Resource" id="Resource_fdkch"]
+script = ExtResource("1_05u1u")
+effect = SubResource("Resource_c7mgj")
+duration = 0.35
+
+[resource]
+script = ExtResource("5_nj6gf")
+label = "color"
+entries = Array[ExtResource("1_05u1u")]([SubResource("Resource_fdkch")])
