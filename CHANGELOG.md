@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Playgrounds and EffectLibrary demos now `stop_all` and restore transforms before replaying, so rapid Play no longer leaves subjects drifted off-center.
+- `GameFeelFlow.stop(target)` now delegates to `stop_all(target)` (GFFPlayer **and** global effect stack), matching the documented intent.
+
+### Removed
+- Legacy orphan demos: `demo_resource_effects`, `demo_effects`, `demo_game`, `demo_inspector` (superseded by EffectLibrary / showcase / playgrounds).
+
+### Changed
+- Example docs (`examples.md`, QUICKSTART, PROJECT_SUMMARY) now list current entry points only.
+- Example subjects refreshed with Kenney CC0 character / coin assets (2D + 3D + Pro UI).
+
 ### Documentation
 - Showcase / Pro reel shot lists, flash bleach, freeze (`Engine.time_scale`), punch `BY_AMOUNT`, and Effect Stack naming (`GFFEffect` / `GFFEffectStack`).
 - Added `docs/SCREENSHOTS.md` capture checklist for docs + store assets.

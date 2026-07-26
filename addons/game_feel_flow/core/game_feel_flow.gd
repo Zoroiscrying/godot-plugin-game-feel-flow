@@ -133,10 +133,8 @@ func play_global(effect, params = null) -> void:
 	await play(effect, tree.root, params)
 
 func stop(target: Node) -> void:
-	## Stop all effects on target
-	var player = _find_player(target)
-	if player:
-		player.stop()
+	## Stop all effects on target (GFFPlayer-owned and global stack).
+	stop_all(target)
 
 func stop_all(node: Node = null) -> void:
 	## Stop all effects. If a node is provided, only stop effects on that node

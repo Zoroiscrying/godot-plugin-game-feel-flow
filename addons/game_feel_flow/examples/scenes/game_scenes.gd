@@ -28,11 +28,11 @@ func _setup_attack_scene() -> void:
 
 	var hit_light_btn = Button.new()
 	hit_light_btn.text = "Hit Light"
-	hit_light_btn.pressed.connect(func(): GameFeelFlow.play_combo("hit_light", enemy))
+	hit_light_btn.pressed.connect(func(): _replay_combo(enemy, "hit_light"))
 
 	var hit_heavy_btn = Button.new()
 	hit_heavy_btn.text = "Hit Heavy"
-	hit_heavy_btn.pressed.connect(func(): GameFeelFlow.play_combo("hit_heavy", enemy))
+	hit_heavy_btn.pressed.connect(func(): _replay_combo(enemy, "hit_heavy"))
 
 	var hbox = HBoxContainer.new()
 	hbox.add_child(hit_light_btn)
@@ -50,7 +50,7 @@ func _setup_death_scene() -> void:
 
 	var death_btn = Button.new()
 	death_btn.text = "Death"
-	death_btn.pressed.connect(func(): GameFeelFlow.play_combo("death", enemy))
+	death_btn.pressed.connect(func(): _replay_combo(enemy, "death"))
 	death_btn.position = Vector2(350, 500)
 
 	death_scene.add_child(enemy)
@@ -64,7 +64,7 @@ func _setup_pickup_scene() -> void:
 
 	var pickup_btn = Button.new()
 	pickup_btn.text = "Pickup"
-	pickup_btn.pressed.connect(func(): GameFeelFlow.play_combo("pickup", item))
+	pickup_btn.pressed.connect(func(): _replay_combo(item, "pickup"))
 	pickup_btn.position = Vector2(350, 500)
 
 	pickup_scene.add_child(player)
@@ -78,7 +78,7 @@ func _setup_explosion_scene() -> void:
 
 	var explosion_btn = Button.new()
 	explosion_btn.text = "Explosion"
-	explosion_btn.pressed.connect(func(): GameFeelFlow.play_combo("explosion", target))
+	explosion_btn.pressed.connect(func(): _replay_combo(target, "explosion"))
 	explosion_btn.position = Vector2(350, 500)
 
 	explosion_scene.add_child(target)
@@ -90,7 +90,12 @@ func _setup_ui_scene() -> void:
 	var button = Button.new()
 	button.text = "Click Me"
 	button.position = Vector2(300, 200)
-	button.pressed.connect(func(): GameFeelFlow.play("scale", button))
+	var button_origin := button.scale
+	button.pressed.connect(func():
+		GameFeelFlow.stop_all(button)
+		button.scale = button_origin
+		GameFeelFlow.play("scale", button)
+	)
 
 	var progress = ProgressBar.new()
 	progress.value = 50
@@ -112,10 +117,19 @@ func _setup_ui_scene() -> void:
 
 # ===== Helpers =====
 
+func _replay_combo(target: Node2D, combo_name: String) -> void:
+	GameFeelFlow.stop_all(target)
+	target.position = target.get_meta("gff_origin", target.position)
+	target.scale = Vector2.ONE
+	target.modulate = Color.WHITE
+	Engine.time_scale = 1.0
+	GameFeelFlow.play_combo(combo_name, target)
+
 func _create_character(character_name: String, char_position: Vector2) -> Node2D:
 	var character = Node2D.new()
 	character.name = character_name
 	character.position = char_position
+	character.set_meta("gff_origin", char_position)
 
 	var sprite = ColorRect.new()
 	sprite.size = Vector2(50, 80)
@@ -134,6 +148,7 @@ func _create_item(item_name: String, item_position: Vector2) -> Node2D:
 	var item = Node2D.new()
 	item.name = item_name
 	item.position = item_position
+	item.set_meta("gff_origin", item_position)
 
 	var sprite = ColorRect.new()
 	sprite.size = Vector2(30, 30)

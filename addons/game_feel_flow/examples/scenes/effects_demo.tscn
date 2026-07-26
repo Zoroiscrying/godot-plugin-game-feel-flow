@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://addons/game_feel_flow/examples/scenes/effects_demo.gd" id="1"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/examples/components/param_panel.gd" id="2"]
 
 [node name="EffectsDemo" type="Control"]
 layout_mode = 3
@@ -62,6 +63,7 @@ grow_vertical = 2
 [node name="ParamPanel" type="VBoxContainer" parent="DetailWindow/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+script = ExtResource("2")
 
 [node name="PreviewContainer" type="SubViewportContainer" parent="DetailWindow/VBoxContainer"]
 layout_mode = 2

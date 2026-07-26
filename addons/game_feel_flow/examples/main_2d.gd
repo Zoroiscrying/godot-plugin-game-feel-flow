@@ -2,7 +2,7 @@ extends Node2D
 
 ## Game Feel Flow 2D Main Scene
 
-@onready var sprite: ColorRect = $Sprite2D
+@onready var sprite: Sprite2D = $Sprite2D
 @onready var camera: Camera2D = $Camera2D
 @onready var effect_list: ItemList = $UI/Panel/VBoxContainer/EffectList
 @onready var param_panel: VBoxContainer = $UI/Panel/VBoxContainer/ScrollContainer/ParamPanel
@@ -14,6 +14,8 @@ var _original_position: Vector2 = Vector2.ZERO
 var _original_scale: Vector2 = Vector2.ONE
 var _original_rotation: float = 0.0
 var _original_color: Color = Color.WHITE
+var _original_camera_position: Vector2 = Vector2.ZERO
+var _original_camera_zoom: Vector2 = Vector2.ONE
 
 # ===== Effect List =====
 var effects: Array[Dictionary] = [
@@ -50,6 +52,8 @@ func _store_original() -> void:
 	_original_scale = sprite.scale
 	_original_rotation = sprite.rotation
 	_original_color = sprite.modulate
+	_original_camera_position = camera.position
+	_original_camera_zoom = camera.zoom
 
 func _init_ui() -> void:
 	for effect in effects:
@@ -65,6 +69,11 @@ func _on_effect_selected(index: int) -> void:
 # ===== Effect Playback =====
 
 func _play_effect(effect_type: String) -> void:
+	# Stop in-flight effects and snap back before replaying, otherwise stacked
+	# shakes capture the mid-offset as the new "initial" and never settle.
+	GameFeelFlow.stop_all(self)
+	_restore_transforms()
+
 	var params = _get_params()
 	print("Playing: ", effect_type, " with params: ", params)
 
@@ -96,12 +105,18 @@ func _play_effect(effect_type: String) -> void:
 		"death":
 			GameFeelFlow.play_combo("death", sprite, params)
 
-func _reset() -> void:
+func _restore_transforms() -> void:
 	sprite.position = _original_position
 	sprite.scale = _original_scale
 	sprite.rotation = _original_rotation
 	sprite.modulate = _original_color
+	camera.position = _original_camera_position
+	camera.zoom = _original_camera_zoom
 	Engine.time_scale = 1.0
+
+func _reset() -> void:
+	GameFeelFlow.stop_all(self)
+	_restore_transforms()
 	print("Reset")
 
 # ===== Parameter Management =====

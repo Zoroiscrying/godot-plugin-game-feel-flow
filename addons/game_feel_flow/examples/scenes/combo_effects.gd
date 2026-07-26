@@ -15,6 +15,7 @@ extends Control
 # ===== Properties =====
 var current_combo: String = ""
 var preview_target: Node2D = null
+var _preview_origin: Vector2 = Vector2.ZERO
 
 # ===== Combo List =====
 var combos: Dictionary = {
@@ -52,6 +53,7 @@ func _create_preview_target() -> void:
 	sprite.position = Vector2(-50, -50)
 	preview_target.add_child(sprite)
 	preview_viewport.add_child(preview_target)
+	_preview_origin = preview_target.position
 
 # ===== Combo Selection =====
 
@@ -80,6 +82,10 @@ func _on_combo_selected(index: int) -> void:
 
 func _on_play_pressed() -> void:
 	if current_combo and preview_target:
+		GameFeelFlow.stop_all(preview_target)
+		preview_target.position = _preview_origin
+		preview_target.scale = Vector2.ONE
+		preview_target.modulate = Color.WHITE
 		GameFeelFlow.play_combo(current_combo, preview_target)
 
 func _on_copy_pressed() -> void:

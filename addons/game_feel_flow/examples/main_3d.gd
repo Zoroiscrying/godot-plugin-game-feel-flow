@@ -57,14 +57,8 @@ func _ready() -> void:
 	play_button.pressed.connect(_on_play_pressed)
 	reset_button.pressed.connect(_on_reset_pressed)
 
-	# Select first object (find first MeshInstance3D in containers)
-	for child in objects.get_children():
-		for grandchild in child.get_children():
-			if grandchild is MeshInstance3D:
-				_select_target(grandchild)
-				break
-		if _selected_target:
-			break
+	# Select Kenney character first when available, else first mesh.
+	_select_default_target()
 
 func _process(delta: float) -> void:
 	_time += delta
@@ -76,31 +70,70 @@ func _input(event: InputEvent) -> void:
 
 # ===== Initialization =====
 
+func _find_first_mesh(node: Node) -> MeshInstance3D:
+	if node is MeshInstance3D:
+		return node as MeshInstance3D
+	for child in node.get_children():
+		var found := _find_first_mesh(child)
+		if found:
+			return found
+	return null
+
+
+func _collect_meshes(node: Node, out: Array[MeshInstance3D]) -> void:
+	if node is MeshInstance3D:
+		out.append(node as MeshInstance3D)
+	for child in node.get_children():
+		_collect_meshes(child, out)
+
+
+func _wrap_in_container(child: Node3D) -> void:
+	var container := Node3D.new()
+	container.name = child.name + "_Container"
+	container.position = child.position
+	container.rotation = child.rotation
+	container.scale = child.scale
+
+	child.position = Vector3.ZERO
+	child.rotation = Vector3.ZERO
+	child.scale = Vector3.ONE
+
+	objects.add_child(container)
+	objects.remove_child(child)
+	container.add_child(child)
+
+	_original_values[container] = {
+		"position": container.position,
+		"rotation": container.rotation,
+		"scale": container.scale,
+	}
+
+
 func _store_original() -> void:
-	for child in objects.get_children():
+	var children: Array = objects.get_children().duplicate()
+	for child in children:
+		if not (child is Node3D):
+			continue
+		if String(child.name).ends_with("_Container"):
+			continue
 		if child is MeshInstance3D:
-			# Create container as logic layer (handles movement)
-			var container = Node3D.new()
-			container.name = child.name + "_Container"
-			container.position = child.position
-			container.rotation = child.rotation
-			container.scale = child.scale
+			_wrap_in_container(child as Node3D)
+		elif _find_first_mesh(child) != null:
+			_wrap_in_container(child as Node3D)
 
-			# Move original object under container as visual layer (handles display and effects)
-			child.position = Vector3.ZERO
-			child.rotation = Vector3.ZERO
-			child.scale = Vector3.ONE
 
-			# Reorganize hierarchy
-			objects.add_child(container)
-			objects.remove_child(child)
-			container.add_child(child)
-
-			_original_values[container] = {
-				"position": container.position,
-				"rotation": container.rotation,
-				"scale": container.scale,
-			}
+func _select_default_target() -> void:
+	var preferred := objects.get_node_or_null("KenneyCharacter_Container")
+	if preferred:
+		var mesh := _find_first_mesh(preferred)
+		if mesh:
+			_select_target(mesh)
+			return
+	for child in objects.get_children():
+		var mesh := _find_first_mesh(child)
+		if mesh:
+			_select_target(mesh)
+			return
 
 func _find_moving_objects() -> void:
 	# Find MovingCapsule container (already transformed by _store_original)
@@ -133,15 +166,14 @@ func _handle_click(click_pos: Vector2) -> void:
 	var closest: MeshInstance3D = null
 	var min_dist = 80.0  # Max pixel distance
 
-	# Find MeshInstance3D in container hierarchy
-	for child in objects.get_children():
-		for grandchild in child.get_children():
-			if grandchild is MeshInstance3D:
-				var screen_pos = camera.unproject_position(grandchild.global_position)
-				var dist = click_pos.distance_to(screen_pos)
-				if dist < min_dist:
-					min_dist = dist
-					closest = grandchild
+	var meshes: Array[MeshInstance3D] = []
+	_collect_meshes(objects, meshes)
+	for mesh in meshes:
+		var screen_pos = camera.unproject_position(mesh.global_position)
+		var dist = click_pos.distance_to(screen_pos)
+		if dist < min_dist:
+			min_dist = dist
+			closest = mesh
 
 	if closest:
 		_select_target(closest)
@@ -178,21 +210,20 @@ func _on_effect_selected(index: int) -> void:
 # ===== Effect Playback =====
 
 func _get_visual_target(target: Node) -> Node:
-	## Get Visual layer (MeshInstance3D in container)
+	## Prefer a MeshInstance3D under the selection for material effects.
 	if target is MeshInstance3D:
 		return target
-
-	# Find MeshInstance3D child in container
-	for child in target.get_children():
-		if child is MeshInstance3D:
-			return child
-
-	return target
+	var mesh := _find_first_mesh(target)
+	return mesh if mesh else target
 
 func _play_effect(effect_type: String) -> void:
 	if not _selected_target:
 		print("Please select a target first")
 		return
+
+	# Stop in-flight effects and snap back before replaying.
+	GameFeelFlow.stop_all(self)
+	_restore_transforms(false)
 
 	var params = _get_params()
 	var visual_target = _get_visual_target(_selected_target)
@@ -239,7 +270,7 @@ func _play_effect(effect_type: String) -> void:
 		"camera_fov":
 			GameFeelFlow.play("camera_fov", visual_target, params)
 
-func _reset_all() -> void:
+func _restore_transforms(log_reset: bool = true) -> void:
 	for child in objects.get_children():
 		if child in _original_values:
 			var vals = _original_values[child]
@@ -258,7 +289,12 @@ func _reset_all() -> void:
 
 	camera.fov = 75.0
 	Engine.time_scale = 1.0
-	print("Reset")
+	if log_reset:
+		print("Reset")
+
+func _reset_all() -> void:
+	GameFeelFlow.stop_all(self)
+	_restore_transforms(true)
 
 # ===== Parameter Management =====
 

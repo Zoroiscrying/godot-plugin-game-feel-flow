@@ -14,6 +14,7 @@ extends Control
 # ===== Properties =====
 var current_effect: String = ""
 var preview_target: Node2D = null
+var _preview_origin: Vector2 = Vector2.ZERO
 
 # ===== Lifecycle =====
 
@@ -43,6 +44,7 @@ func _create_preview_target() -> void:
 	sprite.position = Vector2(-50, -50)
 	preview_target.add_child(sprite)
 	preview_viewport.add_child(preview_target)
+	_preview_origin = preview_target.position
 
 # ===== Effect Switching =====
 
@@ -59,6 +61,11 @@ func _on_effect_selected(index: int) -> void:
 
 func _on_params_changed(params: GFFParams) -> void:
 	if current_effect and preview_target:
+		GameFeelFlow.stop_all(preview_target)
+		preview_target.position = _preview_origin
+		preview_target.scale = Vector2.ONE
+		preview_target.modulate = Color.WHITE
+		Engine.time_scale = 1.0
 		GameFeelFlow.play(current_effect, preview_target, params)
 
 func _on_code_pressed() -> void:
@@ -68,4 +75,10 @@ func _on_code_pressed() -> void:
 	code_preview.show_code('GameFeelFlow.play("%s", target, %s)' % [current_effect, params_code])
 
 func _on_reset_pressed() -> void:
+	if preview_target:
+		GameFeelFlow.stop_all(preview_target)
+		preview_target.position = _preview_origin
+		preview_target.scale = Vector2.ONE
+		preview_target.modulate = Color.WHITE
+		Engine.time_scale = 1.0
 	param_panel.reset_params()

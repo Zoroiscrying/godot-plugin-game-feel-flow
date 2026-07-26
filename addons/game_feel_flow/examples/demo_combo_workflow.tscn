@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://cjg7qyv2n7p1a"]
 
 [ext_resource type="Script" uid="uid://b6hb1c3t0eppb" path="res://addons/game_feel_flow/core/gff_player.gd" id="1_7i3b7"]
-[ext_resource type="Texture2D" uid="uid://bs8ihqn8n531d" path="res://icon.svg" id="2_icon"]
+[ext_resource type="Texture2D" path="res://addons/game_feel_flow/examples/assets/sprites/kenney_prop.png" id="2_icon"]
 [ext_resource type="Script" uid="uid://d0n7qyv2n7p1b" path="res://addons/game_feel_flow/examples/demo_combo_workflow.gd" id="3_demo"]
 
 [node name="DemoComboWorkflow" type="Node2D"]
@@ -9,15 +9,21 @@ script = ExtResource("3_demo")
 
 [node name="Icon" type="Sprite2D" parent="."]
 position = Vector2(576, 324)
+scale = Vector2(2, 2)
 texture = ExtResource("2_icon")
 
 [node name="GFFPlayer" type="Node" parent="Icon"]
 script = ExtResource("1_7i3b7")
 active_combo_key = "hit"
 
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(576, 324)
+
 [node name="Label" type="Label" parent="."]
 offset_left = 16.0
 offset_top = 16.0
-offset_right = 256.0
-offset_bottom = 80.0
-text = "Click to play 'hit'\nSpace to play 'explosion'"
+offset_right = 420.0
+offset_bottom = 96.0
+text = "Combo Click Demo
+Click = hit · Space = explosion
+(Teaching flow: onboarding.tscn)"

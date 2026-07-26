@@ -117,7 +117,6 @@ func _reset_stage() -> void:
 
 
 func _open_effect_library() -> void:
-	## No-ops until Task 6 lands effect_library.tscn; avoids a hard scene-load error.
 	if ResourceLoader.exists(EFFECT_LIBRARY_SCENE_PATH):
 		get_tree().change_scene_to_file(EFFECT_LIBRARY_SCENE_PATH)
 	else:

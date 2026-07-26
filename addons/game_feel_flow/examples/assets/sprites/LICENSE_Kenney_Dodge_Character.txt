@@ -1,0 +1,3 @@
+﻿Dodge the Creeps art (playerGrey_*.png) originates from Kenney and is included
+via the Godot demo projects. License: CC0 / public domain (Kenney.nl).
+See also: https://github.com/godotengine/godot-demo-projects
