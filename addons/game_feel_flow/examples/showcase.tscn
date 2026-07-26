@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://dntockp8ly7ci"]
+[gd_scene format=3 uid="uid://dntockp8ly7ci"]
 
 [ext_resource type="Script" uid="uid://chlu77fnsoaus" path="res://addons/game_feel_flow/examples/showcase.gd" id="1_script"]
 [ext_resource type="Script" uid="uid://hsh2wowj52v7" path="res://addons/game_feel_flow/examples/components/gff_showcase_controller.gd" id="2_controller"]
 [ext_resource type="PackedScene" path="res://addons/game_feel_flow/examples/components/showcase_chrome.tscn" id="3_chrome"]
-[ext_resource type="Texture2D" path="res://addons/game_feel_flow/examples/assets/sprites/kenney_character.png" id="4_subject"]
-[ext_resource type="Theme" path="res://addons/game_feel_flow/examples/resources/themes/showcase_theme.tres" id="5_theme"]
+[ext_resource type="Texture2D" uid="uid://b7nqa0a6820ij" path="res://addons/game_feel_flow/examples/assets/sprites/kenney_prop.png" id="4_subject"]
+[ext_resource type="Theme" uid="uid://ctifrqtvo7eb8" path="res://addons/game_feel_flow/examples/resources/themes/showcase_theme.tres" id="5_theme"]
+[ext_resource type="Script" path="res://addons/game_feel_flow/examples/components/showcase_sine_mover.gd" id="6_sine"]
 
 [sub_resource type="Gradient" id="Gradient_backdrop"]
 colors = PackedColorArray(0.070588, 0.086275, 0.14902, 1, 0.023529, 0.027451, 0.043137, 1)
@@ -42,19 +43,28 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+z_index = 0
 texture = SubResource("GradientTexture2D_backdrop")
 expand_mode = 1
 stretch_mode = 1
 
-[node name="Subject" type="Node2D" parent="Stage"]
+[node name="SubjectLayer" type="CanvasLayer" parent="."]
+layer = 1
 
-[node name="Sprite" type="Sprite2D" parent="Stage/Subject"]
+[node name="Subject" type="Node2D" parent="SubjectLayer"]
+z_index = 1
+
+[node name="Sprite" type="Sprite2D" parent="SubjectLayer/Subject"]
 texture = ExtResource("4_subject")
+
+[node name="SineMover" type="Node" parent="."]
+script = ExtResource("6_sine")
 
 [node name="ShowcaseController" type="Node" parent="."]
 script = ExtResource("2_controller")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 2
 
 [node name="ShowcaseChrome" parent="CanvasLayer" instance=ExtResource("3_chrome")]
 
@@ -64,8 +74,8 @@ anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 24.0
 offset_top = -118.0
-offset_right = 720.0
+offset_right = 920.0
 offset_bottom = -90.0
 theme_override_colors/font_color = Color(0.75, 0.8, 0.86, 0.85)
 theme_override_font_sizes/font_size = 14
-text = "2D subject (Kenney CC0) — the same effects work on 3D Node3D targets too"
+text = "Kenney prop (CC0) · Subject on CanvasLayer 1 above backdrop · Freeze = Engine.time_scale 0"

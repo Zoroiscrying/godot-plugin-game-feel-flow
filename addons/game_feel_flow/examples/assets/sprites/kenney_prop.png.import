@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bmqkg81w6nutl"
-path="res://.godot/imported/kenney_character.png-ba6c6f7dd3d3687e796f09dbbdd9bd46.ctex"
+uid="uid://b7nqa0a6820ij"
+path="res://.godot/imported/kenney_prop.png-ade9a9bd0f219fae39d121539be6a911.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/game_feel_flow/examples/assets/sprites/kenney_character.png"
-dest_files=["res://.godot/imported/kenney_character.png-ba6c6f7dd3d3687e796f09dbbdd9bd46.ctex"]
+source_file="res://addons/game_feel_flow/examples/assets/sprites/kenney_prop.png"
+dest_files=["res://.godot/imported/kenney_prop.png-ade9a9bd0f219fae39d121539be6a911.ctex"]
 
 [params]
 

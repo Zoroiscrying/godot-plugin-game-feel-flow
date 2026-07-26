@@ -21,5 +21,12 @@ func apply_value(node: Node, value: Variant) -> void:
 		c.a = clampf(value, 0.0, 1.0)
 		node.modulate = c
 
+func apply_params(params: GFFParams) -> void:
+	if params == null:
+		return
+	var v: Variant = params.get_variant("target_alpha", null)
+	if v != null:
+		target_alpha = float(v)
+
 func get_target_name() -> String:
 	return "Alpha"

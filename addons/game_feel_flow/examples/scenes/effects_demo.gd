@@ -87,7 +87,7 @@ func _create_effect_cards() -> void:
 	_cards_created = true
 
 func _create_card(effect: Dictionary) -> PanelContainer:
-	var card = EffectCard.new()
+	var card = EffectCard.create_from_pool()
 	card.set_effect(effect["name"], effect["type"], effect["complexity"])
 	card.clicked.connect(_on_card_clicked)
 	return card

@@ -232,9 +232,14 @@ func _register_effects() -> void:
 	_effect_registry["shake_scale"] = GFFEffectRegistry.create_effect("scale", "shake")
 	_effect_registry["shake_rotation"] = GFFEffectRegistry.create_effect("rotation", "shake")
 
-	# Punch series
+	# Punch series — relative BY_AMOUNT + elastic return to origin
 	_effect_registry["punch_position"] = GFFEffectRegistry.create_effect("position", "elastic")
-	_effect_registry["punch_scale"] = GFFEffectRegistry.create_effect("scale", "elastic")
+	var punch_scale := GFFEffectRegistry.create_effect("scale", "elastic") as GFFEffectCommon
+	var punch_scale_target := punch_scale.target as GFFScaleTarget
+	punch_scale_target.mode = GFFScaleTarget.Mode.BY_AMOUNT
+	punch_scale_target.target_value = Vector3(0.25, 0.25, 0.0)
+	(punch_scale.tweener as GFFElasticTweener).punch_mode = GFFElasticTweener.PunchMode.TO_ORIGIN
+	_effect_registry["punch_scale"] = punch_scale
 	_effect_registry["punch_rotation"] = GFFEffectRegistry.create_effect("rotation", "elastic")
 
 	# Curved series
@@ -245,7 +250,12 @@ func _register_effects() -> void:
 	# Special effects
 	_effect_registry["flash"] = GFFEffectRegistry.create_effect("color", "flash")
 	_effect_registry["color"] = GFFEffectRegistry.create_effect("color", "color")
-	_effect_registry["alpha"] = GFFEffectRegistry.create_effect("alpha", "linear")
+	var alpha_effect := GFFEffectRegistry.create_effect("alpha", "linear") as GFFEffectCommon
+	(alpha_effect.target as GFFAlphaTarget).target_alpha = 0.0
+	alpha_effect.restore_after_play = true
+	alpha_effect.restore_mode = GFFEffect.RestoreMode.GRADUAL
+	alpha_effect.restore_duration = 0.25
+	_effect_registry["alpha"] = alpha_effect
 
 	# Camera effects
 	_effect_registry["camera_shake"] = GFFEffectRegistry.create_effect("camera_offset", "shake")

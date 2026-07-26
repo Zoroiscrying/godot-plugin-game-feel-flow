@@ -29,6 +29,9 @@ func _execute(node: Node, params: GFFParams) -> void:
 	var intensity := params.get_float("intensity", _get_default_intensity())
 	var final_duration := params.get_float("duration", duration)
 
+	if target.has_method("apply_params"):
+		target.apply_params(params)
+
 	var from := target.get_start_value(node, intensity)
 	var to := target.get_end_value(node, intensity)
 

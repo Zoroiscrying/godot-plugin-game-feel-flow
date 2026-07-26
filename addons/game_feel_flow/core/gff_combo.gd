@@ -24,22 +24,23 @@ var _stop_requested: bool = false
 # ===== Predefined Combos =====
 
 static func hit_light() -> GFFCombo:
-	## Light hit effect
+	## Light hit: small pixel shake + white bleach flash + subtle relative punch.
+	## Shake amplitude is in local position units (pixels for Node2D).
 	var combo = GFFCombo.new()
 	combo.label = "hit_light"
-	combo.add_entry(_create_shake(0.3, 0.08), 0.0, 0.08, 0)
-	combo.add_entry(_create_flash(Color.WHITE, 0.04), 0.0, 0.04, 1)
-	combo.add_entry(_create_punch_scale(Vector2(0.1, 0.1), 0.15), 0.0, 0.15, 2)
+	combo.add_entry(_create_shake(3.0, 0.08), 0.0, 0.08, 0)
+	combo.add_entry(_create_flash(Color.WHITE, 0.06), 0.0, 0.06, 1)
+	combo.add_entry(_create_punch_scale(Vector2(0.04, 0.04), 0.14), 0.0, 0.14, 2)
 	return combo
 
 static func hit_heavy() -> GFFCombo:
-	## Heavy hit effect
+	## Heavy hit: stronger shake + bleach flash + brief freeze + punch.
 	var combo = GFFCombo.new()
 	combo.label = "hit_heavy"
-	combo.add_entry(_create_shake(0.6, 0.12), 0.0, 0.12, 0)
-	combo.add_entry(_create_flash(Color.WHITE, 0.06), 0.0, 0.06, 1)
-	combo.add_entry(_create_freeze(0.02), 0.06, 0.02, 2)
-	combo.add_entry(_create_punch_scale(Vector2(0.2, 0.2), 0.2), 0.08, 0.2, 2)
+	combo.add_entry(_create_shake(10.0, 0.14), 0.0, 0.14, 0)
+	combo.add_entry(_create_flash(Color.WHITE, 0.08), 0.0, 0.08, 1)
+	combo.add_entry(_create_freeze(0.06), 0.04, 0.06, 2)
+	combo.add_entry(_create_punch_scale(Vector2(0.18, 0.18), 0.22), 0.06, 0.22, 2)
 	return combo
 
 static func death() -> GFFCombo:
@@ -106,11 +107,12 @@ static func death_explosion() -> GFFCombo:
 	return combo
 
 static func pickup_coin() -> GFFCombo:
-	## Coin pickup effect
+	## Coin pickup: hop up + big pop scale + gold bleach flash (distinct from hit_light).
 	var combo = GFFCombo.new()
 	combo.label = "pickup_coin"
-	combo.add_entry(_create_punch_scale(Vector2(0.2, 0.2), 0.1), 0.0, 0.1, 0)
-	combo.add_entry(_create_flash(Color.GOLD, 0.05), 0.0, 0.05, 1)
+	combo.add_entry(_create_punch_position(Vector2(0.0, -36.0), 0.28), 0.0, 0.28, 0)
+	combo.add_entry(_create_punch_scale(Vector2(0.35, 0.35), 0.22), 0.0, 0.22, 1)
+	combo.add_entry(_create_flash(Color.GOLD, 0.12), 0.0, 0.12, 2)
 	return combo
 
 static func pickup_health() -> GFFCombo:
@@ -337,6 +339,18 @@ static func _create_shake(p_amplitude: float, p_duration: float) -> GFFEffect:
 	effect.duration = p_duration
 	return effect
 
+static func _create_punch_position(amount: Vector2, p_duration: float) -> GFFEffect:
+	var effect := GFFEffectCommon.new()
+	var t := GFFPositionTarget.new()
+	t.mode = GFFPositionTarget.Mode.BY_AMOUNT
+	t.target_value = Vector3(amount.x, amount.y, 0.0)
+	var tw := GFFElasticTweener.new()
+	tw.punch_mode = GFFElasticTweener.PunchMode.TO_ORIGIN
+	effect.target = t
+	effect.tweener = tw
+	effect.duration = p_duration
+	return effect
+
 static func _create_flash(color: Color, p_duration: float) -> GFFEffect:
 	var effect := GFFEffectCommon.new()
 	var t := GFFColorTarget.new()
@@ -363,9 +377,11 @@ static func _create_scale(target_scale: Vector2, p_duration: float) -> GFFEffect
 	return effect
 
 static func _create_punch_scale(target_scale: Vector2, p_duration: float) -> GFFEffect:
+	## target_scale is a relative delta (BY_AMOUNT), e.g. (0.2, 0.2) = +20% then elastic return.
 	var effect := GFFEffectCommon.new()
 	var t := GFFScaleTarget.new()
-	t.target_value = Vector3(target_scale.x, target_scale.y, 1.0)
+	t.mode = GFFScaleTarget.Mode.BY_AMOUNT
+	t.target_value = Vector3(target_scale.x, target_scale.y, 0.0)
 	var tw := GFFElasticTweener.new()
 	tw.punch_mode = GFFElasticTweener.PunchMode.TO_ORIGIN
 	effect.target = t

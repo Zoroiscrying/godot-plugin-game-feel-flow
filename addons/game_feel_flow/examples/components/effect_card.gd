@@ -3,6 +3,8 @@ extends PanelContainer
 ## Effect card component
 ## Used to show preview and info for a single effect
 
+const EFFECT_CARD_SCENE := preload("res://addons/game_feel_flow/examples/components/effect_card.tscn")
+
 # ===== Object Pool =====
 static var pool: Array[PanelContainer] = []
 
@@ -11,7 +13,8 @@ static func create_from_pool() -> PanelContainer:
 		var card = pool.pop_front()
 		card.visible = true
 		return card
-	return new()
+	# Must instantiate the scene — script.new() has no child nodes.
+	return EFFECT_CARD_SCENE.instantiate() as PanelContainer
 
 static func return_to_pool(card: PanelContainer) -> void:
 	card.visible = false

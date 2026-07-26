@@ -43,5 +43,17 @@ func apply_value(node: Node, value: Variant) -> void:
 	elif node is Node2D:
 		node.scale = Vector2(value.x, value.y)
 
+func apply_params(params: GFFParams) -> void:
+	if params == null:
+		return
+	var mode_v: Variant = params.get_variant("mode", null)
+	if mode_v != null:
+		mode = int(mode_v) as Mode
+	var tv: Variant = params.get_variant("target_value", null)
+	if tv is Vector3:
+		target_value = tv
+	elif tv is Vector2:
+		target_value = Vector3(tv.x, tv.y, 0.0)
+
 func get_target_name() -> String:
 	return "Scale"
